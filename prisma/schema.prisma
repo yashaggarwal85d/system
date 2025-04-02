@@ -1,0 +1,138 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Required for NextAuth Prisma Adapter
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+// Required for NextAuth Prisma Adapter
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Required for NextAuth Prisma Adapter (Email provider)
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+
+model User {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String // Hashed password
+  // Removed createdAt, updatedAt
+
+  player   Player?
+  tasks    Task[]
+  routines Routine[]
+  scrambledPhrases ScrambledPhrase[]
+
+  // Relations required by NextAuth Prisma Adapter
+  accounts Account[]
+  sessions Session[]
+}
+
+model Player {
+  id              String   @id @default(cuid())
+  level           Int      @default(1)
+  aura            Float    @default(0)
+  auraToNextLevel Float    @default(100)
+  title           String   @default("Initiate")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+}
+
+model Task {
+  id          String   @id @default(cuid())
+  title       String
+  completed   Boolean  @default(false)
+  category    String // "todo", "habit"
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  deadline    DateTime?
+
+  isHabit     Boolean?
+  frequency   Json? // { count, period, value, time }
+  isGoodHabit Boolean?
+  lastCompleted DateTime?
+  nextDue     DateTime?
+  originalTime String?
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+}
+
+model Routine {
+  id            String   @id @default(cuid())
+  name          String
+  frequency     Json // { count, period, value, time }
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  nextDue       DateTime?
+  completed     Boolean  @default(false)
+  lastCompleted DateTime?
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  checklist ChecklistItem[]
+}
+
+model ChecklistItem {
+  id        String  @id @default(cuid())
+  text      String
+  completed Boolean @default(false)
+  level     Int     @default(0)
+  order     Int
+
+  routine   Routine @relation(fields: [routineId], references: [id], onDelete: Cascade)
+  routineId String
+
+  @@index([routineId, order])
+}
+
+model ScrambledPhrase {
+  id     Int    @id @default(autoincrement())
+  phrase String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([userId, phrase])
+}

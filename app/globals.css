@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 25% 4%;
+    --foreground: 198 95% 95%;
+    
+    --card: 220 25% 4%;
+    --card-foreground: 198 95% 95%;
+    
+    --popover: 220 25% 4%;
+    --popover-foreground: 198 95% 95%;
+    
+    --primary: 198 95% 65%;
+    --primary-foreground: 220 25% 4%;
+    
+    --secondary: 220 25% 8%;
+    --secondary-foreground: 198 95% 95%;
+    
+    --muted: 220 25% 8%;
+    --muted-foreground: 198 95% 65%;
+    
+    --accent: 198 95% 65%;
+    --accent-foreground: 220 25% 4%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 220 25% 8%;
+    --input: 220 25% 8%;
+    --ring: 198 95% 65%;
+    
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background-image: radial-gradient(
+      circle at center,
+      rgba(0, 8, 20, 0.7) 0%,
+      rgba(0, 4, 10, 0.95) 100%
+    );
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes glow {
+  0%, 100% {
+    text-shadow: 0 0 4px rgba(74, 222, 246, 0.3),
+                 0 0 8px rgba(74, 222, 246, 0.3),
+                 0 0 12px rgba(74, 222, 246, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 8px rgba(74, 222, 246, 0.5),
+                 0 0 16px rgba(74, 222, 246, 0.5),
+                 0 0 24px rgba(74, 222, 246, 0.5);
+  }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.dud {
+  color: #4ADEF6;
+  opacity: 0.7;
+}
+
