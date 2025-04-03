@@ -1,9 +1,8 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import RainingLetters from "@/components/ui/RainingLetters";
-import ScrambledText from "@/components/ScrambledText"; // Import ScrambledText
 import Dashboard from "@/components/Dashboard";
 import useDashboardStore from "@/store/dashboardStore";
 import { useSession, signIn } from "next-auth/react"; // Import useSession and signIn
@@ -62,7 +61,6 @@ export default function Home() {
     return (
       <main className="min-h-screen">
         <RainingLetters />
-        <ScrambledText /> {/* Add ScrambledText here */}
         <Dashboard />
       </main>
     );

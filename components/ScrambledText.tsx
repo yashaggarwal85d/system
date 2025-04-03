@@ -1,101 +1,58 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import useScrambleStore from "@/store/scrambleStore";
 import { useSession } from "next-auth/react";
 import { TextScramble } from "@/lib/utils/scrambled";
 
-const ScrambledText = () => {
-  const { status } = useSession();
-  const { getNextPhrase, fetchPhrases, isLoading, error, phrases } =
-    useScrambleStore();
-  const textRef = useRef<HTMLDivElement>(null); // Ref for the text element
-  const scrambleInstance = useRef<TextScramble | null>(null); // Ref for the TextScramble instance
-  const [isInitialized, setIsInitialized] = useState(false); // Track if TextScramble is ready
+const ScrambledText: React.FC = () => {
+  const elementRef = useRef<HTMLHeadingElement>(null);
+  const scramblerRef = useRef<TextScramble | null>(null);
+  const [mounted, setMounted] = useState(false);
+  useSession();
 
-  // Effect 1: Initialize TextScramble
+  const { getNextPhrase, fetchPhrases, isLoading, error } = useScrambleStore();
+
   useEffect(() => {
-    if (textRef.current && !scrambleInstance.current) {
-      scrambleInstance.current = new TextScramble(textRef.current);
-      scrambleInstance.current.setText("Initializing...").then(() => {
-        setIsInitialized(true); // Mark as ready after initial text is set
-      });
+    if (elementRef.current && !scramblerRef.current) {
+      scramblerRef.current = new TextScramble(elementRef.current);
+      setMounted(true);
     }
-    // No specific cleanup needed here as TextScramble manages its animation frames
-  }, []); // Run only once on mount
+  }, []);
 
-  // Effect 2: Fetch phrases when authenticated
   useEffect(() => {
-    if (status === "authenticated") {
-      // Trigger fetch only if needed (store handles avoiding refetch)
-      fetchPhrases();
-    }
-    // Optional: Reset state if status becomes unauthenticated?
-    // else if (status === "unauthenticated") {
-    //   // Reset local state if needed
-    //   setCurrentText("Initializing...");
-    // }
-  }, [status, fetchPhrases]);
+    fetchPhrases();
+  }, [fetchPhrases]);
 
-  // Effect 2: Update displayed text and manage interval based on auth and store state
   useEffect(() => {
-    let intervalId: NodeJS.Timeout | null = null;
-
-    // Ensure the scramble instance is ready before trying to set text
-    if (scrambleInstance.current && isInitialized) {
-      if (status === "authenticated") {
-        if (isLoading) {
-          scrambleInstance.current.setText("Loading Phrases...");
-        } else if (error) {
-          scrambleInstance.current.setText(`Error: ${error}`); // Display specific error
-        } else if (phrases.length > 0) {
-          // Ensure phrases are loaded
-          // Authenticated, not loading, no error, phrases available: Start the cycle
-          const initialPhrase = getNextPhrase(); // Get first/next phrase
-          scrambleInstance.current.setText(initialPhrase);
-
-          intervalId = setInterval(() => {
-            if (scrambleInstance.current) {
-              // Check again inside interval
-              scrambleInstance.current.setText(getNextPhrase());
-            }
-          }, 5000); // Change phrase every 5 seconds
-        } else {
-          // Authenticated, but no phrases yet (might be initial fetch)
-          scrambleInstance.current.setText("Fetching data...");
+    if (mounted && scramblerRef.current && !isLoading && !error) {
+      const next = () => {
+        if (scramblerRef.current) {
+          const phrase = getNextPhrase();
+          scramblerRef.current.setText(phrase).then(() => {
+            setTimeout(next, 2000);
+          });
         }
-      } else {
-        // Not authenticated or session loading
-        scrambleInstance.current.setText("Initializing...");
-      }
-    } else if (!isInitialized && textRef.current) {
-      // If not initialized yet but ref exists, ensure initial text is set
-      // This might be redundant if Effect 1 handles it, but acts as a fallback
-      if (!scrambleInstance.current) {
-        scrambleInstance.current = new TextScramble(textRef.current);
-      }
-      scrambleInstance.current.setText("Initializing...");
+      };
+      next();
     }
+  }, [mounted, isLoading, error, getNextPhrase]);
 
-    // Cleanup function for the interval
-    return () => {
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-    // Rerun when auth status, loading, error, phrases, or initialization status change
-  }, [status, isLoading, error, phrases, getNextPhrase, isInitialized]);
+  let displayText = "SYSTEM INITIALIZING...";
+  if (isLoading) {
+    displayText = "LOADING PHRASES...";
+  } else if (error) {
+    displayText = "ERROR LOADING DATA";
+  }
 
   return (
-    <div className="absolute top-4 left-4 z-10 p-2 bg-black/30 backdrop-blur-sm rounded">
-      {/* Use a standard div with the ref, TextScramble handles the content and animation */}
-      <div
-        ref={textRef}
-        className="text-sm text-[#4ADEF6] font-mono min-h-[1.2em]" // Added min-height to prevent layout shift
+    <div className="mb-12 text-center">
+      <h1
+        ref={elementRef}
+        className="text-[#4ADEF6] text-4xl font-bold tracking-wider text-center animate-glow"
       >
-        {/* Content is managed by TextScramble */}
-      </div>
+        {displayText}
+      </h1>
     </div>
   );
 };

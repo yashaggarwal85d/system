@@ -25,106 +25,103 @@ export function getAuraValue(
   }
 }
 
-// Implemented based on store logic and Dashboard.tsx usage
+// Calculates the next due date based on a base date and frequency settings.
 export function calculateNextDueDate(
-  baseDate: Date,
+  baseDate: Date | string, // Accept string or Date
   frequency?: HabitConfig | Routine["frequency"]
 ): Date | undefined {
   if (!frequency) return undefined;
 
-  // Ensure baseDate is a Date object
+  // 1. Validate and establish the base date/time for calculation
   const validBaseDate =
-    typeof baseDate === "string" ? new Date(baseDate) : baseDate;
+    typeof baseDate === "string" ? new Date(baseDate) : new Date(baseDate); // Clone to avoid mutation
   if (!(validBaseDate instanceof Date) || isNaN(validBaseDate.getTime())) {
     console.error(
       "Invalid baseDate provided to calculateNextDueDate:",
       baseDate
     );
-    return undefined; // Invalid date provided
+    return undefined;
   }
 
   const { count, period, value, time } = frequency;
-  if (count <= 0 || value <= 0) return undefined; // Invalid frequency
+  // We currently ignore 'count' and assume the task is due every 'value' periods.
+  if (value <= 0) return undefined; // Invalid frequency value
 
-  const nextDue = new Date(validBaseDate); // Use the validated Date object
+  const nextDue = new Date(validBaseDate); // Start calculation from base date
 
-  // Calculate the interval in milliseconds based on period and value
-  let intervalMs: number;
+  // 2. Add the primary interval based on 'value' and 'period'
   switch (period) {
     case "days":
-      intervalMs = value * 24 * 60 * 60 * 1000;
+      nextDue.setDate(nextDue.getDate() + value);
       break;
     case "weeks":
-      intervalMs = value * 7 * 24 * 60 * 60 * 1000;
+      nextDue.setDate(nextDue.getDate() + value * 7);
       break;
     case "months":
-      // Calculating months precisely is tricky, add months directly
       nextDue.setMonth(nextDue.getMonth() + value);
-      intervalMs = 0; // Handled by setMonth
       break;
     default:
-      return undefined; // Unknown period
+      console.error("Unknown period in calculateNextDueDate:", period);
+      return undefined;
   }
 
-  // If interval is calculated (days/weeks), add it.
-  // The division by 'count' seems complex and might be misinterpreted.
-  // Standard habit tracking usually means 'value' period passes 'count' times.
-  // Let's assume the interval is simply based on 'value' and 'period' for now.
-  // If it means 'count' completions within 'value' period, the logic is different.
-  // Sticking to the simpler interpretation: due every 'value' period.
-  if (intervalMs > 0) {
-    nextDue.setTime(nextDue.getTime() + intervalMs);
-  }
-
-  // Set the time if provided
+  // 3. Set the specific time if provided
+  let timeWasSet = false;
   if (time) {
     const [hours, minutes] = time.split(":").map(Number);
     if (!isNaN(hours) && !isNaN(minutes)) {
-      // Set time on the calculated date
-      const dateWithTime = new Date(nextDue);
-      dateWithTime.setHours(hours, minutes, 0, 0);
+      nextDue.setHours(hours, minutes, 0, 0);
+      timeWasSet = true;
+    } else {
+      console.warn("Invalid time format provided:", time);
+      // Fallback to start of day if time is invalid
+      nextDue.setHours(0, 0, 0, 0);
+    }
+  } else {
+    // If no time specified, default to the start of the calculated day
+    nextDue.setHours(0, 0, 0, 0);
+  }
 
-      // If the calculated due time is still before the baseDate (e.g., time already passed today)
-      // advance it by one interval.
-      if (dateWithTime.getTime() <= validBaseDate.getTime()) {
-        // Use validated date
-        if (intervalMs > 0) {
-          dateWithTime.setTime(dateWithTime.getTime() + intervalMs);
-        } else if (period === "months") {
-          dateWithTime.setMonth(dateWithTime.getMonth() + value);
-        }
-        // Re-apply time after adding interval
-        dateWithTime.setHours(hours, minutes, 0, 0);
-      }
-      return dateWithTime;
+  // 4. Ensure the calculated 'nextDue' is strictly after the 'baseDate'
+  // This handles cases where the interval is daily and the time is earlier than the base time,
+  // or monthly calculations that land on the same day initially.
+  while (nextDue.getTime() <= validBaseDate.getTime()) {
+    // Keep adding the interval until it's in the future
+    switch (period) {
+      case "days":
+        nextDue.setDate(nextDue.getDate() + value);
+        break;
+      case "weeks":
+        nextDue.setDate(nextDue.getDate() + value * 7);
+        break;
+      case "months":
+        nextDue.setMonth(nextDue.getMonth() + value);
+        break;
+    }
+    // Re-apply time after adding the interval if it was originally set
+    if (timeWasSet) {
+      const [hours, minutes] = time.split(":").map(Number);
+      nextDue.setHours(hours, minutes, 0, 0);
+    } else {
+      nextDue.setHours(0, 0, 0, 0); // Ensure start of day otherwise
     }
   }
 
-  // If time wasn't set or invalid, return the calculated date part
-  // Ensure it's after baseDate if only date changed (e.g. monthly)
-  if (
-    nextDue.getTime() <= validBaseDate.getTime() &&
-    intervalMs === 0 &&
-    period === "months"
-  ) {
-    // This case needs refinement if only date matters and it hasn't advanced past validBaseDate
-    // For simplicity, let's assume setMonth already pushed it forward correctly.
-  } else if (nextDue.getTime() <= validBaseDate.getTime()) {
-    // If after adding interval and setting time, it's still not in the future, something is wrong or needs another interval jump.
-    // Let's return the calculated date for now.
-  }
-
-  return nextDue;
+  return nextDue; // Return the final calculated date
 }
 
-// Placeholder for other missing functions from Dashboard.tsx if needed later
+// Utility functions previously present
 export const isDateWithinOneYearRange = (date: Date): boolean => {
   const today = new Date();
   const oneYearFromNow = new Date();
   oneYearFromNow.setFullYear(today.getFullYear() + 1);
   today.setHours(0, 0, 0, 0);
   oneYearFromNow.setHours(0, 0, 0, 0);
-  return date >= today && date <= oneYearFromNow;
+  // Ensure date is also a Date object before comparison
+  if (!(date instanceof Date) || isNaN(date.getTime())) return false;
+  const checkDate = new Date(date);
+  checkDate.setHours(0, 0, 0, 0);
+  return checkDate >= today && checkDate <= oneYearFromNow;
 };
 
 export const getDaysRemaining = (deadline?: Date | string): number | null => {
@@ -143,7 +140,7 @@ export const getDaysRemaining = (deadline?: Date | string): number | null => {
   return diffDays;
 };
 
-export const getDeadlineColor = (deadline?: Date): string => {
+export const getDeadlineColor = (deadline?: Date | string): string => {
   const daysRemaining = getDaysRemaining(deadline);
   if (daysRemaining === null) return "text-[#4ADEF6]/70"; // No deadline
   if (daysRemaining < 0) return "text-red-500"; // Overdue
@@ -151,7 +148,7 @@ export const getDeadlineColor = (deadline?: Date): string => {
   return "text-green-500"; // Due later
 };
 
-export const getDeadlineText = (deadline?: Date): string => {
+export const getDeadlineText = (deadline?: Date | string): string => {
   const daysRemaining = getDaysRemaining(deadline);
   if (daysRemaining === null) return "No deadline";
   if (daysRemaining < 0) return `Overdue by ${Math.abs(daysRemaining)} day(s)`;
@@ -177,5 +174,25 @@ export const getRemainingTime = (nextDue?: Date | string): string => {
 
   if (days > 0) return `in ${days}d ${hours}h`;
   if (hours > 0) return `in ${hours}h ${minutes}m`;
-  return `in ${minutes}m`;
+  if (minutes > 0) return `in ${minutes}m`; // Show minutes if less than an hour
+  return "Due now"; // Or handle very close due times
+};
+
+// Function to format the reset time
+export const formatResetTime = (nextDueDate?: Date | string): string => {
+  if (!nextDueDate) return "";
+  const validNextDue =
+    typeof nextDueDate === "string" ? new Date(nextDueDate) : nextDueDate;
+  if (!(validNextDue instanceof Date) || isNaN(validNextDue.getTime())) {
+    return "Invalid date";
+  }
+
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  };
+  return `Resets ${validNextDue.toLocaleString("en-US", options)}`;
 };

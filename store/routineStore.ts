@@ -1,46 +1,50 @@
 import { create, StateCreator } from "zustand";
-// Remove persist imports
-import { Routine } from "@/lib/interfaces/routine";
+import { persist, createJSONStorage, PersistOptions } from "zustand/middleware";
+import { Routine, Frequency } from "@/lib/interfaces/routine"; // Use local interface and Frequency type
 import { ChecklistItemData } from "@/components/ui/checklist-item";
-import { calculateNextDueDate, getAuraValue } from "@/lib/utils";
-// TODO: Import API functions
+import { calculateNextDueDate } from "@/lib/utils";
+// Import the actual API functions
+import {
+  fetchRoutinesAPI,
+  addRoutineAPI,
+  updateRoutineAPI,
+  deleteRoutineAPI,
+} from "@/lib/apiClient";
 
 interface RoutineState {
   routines: Routine[];
   isLoading: boolean;
   error: string | null;
-
-  // setRoutines: (routines: Routine[] | ((prev: Routine[]) => Routine[])) => void; // Keep if needed
   fetchRoutines: () => Promise<void>;
   addRoutine: (
     routineData: Omit<
       Routine,
       | "id"
       | "createdAt"
-      | "updatedAt" // Added
+      | "updatedAt"
       | "completed"
-      | "auraValue"
       | "nextDue"
       | "lastCompleted"
-      | "userId" // Added
+      | "userId"
     >
   ) => Promise<Routine | null>;
   updateRoutine: (
     routineId: string,
-    updatedRoutineData: Partial<
-      Omit<Routine, "id" | "createdAt" | "updatedAt" | "userId">
-    > // Exclude fields set by backend
+    updatedRoutineData: {
+      name: string;
+      frequency?: Frequency;
+      checklist: ChecklistItemData[];
+    } // Use correct Frequency type
   ) => Promise<void>;
   deleteRoutine: (routineId: string) => Promise<void>;
   toggleChecklistItem: (
     routineId: string,
     itemId: string
   ) => Promise<{
-    // Return type might change
     itemCompleted?: boolean;
     routineCompleted?: boolean;
     auraChange?: number;
-    nextDue?: Date;
+    nextDue?: Date | undefined;
     error?: string;
   }>;
   updateChecklistItem: (
@@ -49,41 +53,34 @@ interface RoutineState {
     text: string
   ) => Promise<void>;
   deleteChecklistItem: (routineId: string, itemId: string) => Promise<void>;
-  indentChecklistItem: (routineId: string, itemId: string) => Promise<void>; // These might become API calls or stay local UI state updates initially
-  outdentChecklistItem: (routineId: string, itemId: string) => Promise<void>; // These might become API calls or stay local UI state updates initially
+  indentChecklistItem: (routineId: string, itemId: string) => Promise<void>;
+  outdentChecklistItem: (routineId: string, itemId: string) => Promise<void>;
   addChecklistItem: (
     routineId: string,
     afterItemId: string | null,
     level: number
-  ) => Promise<ChecklistItemData | null>; // Return new item or null
+  ) => Promise<ChecklistItemData | null>;
   reorderChecklist: (
     routineId: string,
-    newChecklistOrder: ChecklistItemData[] // Send the whole new order
+    newChecklistOrder: ChecklistItemData[]
   ) => Promise<void>;
 }
 
+type PersistedRoutineState = {
+  routines: Routine[];
+};
+
 const routineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
   routines: [],
-  isLoading: true,
+  isLoading: false,
   error: null,
 
-  // setRoutines: (updater) =>
-  //   set((state) => ({
-  //     routines:
-  //       typeof updater === "function" ? updater(state.routines) : updater,
-  //     isLoading: false, error: null
-  //   })),
-
   fetchRoutines: async () => {
+    if (get().isLoading) return;
     set({ isLoading: true, error: null });
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log("TODO: Fetch routines from API");
-      // const fetchedRoutines = await fetchRoutinesAPI();
-      // Convert dates...
-      // set({ routines: routinesWithDates, isLoading: false });
-      set({ routines: [], isLoading: false }); // Simulate empty fetch
-      // --- End TODO ---
+      const fetchedRoutines = await fetchRoutinesAPI(); // API client now returns correct frontend Routine[] type
+      set({ routines: fetchedRoutines, isLoading: false, error: null });
     } catch (err) {
       console.error("Failed to fetch routines:", err);
       const errorMsg =
@@ -99,48 +96,24 @@ const routineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
   addRoutine: async (routineData) => {
     set({ isLoading: true });
     try {
-      const routinePayload = {
-        ...routineData,
-        auraValue: getAuraValue("routine"),
-        nextDue: calculateNextDueDate(new Date(), routineData.frequency),
-        // Ensure checklist items have basic structure if needed by API
+      // Prepare payload for API
+      const payload = {
+        name: routineData.name,
+        frequency: routineData.frequency, // Use Frequency type
+        // Send only necessary data for checklist creation
         checklist: routineData.checklist.map((item) => ({
-          text: item.text || "",
-          level: item.level || 0,
-          completed: !!item.completed,
+          text: item.text,
+          level: item.level,
         })),
-        // id, createdAt, updatedAt, completed, lastCompleted, userId set by backend
       };
-      // --- TODO: Replace with actual API call ---
-      console.log("TODO: Call API to add routine:", routinePayload);
-      // const addedRoutine = await addRoutineAPI(routinePayload);
-      // Convert dates...
-      // set((state) => ({ routines: [routineWithDates, ...state.routines], isLoading: false, error: null }));
-      // return routineWithDates;
+      const addedRoutine = await addRoutineAPI(payload); // API client returns frontend Routine type
 
-      // Simulate API response
-      const simulatedRoutine: Routine = {
-        ...routinePayload,
-        id: Math.random().toString(36).substring(7),
-        completed: false,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        userId: "temp-user-id",
-        lastCompleted: undefined,
-        // Simulate checklist items getting IDs from backend
-        checklist: routinePayload.checklist.map((item) => ({
-          ...item,
-          id: Math.random().toString(36).substring(7),
-          children: [],
-        })),
-      };
       set((state) => ({
-        routines: [simulatedRoutine, ...state.routines],
+        routines: [addedRoutine, ...state.routines], // Add the correctly typed routine
         isLoading: false,
         error: null,
       }));
-      return simulatedRoutine;
-      // --- End TODO ---
+      return addedRoutine;
     } catch (err) {
       console.error("Failed to add routine:", err);
       const errorMsg =
@@ -152,45 +125,60 @@ const routineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
 
   updateRoutine: async (routineId, updatedRoutineData) => {
     const originalRoutines = get().routines;
-    // Optimistic update
+    // Optimistic update using frontend types
     set((state) => ({
       routines: state.routines.map((r) => {
         if (r.id === routineId) {
-          const updated = { ...r, ...updatedRoutineData };
-          // Recalculate nextDue if frequency changed optimistically
-          if (updatedRoutineData.frequency) {
-            updated.nextDue = calculateNextDueDate(
-              new Date(),
-              updatedRoutineData.frequency
-            );
-          }
-          // Optimistic checklist update (if provided) - ensure items have basic structure
-          if (updatedRoutineData.checklist) {
-            updated.checklist = updatedRoutineData.checklist.map((item) => ({
-              id: item.id || Math.random().toString(36).substring(7), // Keep existing ID or generate temp one
-              text: item.text || "",
-              completed: !!item.completed,
-              level: item.level || 0,
-              children: item.children || [],
-            }));
-          }
+          const updated: Routine = {
+            // Ensure optimistic update matches Routine interface
+            ...r,
+            name: updatedRoutineData.name,
+            ...(updatedRoutineData.frequency && {
+              frequency: updatedRoutineData.frequency, // Use Frequency type
+              nextDue:
+                calculateNextDueDate(
+                  new Date(),
+                  updatedRoutineData.frequency
+                ) ?? undefined,
+            }),
+            // Optimistically update checklist (ensure it matches ChecklistItemData)
+            checklist: updatedRoutineData.checklist.map((item) => ({
+              id: item.id,
+              text: item.text,
+              completed: item.completed,
+              level: item.level,
+              children: item.children || [], // Ensure children array exists
+            })),
+          };
           return updated;
         }
         return r;
       }),
+      error: null,
     }));
 
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log(
-        `TODO: Call API to update routine ${routineId} with`,
-        updatedRoutineData
-      );
-      // await updateRoutineAPI(routineId, updatedRoutineData);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      set({ error: null });
-      console.log("Simulated routine update successful");
-      // --- End TODO ---
+      // Prepare payload for API
+      const payload = {
+        name: updatedRoutineData.name,
+        frequency: updatedRoutineData.frequency, // Use Frequency type
+        // Send checklist items with necessary fields for upsert
+        checklist: updatedRoutineData.checklist.map((item) => ({
+          id: item.id,
+          text: item.text,
+          completed: item.completed,
+          level: item.level,
+        })),
+      };
+      const updatedRoutine = await updateRoutineAPI(routineId, payload); // API client returns frontend Routine type
+
+      // Update state with confirmed data
+      set((state) => ({
+        routines: state.routines.map((r) =>
+          r.id === routineId ? updatedRoutine : r
+        ), // Use the returned routine directly
+        error: null,
+      }));
     } catch (err) {
       console.error(`Failed to update routine ${routineId}:`, err);
       set({
@@ -206,16 +194,12 @@ const routineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
     const originalRoutines = get().routines;
     set((state) => ({
       routines: state.routines.filter((r) => r.id !== routineId),
+      error: null,
     })); // Optimistic
 
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log(`TODO: Call API to delete routine ${routineId}`);
-      // await deleteRoutineAPI(routineId);
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await deleteRoutineAPI(routineId); // Call API
       set({ error: null });
-      console.log("Simulated routine delete successful");
-      // --- End TODO ---
     } catch (err) {
       console.error(`Failed to delete routine ${routineId}:`, err);
       set({
@@ -228,73 +212,77 @@ const routineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
   },
 
   // --- Checklist Item Actions ---
-  // These might require more complex API endpoints or could be batched with routine updates
-
   toggleChecklistItem: async (routineId, itemId) => {
     const originalRoutines = get().routines;
-    let resultData: any = {}; // To store optimistic results
+    const routine = originalRoutines.find((r) => r.id === routineId);
+    if (!routine) return { error: "Routine not found" };
 
-    // Optimistic update
+    let itemCompleted = false;
+    let routineCompleted = routine.completed;
+    let auraChange = 0; // Example aura change
+
+    const updatedChecklist = routine.checklist.map((item) => {
+      if (item.id === itemId) {
+        itemCompleted = !item.completed;
+        auraChange = itemCompleted ? 5 : -5;
+        return { ...item, completed: itemCompleted };
+      }
+      return item;
+    });
+
+    const allItemsCompleted = updatedChecklist.every((item) => item.completed);
+    if (allItemsCompleted && !routine.completed) {
+      routineCompleted = true;
+    } else if (!allItemsCompleted && routine.completed) {
+      routineCompleted = false;
+    }
+
+    // Optimistic UI update
     set((state) => ({
-      routines: state.routines.map((routine) => {
-        if (routine.id === routineId) {
-          let itemCompleted = false;
-          let routineCompleted = routine.completed;
-          let auraChange = 0;
-          let nextDue = routine.nextDue;
-          let lastCompleted = routine.lastCompleted;
-
-          const updatedChecklist = routine.checklist.map((item) => {
-            if (item.id === itemId) {
-              itemCompleted = !item.completed;
-              auraChange = itemCompleted ? 5 : -5; // Example item aura
-              return { ...item, completed: itemCompleted };
-            }
-            return item;
-          });
-
-          const allItemsCompleted = updatedChecklist.every(
-            (item) => item.completed
-          );
-
-          if (allItemsCompleted && !routine.completed) {
-            routineCompleted = true;
-            lastCompleted = new Date();
-            nextDue = calculateNextDueDate(new Date(), routine.frequency);
-            // auraChange += routine.auraValue; // Backend calculates routine completion aura
-          } else if (!allItemsCompleted && routine.completed) {
-            routineCompleted = false;
-            lastCompleted = undefined;
-            nextDue = calculateNextDueDate(new Date(), routine.frequency);
-            // auraChange -= routine.auraValue; // Backend calculates routine completion aura loss
-          }
-          resultData = { itemCompleted, routineCompleted, auraChange, nextDue }; // Store optimistic results (auraChange is just item aura here)
-          return {
-            ...routine,
-            checklist: updatedChecklist,
-            completed: routineCompleted,
-            nextDue,
-            lastCompleted,
-          };
-        }
-        return routine;
-      }),
+      routines: state.routines.map((r) =>
+        r.id === routineId
+          ? { ...r, checklist: updatedChecklist, completed: routineCompleted }
+          : r
+      ),
+      error: null,
     }));
 
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log(
-        `TODO: Call API to toggle checklist item ${itemId} in routine ${routineId}`
-      );
-      // const apiResult = await toggleChecklistItemAPI(routineId, itemId);
-      // Update store with confirmed state from API if necessary
-      // return apiResult;
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      console.log("Simulated checklist toggle successful");
-      return resultData; // Return optimistic data on success
-      // --- End TODO ---
+      // Call updateRoutineAPI with the new checklist state AND the calculated routine completion status
+      const payload = {
+        name: routine.name,
+        frequency: routine.frequency, // Use correct Frequency type
+        completed: routineCompleted, // Send the calculated completion status
+        checklist: updatedChecklist.map((item) => ({
+          // Map to expected payload for API
+          id: item.id,
+          text: item.text,
+          completed: item.completed,
+          level: item.level,
+        })),
+      };
+      const updatedRoutineResult = await updateRoutineAPI(routineId, payload); // API client returns frontend Routine type
+
+      // Update store with confirmed state from API
+      set((state) => ({
+        routines: state.routines.map((r) =>
+          r.id === routineId ? updatedRoutineResult : r
+        ),
+        error: null,
+      }));
+
+      // Return results
+      return {
+        itemCompleted,
+        routineCompleted,
+        auraChange,
+        nextDue: updatedRoutineResult.nextDue,
+      };
     } catch (err) {
-      console.error(`Failed to toggle checklist item ${itemId}:`, err);
+      console.error(
+        `Failed to toggle checklist item ${itemId} via updateRoutine:`,
+        err
+      );
       set({
         routines: originalRoutines,
         error: `Failed to toggle item: ${
@@ -305,124 +293,328 @@ const routineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
     }
   },
 
-  // Update, Delete, Indent, Outdent, Add, Reorder checklist items would follow similar patterns:
-  // 1. Optimistic UI update (optional but recommended for responsiveness)
-  // 2. API call
-  // 3. Handle success (potentially update state with confirmed data from API)
-  // 4. Handle error (rollback optimistic update, set error state)
-
-  // Placeholder implementations for other checklist actions:
   updateChecklistItem: async (routineId, itemId, text) => {
+    const originalRoutines = get().routines;
+    const routine = originalRoutines.find((r) => r.id === routineId);
+    if (!routine) return;
+
+    const updatedChecklist = routine.checklist.map((item) =>
+      item.id === itemId ? { ...item, text } : item
+    );
+
     set((state) => ({
       routines: state.routines.map((r) =>
-        r.id === routineId
-          ? {
-              ...r,
-              checklist: r.checklist.map((i) =>
-                i.id === itemId ? { ...i, text } : i
-              ),
-            }
-          : r
+        r.id === routineId ? { ...r, checklist: updatedChecklist } : r
       ),
-    }));
-    console.log(`TODO: API call to update item ${itemId} text`);
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate
+    })); // Optimistic
+
+    try {
+      await updateRoutineAPI(routineId, {
+        name: routine.name,
+        frequency: routine.frequency, // Use correct Frequency type
+        checklist: updatedChecklist.map((item) => ({
+          // Map to expected payload
+          id: item.id,
+          text: item.text,
+          completed: item.completed,
+          level: item.level,
+        })),
+      });
+      set({ error: null });
+    } catch (err) {
+      console.error(`Failed to update checklist item ${itemId} text:`, err);
+      set({
+        routines: originalRoutines,
+        error: `Failed to update item text: ${
+          err instanceof Error ? err.message : "Unknown error"
+        }`,
+      });
+    }
   },
+
   deleteChecklistItem: async (routineId, itemId) => {
+    const originalRoutines = get().routines;
+    const routine = originalRoutines.find((r) => r.id === routineId);
+    if (!routine) return;
+
+    const updatedChecklist = routine.checklist.filter(
+      (item) => item.id !== itemId
+    );
+
     set((state) => ({
       routines: state.routines.map((r) =>
-        r.id === routineId
-          ? { ...r, checklist: r.checklist.filter((i) => i.id !== itemId) }
-          : r
+        r.id === routineId ? { ...r, checklist: updatedChecklist } : r
       ),
-    }));
-    console.log(`TODO: API call to delete item ${itemId}`);
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate
+    })); // Optimistic
+
+    try {
+      await updateRoutineAPI(routineId, {
+        name: routine.name,
+        frequency: routine.frequency, // Use correct Frequency type
+        checklist: updatedChecklist.map((item) => ({
+          // Map to expected payload
+          id: item.id,
+          text: item.text,
+          completed: item.completed,
+          level: item.level,
+        })),
+      });
+      set({ error: null });
+    } catch (err) {
+      console.error(`Failed to delete checklist item ${itemId}:`, err);
+      set({
+        routines: originalRoutines,
+        error: `Failed to delete item: ${
+          err instanceof Error ? err.message : "Unknown error"
+        }`,
+      });
+    }
   },
-  indentChecklistItem: async (routineId, itemId) => {
-    // Complex logic - requires finding previous item, checking levels. Keep local for now or implement complex API.
-    set((state) => ({
-      routines: state.routines.map((routine) => {
-        if (routine.id === routineId) {
-          const index = routine.checklist.findIndex(
-            (item) => item.id === itemId
-          );
-          if (index > 0) {
-            const updatedChecklist = [...routine.checklist];
-            const prevLevel = updatedChecklist[index - 1].level;
-            updatedChecklist[index] = {
-              ...updatedChecklist[index],
-              level: Math.min(updatedChecklist[index].level + 1, prevLevel + 1),
-            };
-            return { ...routine, checklist: updatedChecklist };
-          }
-        }
-        return routine;
-      }),
-    }));
-    console.log(`TODO: API call to indent item ${itemId}`);
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate
-  },
-  outdentChecklistItem: async (routineId, itemId) => {
-    // Keep local for now or implement complex API.
-    set((state) => ({
-      routines: state.routines.map((routine) => {
-        if (routine.id === routineId) {
-          const updatedChecklist = routine.checklist.map((item) =>
-            item.id === itemId
-              ? { ...item, level: Math.max(0, item.level - 1) }
-              : item
-          );
-          return { ...routine, checklist: updatedChecklist };
-        }
-        return routine;
-      }),
-    }));
-    console.log(`TODO: API call to outdent item ${itemId}`);
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate
-  },
+
   addChecklistItem: async (routineId, afterItemId, level) => {
+    const originalRoutines = get().routines;
+    const routine = originalRoutines.find((r) => r.id === routineId);
+    if (!routine) return null;
+
     const newItem: ChecklistItemData = {
-      id: Math.random().toString(36).substring(7),
+      id: `temp-${Math.random().toString(36).substring(7)}`, // Temporary ID
       text: "",
       completed: false,
       level: level,
       children: [],
     };
-    // Optimistic add
+
+    const index = afterItemId
+      ? routine.checklist.findIndex((item) => item.id === afterItemId)
+      : -1;
+    const newChecklist = [...routine.checklist];
+    newChecklist.splice(index + 1, 0, newItem);
+
     set((state) => ({
-      routines: state.routines.map((routine) => {
-        if (routine.id === routineId) {
-          const index = afterItemId
-            ? routine.checklist.findIndex((item) => item.id === afterItemId)
-            : -1;
-          const newChecklist = [...routine.checklist];
-          newChecklist.splice(index + 1, 0, newItem);
-          return { ...routine, checklist: newChecklist };
-        }
-        return routine;
-      }),
-    }));
-    console.log(
-      `TODO: API call to add item after ${afterItemId} in routine ${routineId}`
-    );
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate
-    // TODO: API should return the created item with its real ID, update the store
-    return newItem; // Return optimistically added item
+      routines: state.routines.map((r) =>
+        r.id === routineId ? { ...r, checklist: newChecklist } : r
+      ),
+    })); // Optimistic
+
+    try {
+      const updatedRoutineResult = await updateRoutineAPI(routineId, {
+        name: routine.name,
+        frequency: routine.frequency, // Use correct Frequency type
+        checklist: newChecklist.map((item) => ({
+          // Map to expected payload
+          id: item.id.startsWith("temp-") ? undefined : item.id,
+          text: item.text,
+          completed: item.completed,
+          level: item.level,
+        })),
+      });
+      // Find the newly added item from the result
+      const addedItem = updatedRoutineResult.checklist.find(
+        (item) =>
+          !originalRoutines
+            .find((r) => r.id === routineId)
+            ?.checklist.some((oc) => oc.id === item.id)
+      );
+
+      // Update store with confirmed state
+      set((state) => ({
+        routines: state.routines.map((r) =>
+          r.id === routineId ? updatedRoutineResult : r
+        ),
+        error: null,
+      }));
+
+      // Return the item confirmed by the backend (cast to ChecklistItemData)
+      return addedItem
+        ? ({
+            id: addedItem.id,
+            text: addedItem.text,
+            completed: addedItem.completed,
+            level: addedItem.level,
+            children: addedItem.children || [],
+          } as ChecklistItemData)
+        : null;
+    } catch (err) {
+      console.error(`Failed to add checklist item:`, err);
+      set({
+        routines: originalRoutines,
+        error: `Failed to add item: ${
+          err instanceof Error ? err.message : "Unknown error"
+        }`,
+      });
+      return null;
+    }
   },
+
   reorderChecklist: async (routineId, newChecklistOrder) => {
+    const originalRoutines = get().routines;
+    const routine = originalRoutines.find((r) => r.id === routineId);
+    if (!routine) return;
+
     // Optimistic update
     set((state) => ({
       routines: state.routines.map((r) =>
         r.id === routineId ? { ...r, checklist: newChecklistOrder } : r
       ),
     }));
-    console.log(`TODO: API call to reorder checklist for routine ${routineId}`);
-    await new Promise((resolve) => setTimeout(resolve, 100)); // Simulate
+
+    try {
+      await updateRoutineAPI(routineId, {
+        name: routine.name,
+        frequency: routine.frequency, // Use correct Frequency type
+        checklist: newChecklistOrder.map((item) => ({
+          // Map to expected payload
+          id: item.id,
+          text: item.text,
+          completed: item.completed,
+          level: item.level,
+        })),
+      });
+      set({ error: null });
+    } catch (err) {
+      console.error(
+        `Failed to reorder checklist for routine ${routineId}:`,
+        err
+      );
+      set({
+        routines: originalRoutines,
+        error: `Failed to reorder checklist: ${
+          err instanceof Error ? err.message : "Unknown error"
+        }`,
+      });
+    }
+  },
+
+  indentChecklistItem: async (routineId, itemId) => {
+    const originalRoutines = get().routines;
+    const routine = originalRoutines.find((r) => r.id === routineId);
+    if (!routine) return;
+
+    let updatedChecklist = [...routine.checklist];
+    const index = updatedChecklist.findIndex((item) => item.id === itemId);
+    if (index > 0) {
+      const currentLevel = updatedChecklist[index].level;
+      const prevLevel = updatedChecklist[index - 1].level;
+      updatedChecklist[index] = {
+        ...updatedChecklist[index],
+        level: Math.min(currentLevel + 1, prevLevel + 1),
+      };
+
+      set((state) => ({
+        routines: state.routines.map((r) =>
+          r.id === routineId ? { ...r, checklist: updatedChecklist } : r
+        ),
+      })); // Optimistic
+
+      try {
+        await updateRoutineAPI(routineId, {
+          name: routine.name,
+          frequency: routine.frequency,
+          checklist: updatedChecklist.map((item) => ({
+            id: item.id,
+            text: item.text,
+            completed: item.completed,
+            level: item.level,
+          })),
+        });
+        set({ error: null });
+      } catch (err) {
+        console.error(`Failed to indent item ${itemId}:`, err);
+        set({
+          routines: originalRoutines,
+          error: `Failed to indent item: ${
+            err instanceof Error ? err.message : "Unknown error"
+          }`,
+        });
+      }
+    }
+  },
+  outdentChecklistItem: async (routineId, itemId) => {
+    const originalRoutines = get().routines;
+    const routine = originalRoutines.find((r) => r.id === routineId);
+    if (!routine) return;
+
+    const updatedChecklist = routine.checklist.map((item) =>
+      item.id === itemId
+        ? { ...item, level: Math.max(0, item.level - 1) }
+        : item
+    );
+
+    set((state) => ({
+      routines: state.routines.map((r) =>
+        r.id === routineId ? { ...r, checklist: updatedChecklist } : r
+      ),
+    })); // Optimistic
+
+    try {
+      await updateRoutineAPI(routineId, {
+        name: routine.name,
+        frequency: routine.frequency,
+        checklist: updatedChecklist.map((item) => ({
+          id: item.id,
+          text: item.text,
+          completed: item.completed,
+          level: item.level,
+        })),
+      });
+      set({ error: null });
+    } catch (err) {
+      console.error(`Failed to outdent item ${itemId}:`, err);
+      set({
+        routines: originalRoutines,
+        error: `Failed to outdent item: ${
+          err instanceof Error ? err.message : "Unknown error"
+        }`,
+      });
+    }
   },
 });
 
-// Create the store WITHOUT persist
-const useRoutineStore = create(routineStoreCreator);
+// Create the store WITH persist middleware applied correctly
+const useRoutineStore = create<RoutineState>()(
+  persist(routineStoreCreator, {
+    name: "routine-storage",
+    storage: createJSONStorage(() => localStorage),
+    partialize: (state): PersistedRoutineState => ({
+      routines: state.routines,
+    }),
+    onRehydrateStorage: () => {
+      console.log("Attempting hydration for routines...");
+      return (state, error) => {
+        if (error) {
+          console.error("Failed to hydrate routines:", error);
+          return;
+        }
+        if (state) {
+          state.routines = state.routines.map((r: any) => ({
+            // Use any temporarily
+            ...r,
+            frequency: r.frequency as Frequency, // Ensure frequency type on rehydrate
+            createdAt: new Date(r.createdAt),
+            updatedAt: r.updatedAt ? new Date(r.updatedAt) : new Date(),
+            lastCompleted: r.lastCompleted
+              ? new Date(r.lastCompleted)
+              : undefined,
+            nextDue: r.nextDue ? new Date(r.nextDue) : undefined,
+            checklist: (r.checklist || []).map((item: any) => ({
+              // Ensure checklist items match interface
+              id: item.id,
+              text: item.text,
+              completed: item.completed,
+              level: item.level,
+              children: item.children || [],
+            })),
+          }));
+          state.isLoading = false;
+          state.error = null;
+          console.log("Routine hydration successful.");
+        } else {
+          console.log("No persisted routine state found.");
+        }
+      };
+    },
+    version: 1,
+  })
+);
 
 export default useRoutineStore;

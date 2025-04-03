@@ -4,9 +4,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Sparkles, Trash2, Pencil } from "lucide-react";
+import { Sparkles, Trash2, Pencil, TimerReset } from "lucide-react"; // Added TimerReset
 import { motion } from "framer-motion";
 import { Task } from "@/lib/interfaces/task"; // Import the main Task interface
+import { formatResetTime } from "@/lib/utils"; // Import the new utility
 
 // Remove local Task interface definition
 
@@ -96,21 +97,31 @@ export const TaskItem = ({
                   {getDeadlineText(deadline)}
                 </span>
               )}
-              {isHabit && frequency && (
-                <span className="text-xs text-[#4ADEF6]/70">
-                  {frequency.count} times per {frequency.value}{" "}
-                  {frequency.period}
-                  {nextDue && (
-                    <span
-                      className={`ml-2 ${
-                        getRemainingTime(nextDue) === "Overdue"
-                          ? "text-red-500"
-                          : ""
-                      }`}
-                    >
-                      {getRemainingTime(nextDue)}
-                    </span>
-                  )}
+              {/* Display Habit Frequency/Next Due OR Reset Time */}
+              {isHabit &&
+                frequency &&
+                !completed && ( // Show frequency/next due only if incomplete
+                  <span className="text-xs text-[#4ADEF6]/70">
+                    {frequency.count} times per {frequency.value}{" "}
+                    {frequency.period}
+                    {nextDue && (
+                      <span
+                        className={`ml-2 ${
+                          getRemainingTime(nextDue) === "Overdue"
+                            ? "text-red-500"
+                            : ""
+                        }`}
+                      >
+                        {getRemainingTime(nextDue)}
+                      </span>
+                    )}
+                  </span>
+                )}
+              {/* Show Reset Time if Habit is Completed */}
+              {isHabit && completed && nextDue && (
+                <span className="text-xs text-green-500 flex items-center gap-1 mt-1">
+                  <TimerReset className="h-3 w-3" />
+                  {formatResetTime(nextDue)}
                 </span>
               )}
             </div>

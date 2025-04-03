@@ -20,7 +20,7 @@ const Dashboard = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        <Header player={player} />
+        {player && <Header player={player} />}
         <ScrambledText />
 
         <Tabs

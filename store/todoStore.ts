@@ -1,64 +1,68 @@
 import { create, StateCreator } from "zustand";
-// Remove persist imports: import { persist, createJSONStorage, PersistOptions } from "zustand/middleware";
-import { Task } from "@/lib/interfaces/task";
-import { getAuraValue } from "@/lib/utils";
-// TODO: Import API functions: import { fetchTodosAPI, addTodoAPI, updateTodoAPI, deleteTodoAPI, toggleTodoAPI } from '@/lib/api';
+import { persist, createJSONStorage, PersistOptions } from "zustand/middleware";
+import { Task } from "@/lib/interfaces/task"; // Use local interface for consistency if needed
+// Import the actual API functions
+import {
+  fetchTodosAPI,
+  addTodoAPI,
+  updateTodoAPI,
+  deleteTodoAPI,
+  toggleTodoAPI,
+} from "@/lib/apiClient";
 
 interface TodoState {
   todos: Task[];
-  lastSelectedDate: Date; // Keep track of the last date used for adding todos locally
+  lastSelectedDate: Date;
   isLoading: boolean;
   error: string | null;
-
-  setTodos: (todos: Task[]) => void; // Keep for direct setting if needed
+  setTodos: (todos: Task[]) => void;
   setLastSelectedDate: (date: Date) => void;
   fetchTodos: () => Promise<void>;
-  addTodo: (
-    // Component only needs to provide title and optional deadline
-    title: string,
-    deadline?: Date
-  ) => Promise<Task | null>; // Return Task or null on error
-  toggleTodo: (taskId: string) => Promise<{
-    // Return type might change based on API response
-    completed?: boolean;
-    auraChange?: number;
-    error?: string;
-  }>;
+  addTodo: (title: string, deadline?: Date) => Promise<Task | null>;
+  toggleTodo: (
+    taskId: string
+  ) => Promise<{ completed?: boolean; auraChange?: number; error?: string }>;
   updateTodo: (
     taskId: string,
     newTitle: string,
-    newDeadline?: Date | null // Allow null to clear deadline
+    newDeadline?: Date | null
   ) => Promise<void>;
   deleteTodo: (taskId: string) => Promise<void>;
 }
 
+type PersistedTodoState = {
+  todos: Task[];
+  lastSelectedDate: Date;
+};
+
 const todoStoreCreator: StateCreator<TodoState> = (set, get) => ({
   todos: [],
-  lastSelectedDate: new Date(), // Still useful for UI default date
-  isLoading: true,
+  lastSelectedDate: new Date(),
+  isLoading: false,
   error: null,
 
-  setTodos: (todos) => set({ todos, isLoading: false, error: null }), // Simplified setter
+  setTodos: (todos) => set({ todos, isLoading: false, error: null }),
   setLastSelectedDate: (date) => set({ lastSelectedDate: date }),
 
   fetchTodos: async () => {
+    // Check if already loading to prevent concurrent fetches
+    if (get().isLoading) return;
     set({ isLoading: true, error: null });
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log("TODO: Fetch todos from API");
-      // const fetchedTodos = await fetchTodosAPI();
-      // Ensure dates are converted
-      // const todosWithDates = fetchedTodos.map(t => ({
-      //   ...t,
-      //   createdAt: new Date(t.createdAt),
-      //   updatedAt: new Date(t.updatedAt),
-      //   deadline: t.deadline ? new Date(t.deadline) : undefined,
-      //   lastCompleted: t.lastCompleted ? new Date(t.lastCompleted) : undefined, // Add if relevant for todos
-      //   nextDue: t.nextDue ? new Date(t.nextDue) : undefined, // Add if relevant for todos
-      // }));
-      // set({ todos: todosWithDates, isLoading: false });
-      set({ todos: [], isLoading: false }); // Simulate empty fetch
-      // --- End TODO ---
+      const fetchedTodos = await fetchTodosAPI();
+      // Ensure dates are converted correctly after fetching
+      const todosWithDates = fetchedTodos.map((t: any) => ({
+        // Use any temporarily if Prisma types mismatch interface
+        ...t,
+        // Ensure category is correctly typed if needed by Task interface
+        category: "todo" as const, // Assuming Task interface requires literal type
+        createdAt: new Date(t.createdAt),
+        updatedAt: new Date(t.updatedAt),
+        deadline: t.deadline ? new Date(t.deadline) : undefined,
+        lastCompleted: t.lastCompleted ? new Date(t.lastCompleted) : undefined,
+        nextDue: t.nextDue ? new Date(t.nextDue) : undefined,
+      }));
+      set({ todos: todosWithDates, isLoading: false, error: null });
     } catch (err) {
       console.error("Failed to fetch todos:", err);
       const errorMsg =
@@ -67,52 +71,47 @@ const todoStoreCreator: StateCreator<TodoState> = (set, get) => ({
         error: `Failed to load todos: ${errorMsg}`,
         isLoading: false,
         todos: [],
-      });
+      }); // Clear todos on error
     }
   },
 
   addTodo: async (title, deadline) => {
-    set({ isLoading: true }); // Indicate loading
+    set({ isLoading: true }); // Indicate loading for this specific action
     const state = get();
     try {
       const todoPayload = {
         title: title,
-        category: "todo",
-        // Removed auraValue
-        deadline: deadline || state.lastSelectedDate || new Date(), // Use local state for default deadline suggestion
-        // completed, createdAt, updatedAt, userId set by backend
+        deadline: deadline, // Pass deadline directly (API handles default/null)
+      };
+      const addedTodo = await addTodoAPI(todoPayload); // Call API
+
+      // Convert dates from API response and ensure type correctness
+      const todoWithDates: Task = {
+        ...addedTodo,
+        category: "todo", // Explicitly set category to match Task interface
+        createdAt: new Date(addedTodo.createdAt),
+        updatedAt: new Date(addedTodo.updatedAt),
+        deadline: addedTodo.deadline ? new Date(addedTodo.deadline) : undefined,
+        // Ensure all other potential date/optional fields from Task interface are handled
+        isHabit: false, // Explicitly set for Task interface if needed
+        frequency: undefined,
+        isGoodHabit: undefined,
+        lastCompleted: addedTodo.lastCompleted
+          ? new Date(addedTodo.lastCompleted)
+          : undefined,
+        nextDue: addedTodo.nextDue ? new Date(addedTodo.nextDue) : undefined,
+        originalTime: undefined,
+        // auraValue: 0, // Removed - Not part of Task interface/model
+        userId: addedTodo.userId || "unknown", // Handle potential missing userId
       };
 
-      // --- TODO: Replace with actual API call ---
-      console.log("TODO: Call API to add todo:", todoPayload);
-      // const addedTodo = await addTodoAPI(todoPayload);
-      // Ensure dates converted
-      // const todoWithDates = {
-      //    ...addedTodo,
-      //    createdAt: new Date(addedTodo.createdAt),
-      //    updatedAt: new Date(addedTodo.updatedAt),
-      //    deadline: addedTodo.deadline ? new Date(addedTodo.deadline) : undefined,
-      // }
-      // set((state) => ({ todos: [todoWithDates, ...state.todos], isLoading: false, error: null }));
-      // return todoWithDates;
-
-      // Simulate API response
-      const simulatedAddedTodo: Task = {
-        ...todoPayload,
-        id: Math.random().toString(36).substring(7),
-        completed: false,
-        category: "todo", // Explicitly set category
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        userId: "temp-user-id", // Placeholder
-      };
-      set((state) => ({
-        todos: [simulatedAddedTodo, ...state.todos],
-        isLoading: false,
+      // Add the new todo (with correct dates/type) to the start of the list
+      set((currentState) => ({
+        todos: [todoWithDates, ...currentState.todos],
+        isLoading: false, // Reset loading state
         error: null,
       }));
-      return simulatedAddedTodo;
-      // --- End TODO ---
+      return todoWithDates;
     } catch (err) {
       console.error("Failed to add todo:", err);
       const errorMsg =
@@ -135,31 +134,22 @@ const todoStoreCreator: StateCreator<TodoState> = (set, get) => ({
         }
         return task;
       }),
-      error: null,
+      error: null, // Clear previous errors on new action
     }));
 
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log(`TODO: Call API to toggle todo ${taskId}`);
-      // const result = await toggleTodoAPI(taskId); // API returns { completed, auraChange }
-      // set((state) => ({ // Update completion state based on response if needed, though optimistic should match
-      //    todos: state.todos.map(t => t.id === taskId ? {...t, completed: result.completed} : t)
-      // }));
-      // return { completed: result.completed, auraChange: result.auraChange };
-
-      // Simulate API response
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const toggledTodo = originalTodos.find((t) => t.id === taskId);
-      if (!toggledTodo) throw new Error("Todo not found for simulation");
-      // Simulate aura change calculation (backend would do this)
-      const simulatedAuraChange = optimisticCompleted ? 10 : -10; // Example value
-      const auraChange = simulatedAuraChange;
-      console.log("Simulated todo toggle successful");
-      return { completed: optimisticCompleted, auraChange: auraChange };
-      // --- End TODO ---
+      const result = await toggleTodoAPI(taskId); // Call API
+      // Update completion state based on response
+      set((state) => ({
+        todos: state.todos.map((t) =>
+          t.id === taskId ? { ...t, completed: result.completed } : t
+        ),
+      }));
+      // Return result from API (includes auraChange calculated by backend)
+      return { completed: result.completed, auraChange: result.auraChange };
     } catch (err) {
       console.error(`Failed to toggle todo ${taskId}:`, err);
-      // Rollback
+      // Rollback optimistic update
       set({
         todos: originalTodos,
         error: `Failed to toggle todo: ${
@@ -179,25 +169,53 @@ const todoStoreCreator: StateCreator<TodoState> = (set, get) => ({
           ? {
               ...t,
               title: newTitle,
+              // Handle deadline update optimistically: null clears, undefined keeps old, Date sets new
               deadline:
-                newDeadline === null ? undefined : newDeadline ?? t.deadline,
+                newDeadline === null
+                  ? undefined
+                  : newDeadline !== undefined
+                  ? newDeadline
+                  : t.deadline,
             }
           : t
       ),
+      error: null, // Clear previous errors
     }));
 
     try {
-      // --- TODO: Replace with actual API call ---
       const payload = { title: newTitle, deadline: newDeadline }; // Send null to clear deadline
-      console.log(`TODO: Call API to update todo ${taskId} with`, payload);
-      // await updateTodoAPI(taskId, payload);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      set({ error: null });
-      console.log("Simulated todo update successful");
-      // --- End TODO ---
+      const updatedTodo = await updateTodoAPI(taskId, payload); // Call API
+
+      // Update state with confirmed data from API, ensuring dates are correct
+      const todoWithDates: Task = {
+        ...updatedTodo,
+        category: "todo",
+        createdAt: new Date(updatedTodo.createdAt),
+        updatedAt: new Date(updatedTodo.updatedAt),
+        deadline: updatedTodo.deadline
+          ? new Date(updatedTodo.deadline)
+          : undefined,
+        isHabit: false,
+        frequency: undefined,
+        isGoodHabit: undefined,
+        lastCompleted: updatedTodo.lastCompleted
+          ? new Date(updatedTodo.lastCompleted)
+          : undefined,
+        nextDue: updatedTodo.nextDue
+          ? new Date(updatedTodo.nextDue)
+          : undefined,
+        originalTime: undefined,
+        // auraValue: 0, // Removed
+        userId: updatedTodo.userId || "unknown",
+      };
+
+      set((state) => ({
+        todos: state.todos.map((t) => (t.id === taskId ? todoWithDates : t)),
+        error: null, // Ensure error state is cleared on success
+      }));
     } catch (err) {
       console.error(`Failed to update todo ${taskId}:`, err);
-      // Rollback
+      // Rollback optimistic update
       set({
         todos: originalTodos,
         error: `Failed to update todo: ${
@@ -212,19 +230,15 @@ const todoStoreCreator: StateCreator<TodoState> = (set, get) => ({
     // Optimistic update
     set((state) => ({
       todos: state.todos.filter((task) => task.id !== taskId),
+      error: null, // Clear previous errors
     }));
 
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log(`TODO: Call API to delete todo ${taskId}`);
-      // await deleteTodoAPI(taskId);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      set({ error: null });
-      console.log("Simulated todo delete successful");
-      // --- End TODO ---
+      await deleteTodoAPI(taskId); // Call API
+      set({ error: null }); // Ensure error state is cleared on success
     } catch (err) {
       console.error(`Failed to delete todo ${taskId}:`, err);
-      // Rollback
+      // Rollback optimistic update
       set({
         todos: originalTodos,
         error: `Failed to delete todo: ${
@@ -235,7 +249,46 @@ const todoStoreCreator: StateCreator<TodoState> = (set, get) => ({
   },
 });
 
-// Create the store WITHOUT persist
-const useTodoStore = create(todoStoreCreator);
+// Create the store WITH persist middleware applied correctly
+const useTodoStore = create<TodoState>()(
+  persist(todoStoreCreator, {
+    name: "todo-storage",
+    storage: createJSONStorage(() => localStorage),
+    partialize: (state): PersistedTodoState => ({
+      todos: state.todos,
+      lastSelectedDate: state.lastSelectedDate,
+    }),
+    onRehydrateStorage: () => {
+      console.log("Attempting hydration for todos...");
+      return (state, error) => {
+        if (error) {
+          console.error("Failed to hydrate todos:", error);
+          return;
+        }
+        if (state) {
+          state.todos = state.todos.map((t: any) => ({
+            // Use any temporarily
+            ...t,
+            category: "todo", // Ensure category is correct on rehydration
+            createdAt: new Date(t.createdAt),
+            updatedAt: t.updatedAt ? new Date(t.updatedAt) : new Date(),
+            deadline: t.deadline ? new Date(t.deadline) : undefined,
+            lastCompleted: t.lastCompleted
+              ? new Date(t.lastCompleted)
+              : undefined,
+            nextDue: t.nextDue ? new Date(t.nextDue) : undefined,
+          }));
+          state.lastSelectedDate = new Date(state.lastSelectedDate);
+          state.isLoading = false;
+          state.error = null;
+          console.log("Todo hydration successful.");
+        } else {
+          console.log("No persisted todo state found.");
+        }
+      };
+    },
+    version: 1,
+  })
+);
 
 export default useTodoStore;

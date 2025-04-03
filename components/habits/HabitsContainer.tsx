@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, useMemo } from "react"; // Ensure useEffect and useMemo are imported
 import { motion } from "framer-motion";
 import { PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -17,10 +17,20 @@ import {
   getRemainingTime,
 } from "@/lib/utils";
 import { containerVariants } from "@/lib/utils/animations";
+import { useSession } from "next-auth/react"; // Import useSession
 
 const HabitsContainer = () => {
-  const { habits, addHabit, updateHabit, deleteHabit, toggleHabit } =
-    useHabitStore();
+  const { data: session, status } = useSession(); // Get session status
+  const {
+    habits,
+    addHabit,
+    updateHabit,
+    deleteHabit,
+    toggleHabit,
+    fetchHabits, // Get fetch action
+    isLoading,
+    error: habitError, // Get loading/error state
+  } = useHabitStore();
   const { addAura, subtractAura } = useDashboardStore();
 
   const [newTaskText, setNewTaskText] = useState("");
@@ -41,6 +51,14 @@ const HabitsContainer = () => {
   });
   const [editingHabit, setEditingHabit] = useState<Task | null>(null);
 
+  // Fetch habits when component mounts and user is authenticated
+  useEffect(() => {
+    if (status === "authenticated") {
+      fetchHabits();
+    }
+    // Optionally clear habits if status becomes unauthenticated?
+  }, [status, fetchHabits]);
+
   const handleEditHabit = (habit: Task) => {
     setEditingHabit(habit);
     setNewTaskText(habit.title);
@@ -53,6 +71,7 @@ const HabitsContainer = () => {
         isGoodHabit: habit.isGoodHabit || false,
       });
     } else {
+      // Reset to default if frequency is missing
       const now = new Date();
       now.setMinutes(now.getMinutes() + 5);
       const hours = now.getHours().toString().padStart(2, "0");
@@ -81,7 +100,7 @@ const HabitsContainer = () => {
     if (editingHabit) {
       updateHabit(editingHabit.id, newTaskText, habitConfig);
     } else {
-      addHabit({} as any, newTaskText, habitConfig);
+      addHabit(newTaskText, habitConfig); // Corrected call
     }
 
     setShowHabitForm(false);
@@ -98,24 +117,31 @@ const HabitsContainer = () => {
     inputRef.current?.focus();
   };
 
-  const handleToggleHabit = (taskId: string) => {
-    const { completed, auraChange } = toggleHabit(taskId);
+  // Make the handler async to await the result
+  const handleToggleHabit = async (taskId: string) => {
+    const result = await toggleHabit(taskId); // Await the promise
 
-    if (auraChange > 0) {
-      addAura(auraChange);
-    } else if (auraChange < 0) {
-      subtractAura(Math.abs(auraChange));
+    if (result.error) {
+      console.error("Failed to toggle habit:", result.error);
+      // TODO: Show error toast
+      return;
+    }
+
+    // Use auraChange from the result
+    if (result.auraChange && result.auraChange > 0) {
+      addAura(result.auraChange);
+    } else if (result.auraChange && result.auraChange < 0) {
+      subtractAura(Math.abs(result.auraChange));
     }
   };
 
   const handleDeleteHabit = (taskId: string) => {
-    deleteHabit(taskId);
+    deleteHabit(taskId); // Fire-and-forget is okay
   };
 
   const openAddHabitForm = () => {
     setEditingHabit(null);
-    // Keep the existing newTaskText
-
+    // Reset config to default, keeping the time
     const now = new Date();
     now.setMinutes(now.getMinutes() + 5);
     const hours = now.getHours().toString().padStart(2, "0");
@@ -129,6 +155,43 @@ const HabitsContainer = () => {
     });
     setShowHabitForm(true);
   };
+
+  // Sort habits: by completion status (incomplete first), then by nextDue date (ascending, null/undefined last)
+  const sortedHabits = useMemo(() => {
+    return [...habits].sort((a, b) => {
+      // Handle completed status first (false comes before true)
+      if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+      }
+
+      // Handle nextDue dates (treat null/undefined as very far in the future)
+      const nextDueA = a.nextDue ? new Date(a.nextDue).getTime() : Infinity;
+      const nextDueB = b.nextDue ? new Date(b.nextDue).getTime() : Infinity;
+
+      if (nextDueA !== nextDueB) {
+        return nextDueA - nextDueB;
+      }
+
+      // Fallback sort by creation date if nextDue dates are the same/both undefined
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    });
+  }, [habits]);
+
+  // Render Loading/Error states
+  if (isLoading && !sortedHabits.length) {
+    // Check sortedHabits length
+    // Show loading only on initial load
+    return (
+      <p className="text-center text-muted-foreground">Loading habits...</p>
+    );
+  }
+  if (habitError) {
+    return (
+      <p className="text-center text-red-500">
+        Error loading habits: {habitError}
+      </p>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -160,24 +223,61 @@ const HabitsContainer = () => {
         className="space-y-4"
         layout
       >
-        {habits.map((task) => (
-          <TaskItem
-            key={task.id}
-            {...task}
-            onToggle={() => handleToggleHabit(task.id)}
-            onUpdate={(id, newTitle) => updateHabit(id, newTitle)}
-            onDelete={() => handleDeleteHabit(task.id)}
-            onEdit={() => handleEditHabit(task)}
-            getDaysRemaining={(d: Date | undefined) => getDaysRemaining(d) ?? 0}
-            getDeadlineColor={(days: number) => {
-              if (days < 0) return "text-red-500";
-              if (days <= 1) return "text-yellow-500";
-              return "text-green-500";
-            }}
-            getDeadlineText={(d: Date | undefined) => getDeadlineText(d)}
-            getRemainingTime={(d: Date | undefined) => getRemainingTime(d)}
-          />
-        ))}
+        {sortedHabits.map(
+          (
+            task // Map over sortedHabits
+          ) => (
+            <TaskItem
+              key={task.id}
+              {...task}
+              // Ensure dates passed to TaskItem are Date objects or undefined
+              createdAt={
+                typeof task.createdAt === "string"
+                  ? new Date(task.createdAt)
+                  : task.createdAt
+              }
+              updatedAt={
+                typeof task.updatedAt === "string"
+                  ? new Date(task.updatedAt)
+                  : task.updatedAt
+              }
+              deadline={
+                task.deadline &&
+                (typeof task.deadline === "string"
+                  ? new Date(task.deadline)
+                  : task.deadline)
+              }
+              lastCompleted={
+                task.lastCompleted &&
+                (typeof task.lastCompleted === "string"
+                  ? new Date(task.lastCompleted)
+                  : task.lastCompleted)
+              }
+              nextDue={
+                task.nextDue &&
+                (typeof task.nextDue === "string"
+                  ? new Date(task.nextDue)
+                  : task.nextDue)
+              }
+              onToggle={() => handleToggleHabit(task.id)}
+              onUpdate={(id, newTitle) => updateHabit(id, newTitle)} // Basic update, config needs form
+              onDelete={() => handleDeleteHabit(task.id)}
+              onEdit={() => handleEditHabit(task)}
+              getDaysRemaining={(d: Date | undefined) =>
+                getDaysRemaining(d) ?? Infinity
+              } // Use Infinity for sorting if no date
+              getDeadlineColor={(days: number | null) => {
+                // Accept null
+                if (days === null) return "text-[#4ADEF6]/70"; // Handle null case
+                if (days < 0) return "text-red-500";
+                if (days <= 1) return "text-yellow-500";
+                return "text-green-500";
+              }}
+              getDeadlineText={(d: Date | undefined) => getDeadlineText(d)}
+              getRemainingTime={(d: Date | undefined) => getRemainingTime(d)}
+            />
+          )
+        )}
       </motion.div>
 
       {showHabitForm && (

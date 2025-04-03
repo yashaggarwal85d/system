@@ -1,34 +1,27 @@
 import { create, StateCreator } from "zustand";
+import { persist, createJSONStorage, PersistOptions } from "zustand/middleware";
 import { Task } from "@/lib/interfaces/task";
 import { HabitConfig } from "@/lib/interfaces/habit";
-import { calculateNextDueDate, getAuraValue } from "@/lib/utils";
-// TODO: Import API functions when created: import { fetchHabitsAPI, addHabitAPI, updateHabitAPI, deleteHabitAPI, toggleHabitAPI } from '@/lib/api';
+import { calculateNextDueDate } from "@/lib/utils";
+// Import the actual API functions
+import {
+  fetchHabitsAPI,
+  addHabitAPI,
+  updateHabitAPI,
+  deleteHabitAPI,
+  toggleHabitAPI,
+} from "@/lib/apiClient";
 
 interface HabitState {
   habits: Task[];
   isLoading: boolean;
   error: string | null;
   fetchHabits: () => Promise<void>;
-  addHabit: (
-    newTaskData: Omit<
-      Task,
-      | "id"
-      | "category"
-      | "createdAt"
-      | "updatedAt"
-      // | "auraValue" // Removed
-      | "isHabit"
-      | "nextDue"
-      | "completed"
-      | "userId"
-    >,
-    title: string,
-    config: HabitConfig
-  ) => Promise<Task | null>;
+  addHabit: (title: string, config: HabitConfig) => Promise<Task | null>;
   toggleHabit: (taskId: string) => Promise<{
     completed?: boolean;
-    auraChange?: number; // API should return this based on calculation
-    nextDue?: Date;
+    auraChange?: number;
+    nextDue?: Date | null;
     error?: string;
   }>;
   updateHabit: (
@@ -39,21 +32,31 @@ interface HabitState {
   deleteHabit: (taskId: string) => Promise<void>;
 }
 
+type PersistedHabitState = {
+  habits: Task[];
+};
+
 const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
   habits: [],
-  isLoading: true,
+  isLoading: false,
   error: null,
 
   fetchHabits: async () => {
+    if (get().isLoading) return;
     set({ isLoading: true, error: null });
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log("TODO: Fetch habits from API");
-      // const fetchedHabits = await fetchHabitsAPI();
-      // Convert dates...
-      // set({ habits: habitsWithDates, isLoading: false });
-      set({ habits: [], isLoading: false }); // Simulate empty fetch
-      // --- End TODO ---
+      const fetchedHabits = await fetchHabitsAPI();
+      // Convert dates
+      const habitsWithDates = fetchedHabits.map((h: any) => ({
+        ...h,
+        category: "habit" as const, // Ensure correct literal type
+        createdAt: new Date(h.createdAt),
+        updatedAt: new Date(h.updatedAt),
+        deadline: h.deadline ? new Date(h.deadline) : undefined,
+        lastCompleted: h.lastCompleted ? new Date(h.lastCompleted) : undefined,
+        nextDue: h.nextDue ? new Date(h.nextDue) : undefined,
+      }));
+      set({ habits: habitsWithDates, isLoading: false, error: null });
     } catch (err) {
       console.error("Failed to fetch habits:", err);
       const errorMsg =
@@ -66,56 +69,38 @@ const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
     }
   },
 
-  addHabit: async (newTaskData, title, config) => {
+  addHabit: async (title, config) => {
     set({ isLoading: true });
     try {
-      const now = new Date();
-      const [hours, minutes] = config.time.split(":").map(Number);
-      let nextDue = new Date(now);
-      nextDue.setHours(hours, minutes, 0, 0);
-      if (nextDue.getTime() < now.getTime()) {
-        const initialNextDue = calculateNextDueDate(now, config);
-        if (initialNextDue) nextDue.setTime(initialNextDue.getTime());
-        else nextDue.setDate(nextDue.getDate() + 1);
-      }
+      const habitPayload = { title, frequency: config };
+      const addedHabit = await addHabitAPI(habitPayload); // Call API
 
-      const habitPayload = {
-        ...newTaskData,
-        title: title,
+      // Convert dates and ensure type
+      const habitWithDates: Task = {
+        ...addedHabit,
         category: "habit",
-        // auraValue removed
-        isHabit: true,
-        frequency: config,
-        isGoodHabit: config.isGoodHabit,
-        originalTime: config.time,
-        nextDue: nextDue,
+        createdAt: new Date(addedHabit.createdAt),
+        updatedAt: new Date(addedHabit.updatedAt),
+        deadline: addedHabit.deadline
+          ? new Date(addedHabit.deadline)
+          : undefined,
+        isHabit: true, // Ensure this is set
+        frequency: addedHabit.frequency as HabitConfig, // Cast if necessary
+        isGoodHabit: addedHabit.isGoodHabit ?? undefined, // Map null/undefined from API to undefined
+        lastCompleted: addedHabit.lastCompleted
+          ? new Date(addedHabit.lastCompleted)
+          : undefined,
+        nextDue: addedHabit.nextDue ? new Date(addedHabit.nextDue) : undefined,
+        originalTime: addedHabit.originalTime ?? undefined, // Map null/undefined from API to undefined
+        userId: addedHabit.userId || "unknown",
       };
 
-      // --- TODO: Replace with actual API call ---
-      console.log("TODO: Call API to add habit:", habitPayload);
-      // const addedHabit = await addHabitAPI(habitPayload);
-      // Convert dates...
-      // set((state) => ({ habits: [habitWithDates, ...state.habits], isLoading: false, error: null }));
-      // return habitWithDates;
-
-      // Simulate API response
-      const simulatedAddedHabit: Task = {
-        ...habitPayload,
-        id: Math.random().toString(36).substring(7),
-        completed: false,
-        category: "habit",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        userId: "temp-user-id",
-        lastCompleted: undefined,
-      };
       set((state) => ({
-        habits: [simulatedAddedHabit, ...state.habits],
+        habits: [habitWithDates, ...state.habits],
         isLoading: false,
         error: null,
       }));
-      return simulatedAddedHabit;
-      // --- End TODO ---
+      return habitWithDates;
     } catch (err) {
       console.error("Failed to add habit:", err);
       const errorMsg =
@@ -128,11 +113,34 @@ const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
   toggleHabit: async (taskId) => {
     const originalHabits = get().habits;
     let optimisticCompleted: boolean | undefined;
+    let optimisticNextDue: Date | undefined | null;
+    let optimisticLastCompleted: Date | undefined | null;
+
+    // Optimistic update
     set((state) => ({
       habits: state.habits.map((task) => {
-        if (task.id === taskId) {
+        if (task.id === taskId && task.frequency) {
           optimisticCompleted = !task.completed;
-          return { ...task, completed: optimisticCompleted };
+          if (optimisticCompleted) {
+            optimisticLastCompleted = new Date();
+            optimisticNextDue = calculateNextDueDate(
+              new Date(),
+              task.frequency
+            );
+          } else {
+            optimisticLastCompleted = undefined; // Use undefined to match interface
+            // Recalculate next due based on 'now' as if it wasn't completed
+            optimisticNextDue = calculateNextDueDate(
+              new Date(),
+              task.frequency
+            );
+          }
+          return {
+            ...task,
+            completed: optimisticCompleted,
+            nextDue: optimisticNextDue,
+            lastCompleted: optimisticLastCompleted,
+          };
         }
         return task;
       }),
@@ -140,53 +148,29 @@ const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
     }));
 
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log(`TODO: Call API to toggle habit ${taskId}`);
-      // const result = await toggleHabitAPI(taskId); // API returns { completed, auraChange, nextDue }
-      // Convert dates...
-      // set((state) => ({ habits: state.habits.map(h => h.id === taskId ? {...h, ...result.updatedHabit} : h) })); // Update with confirmed state
-      // return { completed: result.completed, auraChange: result.auraChange, nextDue: result.nextDue ? new Date(result.nextDue) : undefined };
-
-      // Simulate API response
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const toggledHabit = originalHabits.find((h) => h.id === taskId);
-      if (!toggledHabit) throw new Error("Habit not found for simulation");
-
-      const isGood = toggledHabit.isGoodHabit ?? false;
-      // Simulate aura change calculation (backend would do this based on player level etc.)
-      const simulatedAuraChange = optimisticCompleted
-        ? isGood
-          ? 15
-          : -15 // Example values
-        : isGood
-        ? -15
-        : 15;
-      const nextDue = calculateNextDueDate(new Date(), toggledHabit.frequency);
-
-      // Update store with simulated final state
+      const result = await toggleHabitAPI(taskId); // Call API
+      // Update state with confirmed data from API
       set((state) => ({
         habits: state.habits.map((h) =>
           h.id === taskId
             ? {
                 ...h,
-                completed: optimisticCompleted!,
-                nextDue: nextDue,
-                lastCompleted: optimisticCompleted ? new Date() : undefined,
-              }
+                completed: result.completed,
+                nextDue: result.nextDue ?? undefined, // Convert null to undefined
+                lastCompleted: result.completed ? new Date() : undefined, // Use undefined
+              } // Use API's nextDue, update lastCompleted based on final completed status
             : h
         ),
       }));
-
       return {
-        completed: optimisticCompleted,
-        auraChange: simulatedAuraChange,
-        nextDue: nextDue,
+        completed: result.completed,
+        auraChange: result.auraChange,
+        nextDue: result.nextDue,
       };
-      // --- End TODO ---
     } catch (err) {
       console.error(`Failed to toggle habit ${taskId}:`, err);
       set({
-        habits: originalHabits, // Rollback
+        habits: originalHabits,
         error: `Failed to toggle habit: ${
           err instanceof Error ? err.message : "Unknown error"
         }`,
@@ -206,30 +190,48 @@ const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
             updated.frequency = newConfig;
             updated.isGoodHabit = newConfig.isGoodHabit;
             updated.originalTime = newConfig.time;
-            updated.nextDue = calculateNextDueDate(new Date(), newConfig);
+            updated.nextDue = calculateNextDueDate(new Date(), newConfig); // Optimistic nextDue recalc
           }
           return updated;
         }
         return h;
       }),
+      error: null,
     }));
 
     try {
-      // --- TODO: Replace with actual API call ---
       const payload = {
         title: newTitle,
-        ...(newConfig && {
-          frequency: newConfig,
-          isGoodHabit: newConfig.isGoodHabit,
-          originalTime: newConfig.time,
-        }),
+        ...(newConfig && { frequency: newConfig }),
       };
-      console.log(`TODO: Call API to update habit ${taskId} with`, payload);
-      // await updateHabitAPI(taskId, payload);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      set({ error: null });
-      console.log("Simulated habit update successful");
-      // --- End TODO ---
+      const updatedHabit = await updateHabitAPI(taskId, payload); // Call API
+
+      // Update state with confirmed data from API
+      const habitWithDates: Task = {
+        ...updatedHabit,
+        category: "habit",
+        createdAt: new Date(updatedHabit.createdAt),
+        updatedAt: new Date(updatedHabit.updatedAt),
+        deadline: updatedHabit.deadline
+          ? new Date(updatedHabit.deadline)
+          : undefined,
+        isHabit: true,
+        frequency: updatedHabit.frequency as HabitConfig,
+        isGoodHabit: updatedHabit.isGoodHabit ?? undefined, // Map null to undefined
+        lastCompleted: updatedHabit.lastCompleted
+          ? new Date(updatedHabit.lastCompleted)
+          : undefined,
+        nextDue: updatedHabit.nextDue
+          ? new Date(updatedHabit.nextDue)
+          : undefined,
+        originalTime: updatedHabit.originalTime ?? undefined, // Map null to undefined
+        userId: updatedHabit.userId || "unknown",
+      };
+
+      set((state) => ({
+        habits: state.habits.map((h) => (h.id === taskId ? habitWithDates : h)),
+        error: null,
+      }));
     } catch (err) {
       console.error(`Failed to update habit ${taskId}:`, err);
       set({
@@ -245,16 +247,12 @@ const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
     const originalHabits = get().habits;
     set((state) => ({
       habits: state.habits.filter((task) => task.id !== taskId),
+      error: null,
     })); // Optimistic
 
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log(`TODO: Call API to delete habit ${taskId}`);
-      // await deleteHabitAPI(taskId);
-      await new Promise((resolve) => setTimeout(resolve, 300));
+      await deleteHabitAPI(taskId); // Call API
       set({ error: null });
-      console.log("Simulated habit delete successful");
-      // --- End TODO ---
     } catch (err) {
       console.error(`Failed to delete habit ${taskId}:`, err);
       set({
@@ -267,6 +265,43 @@ const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
   },
 });
 
-const useHabitStore = create(habitStoreCreator);
+// Create the store WITH persist middleware applied correctly
+const useHabitStore = create<HabitState>()(
+  persist(habitStoreCreator, {
+    name: "habit-storage",
+    storage: createJSONStorage(() => localStorage),
+    partialize: (state): PersistedHabitState => ({
+      habits: state.habits,
+    }),
+    onRehydrateStorage: () => {
+      console.log("Attempting hydration for habits...");
+      return (state, error) => {
+        if (error) {
+          console.error("Failed to hydrate habits:", error);
+          return;
+        }
+        if (state) {
+          state.habits = state.habits.map((h: any) => ({
+            ...h,
+            category: "habit", // Ensure correct category
+            createdAt: new Date(h.createdAt),
+            updatedAt: h.updatedAt ? new Date(h.updatedAt) : new Date(),
+            deadline: h.deadline ? new Date(h.deadline) : undefined,
+            lastCompleted: h.lastCompleted
+              ? new Date(h.lastCompleted)
+              : undefined,
+            nextDue: h.nextDue ? new Date(h.nextDue) : undefined,
+          }));
+          state.isLoading = false;
+          state.error = null;
+          console.log("Habit hydration successful.");
+        } else {
+          console.log("No persisted habit state found.");
+        }
+      };
+    },
+    version: 1,
+  })
+);
 
 export default useHabitStore;

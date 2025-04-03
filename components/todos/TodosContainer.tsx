@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react"; // Added useEffect
+import { useState, useRef, useEffect, useMemo } from "react"; // Added useMemo, useEffect
 import { motion } from "framer-motion";
 import { PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -185,19 +185,47 @@ const TodosContainer = () => {
 
   const handleDeadlineChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDeadlineError("");
-    let value = e.target.value.replace(/[^0-9-]/g, "");
-    // Basic auto-formatting for slashes
-    if (value.length === 2 && !value.includes("-")) {
-      value += "-";
-    } else if (value.length === 5 && value.match(/^\d{2}-\d{2}$/)) {
-      value += "-";
+    const input = e.target.value.replace(/\D/g, ""); // Remove all non-digit characters
+    let formattedInput = "";
+
+    if (input.length > 0) {
+      formattedInput += input.substring(0, 2);
     }
-    if (value.length > 8) value = value.slice(0, 8);
-    setDeadlineText(value);
+    if (input.length >= 3) {
+      formattedInput += "-" + input.substring(2, 4);
+    }
+    if (input.length >= 5) {
+      formattedInput += "-" + input.substring(4, 6);
+    }
+
+    // Limit to dd-mm-yy format (8 characters)
+    setDeadlineText(formattedInput.substring(0, 8));
   };
 
+  // Sort todos: by deadline (ascending, undefined last), then by completion status (incomplete first)
+  const sortedTodos = useMemo(() => {
+    return [...todos].sort((a, b) => {
+      // Handle completed status first (false comes before true)
+      if (a.completed !== b.completed) {
+        return a.completed ? 1 : -1;
+      }
+
+      // Handle deadlines (treat undefined as very far in the future)
+      const deadlineA = a.deadline ? a.deadline.getTime() : Infinity;
+      const deadlineB = b.deadline ? b.deadline.getTime() : Infinity;
+
+      if (deadlineA !== deadlineB) {
+        return deadlineA - deadlineB;
+      }
+
+      // Fallback sort by creation date if deadlines are the same/both undefined
+      return a.createdAt.getTime() - b.createdAt.getTime();
+    });
+  }, [todos]);
+
   // Render Loading/Error states
-  if (isLoading && !todos.length) {
+  if (isLoading && !sortedTodos.length) {
+    // Check sortedTodos length
     // Show loading only on initial load
     return (
       <p className="text-center text-muted-foreground">Loading todos...</p>
@@ -250,59 +278,63 @@ const TodosContainer = () => {
         className="space-y-4"
         layout
       >
-        {todos.map((task) => (
-          <TaskItem
-            key={task.id}
-            {...task}
-            // Ensure dates passed to TaskItem are Date objects or undefined
-            createdAt={
-              typeof task.createdAt === "string"
-                ? new Date(task.createdAt)
-                : task.createdAt
-            }
-            updatedAt={
-              typeof task.updatedAt === "string"
-                ? new Date(task.updatedAt)
-                : task.updatedAt
-            }
-            deadline={
-              task.deadline &&
-              (typeof task.deadline === "string"
-                ? new Date(task.deadline)
-                : task.deadline)
-            }
-            lastCompleted={
-              task.lastCompleted &&
-              (typeof task.lastCompleted === "string"
-                ? new Date(task.lastCompleted)
-                : task.lastCompleted)
-            }
-            nextDue={
-              task.nextDue &&
-              (typeof task.nextDue === "string"
-                ? new Date(task.nextDue)
-                : task.nextDue)
-            }
-            onToggle={() => handleToggleTodo(task.id)}
-            onUpdate={(id, newTitle) => updateTodo(id, newTitle)} // Simplified update call for TaskItem
-            onDelete={() => handleDeleteTodo(task.id)}
-            onEdit={() => handleEditTodo(task)}
-            // Provide a default number if getDaysRemaining returns null
-            getDaysRemaining={(d: Date | undefined) =>
-              getDaysRemaining(d) ?? Infinity
-            }
-            getDeadlineColor={(days: number | null) => {
-              // Keep null check here for color logic
-              // Adjusted input type
-              if (days === null) return "text-[#4ADEF6]/70";
-              if (days < 0) return "text-red-500";
-              if (days <= 3) return "text-yellow-500";
-              return "text-green-500";
-            }}
-            getDeadlineText={getDeadlineText}
-            getRemainingTime={getRemainingTime}
-          />
-        ))}
+        {sortedTodos.map(
+          (
+            task // Map over sortedTodos
+          ) => (
+            <TaskItem
+              key={task.id}
+              {...task}
+              // Ensure dates passed to TaskItem are Date objects or undefined
+              createdAt={
+                typeof task.createdAt === "string"
+                  ? new Date(task.createdAt)
+                  : task.createdAt
+              }
+              updatedAt={
+                typeof task.updatedAt === "string"
+                  ? new Date(task.updatedAt)
+                  : task.updatedAt
+              }
+              deadline={
+                task.deadline &&
+                (typeof task.deadline === "string"
+                  ? new Date(task.deadline)
+                  : task.deadline)
+              }
+              lastCompleted={
+                task.lastCompleted &&
+                (typeof task.lastCompleted === "string"
+                  ? new Date(task.lastCompleted)
+                  : task.lastCompleted)
+              }
+              nextDue={
+                task.nextDue &&
+                (typeof task.nextDue === "string"
+                  ? new Date(task.nextDue)
+                  : task.nextDue)
+              }
+              onToggle={() => handleToggleTodo(task.id)}
+              onUpdate={(id, newTitle) => updateTodo(id, newTitle)} // Simplified update call for TaskItem
+              onDelete={() => handleDeleteTodo(task.id)}
+              onEdit={() => handleEditTodo(task)}
+              // Provide a default number if getDaysRemaining returns null
+              getDaysRemaining={(d: Date | undefined) =>
+                getDaysRemaining(d) ?? Infinity
+              }
+              getDeadlineColor={(days: number | null) => {
+                // Keep null check here for color logic
+                // Adjusted input type
+                if (days === null) return "text-[#4ADEF6]/70";
+                if (days < 0) return "text-red-500";
+                if (days <= 3) return "text-yellow-500";
+                return "text-green-500";
+              }}
+              getDeadlineText={getDeadlineText}
+              getRemainingTime={getRemainingTime}
+            />
+          )
+        )}
       </motion.div>
 
       {showTodoForm && (
