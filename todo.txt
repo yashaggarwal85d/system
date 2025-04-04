@@ -1,5 +1,5 @@
 Where you show the player title in the header, make it use TextScramble and show the player title, description, username
-Make header aura bar better
+Errors - 
     Error when creating habit
     Error when creating todo
     Error when creating Routine
