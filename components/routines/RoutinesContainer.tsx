@@ -44,6 +44,10 @@ const RoutinesContainer = () => {
   const [editingRoutine, setEditingRoutine] = useState<Routine | undefined>(
     undefined
   );
+  // State to store aura change per checklist item: { routineId: { itemId: auraChange } }
+  const [lastItemAuraChanges, setLastItemAuraChanges] = useState<{
+    [routineId: string]: { [itemId: string]: number };
+  }>({});
 
   // Fetch routines when component mounts and user is authenticated
   useEffect(() => {
@@ -103,6 +107,25 @@ const RoutinesContainer = () => {
       addAura(result.auraChange);
     } else if (result.auraChange && result.auraChange < 0) {
       subtractAura(Math.abs(result.auraChange));
+    }
+
+    // Store the aura change for this specific item
+    if (result.auraChange !== undefined) {
+      setLastItemAuraChanges((prev) => ({
+        ...prev,
+        [routineId]: {
+          ...(prev[routineId] || {}),
+          [itemId]: result.auraChange ?? 0,
+        },
+      }));
+      // Optional: Clear the aura display after a short delay
+      setTimeout(() => {
+        setLastItemAuraChanges((prev) => {
+          const routineChanges = { ...(prev[routineId] || {}) };
+          delete routineChanges[itemId];
+          return { ...prev, [routineId]: routineChanges };
+        });
+      }, 2000); // Clear after 2 seconds
     }
     // Potentially add routine completion aura based on result.routineCompleted
   };
@@ -308,6 +331,10 @@ const RoutinesContainer = () => {
                             onFocus={() => {}}
                             dragControls={null}
                             isEditing={false}
+                            // Pass the specific aura change for this item
+                            lastCompletedAura={
+                              lastItemAuraChanges[routine.id]?.[item.id]
+                            }
                           />
                         ))}
                       </Reorder.Group>

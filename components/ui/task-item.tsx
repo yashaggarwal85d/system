@@ -22,6 +22,7 @@ interface TaskItemProps extends Task {
   getDeadlineColor: (days: number | null) => string;
   getDeadlineText: (deadline?: Date) => string;
   getRemainingTime: (nextDue?: Date) => string;
+  lastCompletedAura?: number; // Add optional prop for displaying aura change
 }
 
 export const TaskItem = ({
@@ -46,6 +47,7 @@ export const TaskItem = ({
   getDeadlineColor,
   getDeadlineText,
   getRemainingTime,
+  lastCompletedAura, // Destructure the new prop
 }: TaskItemProps) => {
   return (
     <motion.div
@@ -173,7 +175,10 @@ export const TaskItem = ({
                     : isHabit && !isGoodHabit
                     ? "-"
                     : "+"}
-                  {/* Display calculated aura? Needs prop */} Aura
+                  {/* Display specific aura change if available */}
+                  {lastCompletedAura !== undefined
+                    ? `${Math.abs(lastCompletedAura)} Aura`
+                    : "Aura"}
                 </Badge>
                 <Sparkles className="h-4 w-4 text-[#4ADEF6] animate-pulse" />
               </motion.div>

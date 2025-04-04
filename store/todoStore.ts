@@ -101,7 +101,7 @@ const todoStoreCreator: StateCreator<TodoState> = (set, get) => ({
           : undefined,
         nextDue: addedTodo.nextDue ? new Date(addedTodo.nextDue) : undefined,
         originalTime: undefined,
-        // auraValue: 0, // Removed - Not part of Task interface/model
+        auraValue: addedTodo.auraValue ?? undefined, // Add auraValue, map null to undefined
         userId: addedTodo.userId || "unknown", // Handle potential missing userId
       };
 
@@ -123,30 +123,38 @@ const todoStoreCreator: StateCreator<TodoState> = (set, get) => ({
 
   toggleTodo: async (taskId) => {
     const originalTodos = get().todos;
-    let optimisticCompleted: boolean | undefined;
+    // const originalTodos = get().todos; // Remove duplicate
+    const todo = originalTodos.find((t) => t.id === taskId);
+    if (!todo) return { error: "Todo not found" };
+
+    const optimisticCompleted = !todo.completed;
 
     // Optimistic update
     set((state) => ({
-      todos: state.todos.map((task) => {
-        if (task.id === taskId) {
-          optimisticCompleted = !task.completed;
-          return { ...task, completed: optimisticCompleted };
-        }
-        return task;
-      }),
+      todos: state.todos.map((task) =>
+        task.id === taskId ? { ...task, completed: optimisticCompleted } : task
+      ),
       error: null, // Clear previous errors on new action
     }));
 
     try {
-      const result = await toggleTodoAPI(taskId); // Call API
+      const result = await toggleTodoAPI(taskId); // Call API, expects { completed, auraChange }
+
       // Update completion state based on response
       set((state) => ({
         todos: state.todos.map((t) =>
           t.id === taskId ? { ...t, completed: result.completed } : t
         ),
       }));
-      // Return result from API (includes auraChange calculated by backend)
-      return { completed: result.completed, auraChange: result.auraChange };
+
+      // Determine the aura change to return
+      // Use the auraChange from API if provided, otherwise use the stored auraValue
+      // Todos are always positive aura on completion
+      const auraChange = optimisticCompleted
+        ? result.auraChange || todo.auraValue || 0 // Use API change, fallback to stored value, then 0
+        : -(result.auraChange || todo.auraValue || 0); // Negative aura if uncompleting
+
+      return { completed: result.completed, auraChange: auraChange };
     } catch (err) {
       console.error(`Failed to toggle todo ${taskId}:`, err);
       // Rollback optimistic update

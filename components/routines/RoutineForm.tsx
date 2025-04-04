@@ -141,28 +141,42 @@ const RoutineForm = ({
   };
 
   const handleSave = () => {
-    if (!name.trim() || checklist.length === 0) return;
+    if (!name.trim()) {
+      // Basic validation, could add more for checklist items if needed
+      alert("Please enter a routine name.");
+      return;
+    }
 
-    const routine: Routine = {
-      id: Math.random().toString(36).substring(7),
+    // Construct only the data needed for creation/update
+    const routineDataForSave = {
       name,
       frequency,
       checklist: checklist.map((item) => ({
-        id: item.id,
+        id: item.id, // Keep ID for updates
         text: item.text || "",
         completed: !!item.completed,
         level: item.level || 0,
-        children: [],
+        // No need to pass children
       })),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      completed: false,
-      // auraValue removed
-      // userId needs to be added here, likely from session
-      userId: initialRoutine?.userId ?? "temp-user-id", // Placeholder - needs real user ID
+      // Omit fields like id, createdAt, updatedAt, completed, nextDue, lastCompleted, userId, auraValue
+      // as they are handled by the backend or store logic
     };
 
-    onSave(routine);
+    // Pass the correctly shaped data to the onSave callback
+    // The type assertion might be needed if TS can't infer the Omit type correctly here
+    onSave(
+      routineDataForSave as Omit<
+        Routine,
+        | "id"
+        | "createdAt"
+        | "updatedAt"
+        | "completed"
+        | "nextDue"
+        | "lastCompleted"
+        | "userId"
+        | "auraValue"
+      >
+    );
     onClose();
   };
 

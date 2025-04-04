@@ -6,7 +6,7 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date; // Added from Prisma model
   deadline?: Date;
-  // Removed auraValue
+  auraValue?: number; // Added optional auraValue
   isHabit?: boolean;
   frequency?: {
     count: number;

@@ -1,8 +1,9 @@
 import {
-  Task,
+  Task as PrismaTask, // Rename imported Task to avoid conflict
   Routine as PrismaRoutine,
   ChecklistItem as PrismaChecklistItem,
 } from "@prisma/client";
+import { Task } from "./interfaces/task"; // Import frontend Task interface
 import { Frequency, Routine } from "./interfaces/routine"; // Import frontend Routine interface and Frequency
 import { HabitConfig } from "./interfaces/habit";
 import { ChecklistItemData } from "@/components/ui/checklist-item";
@@ -23,11 +24,37 @@ async function handleResponse<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+// Helper to convert API Task response (PrismaTask) to frontend Task type
+const mapApiTaskToFrontend = (apiTask: PrismaTask): Task => {
+  return {
+    ...apiTask,
+    // Ensure correct types for dates and potentially null fields
+    createdAt: new Date(apiTask.createdAt),
+    updatedAt: new Date(apiTask.updatedAt),
+    deadline: apiTask.deadline ? new Date(apiTask.deadline) : undefined,
+    lastCompleted: apiTask.lastCompleted
+      ? new Date(apiTask.lastCompleted)
+      : undefined,
+    nextDue: apiTask.nextDue ? new Date(apiTask.nextDue) : undefined,
+    auraValue: apiTask.auraValue ?? undefined, // Map null to undefined
+    isHabit: apiTask.isHabit ?? undefined, // Map null to undefined
+    isGoodHabit: apiTask.isGoodHabit ?? undefined, // Map null to undefined
+    originalTime: apiTask.originalTime ?? undefined, // Map null to undefined
+    // Cast frequency JSON to the expected HabitConfig type
+    frequency: apiTask.frequency
+      ? (apiTask.frequency as HabitConfig)
+      : undefined,
+    // Ensure category is correctly typed if necessary (though Prisma type might suffice)
+    category: apiTask.category as "todo" | "habit", // Cast if needed
+  };
+};
+
 // --- Todos API ---
 
 export const fetchTodosAPI = async (): Promise<Task[]> => {
   const response = await fetch(`${API_BASE}/todos`);
-  return handleResponse<Task[]>(response);
+  const apiTasks = await handleResponse<PrismaTask[]>(response);
+  return apiTasks.map(mapApiTaskToFrontend); // Map to frontend type
 };
 
 export const addTodoAPI = async (data: {
@@ -39,7 +66,8 @@ export const addTodoAPI = async (data: {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return handleResponse<Task>(response);
+  const newApiTask = await handleResponse<PrismaTask>(response);
+  return mapApiTaskToFrontend(newApiTask); // Map to frontend type
 };
 
 export const updateTodoAPI = async (
@@ -51,7 +79,8 @@ export const updateTodoAPI = async (
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return handleResponse<Task>(response);
+  const updatedApiTask = await handleResponse<PrismaTask>(response);
+  return mapApiTaskToFrontend(updatedApiTask); // Map to frontend type
 };
 
 export const toggleTodoAPI = async (
@@ -80,7 +109,8 @@ export const deleteTodoAPI = async (
 
 export const fetchHabitsAPI = async (): Promise<Task[]> => {
   const response = await fetch(`${API_BASE}/habits`);
-  return handleResponse<Task[]>(response);
+  const apiTasks = await handleResponse<PrismaTask[]>(response);
+  return apiTasks.map(mapApiTaskToFrontend); // Map to frontend type
 };
 
 export const addHabitAPI = async (data: {
@@ -92,7 +122,8 @@ export const addHabitAPI = async (data: {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return handleResponse<Task>(response);
+  const newApiTask = await handleResponse<PrismaTask>(response);
+  return mapApiTaskToFrontend(newApiTask); // Map to frontend type
 };
 
 export const updateHabitAPI = async (
@@ -104,7 +135,8 @@ export const updateHabitAPI = async (
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return handleResponse<Task>(response);
+  const updatedApiTask = await handleResponse<PrismaTask>(response);
+  return mapApiTaskToFrontend(updatedApiTask); // Map to frontend type
 };
 
 export const toggleHabitAPI = async (
@@ -165,6 +197,7 @@ const mapApiRoutineToFrontend = (apiRoutine: ApiRoutineResponse): Routine => {
       level: item.level,
       children: [], // Add empty children array to match ChecklistItemData
     })),
+    auraValue: apiRoutine.auraValue ?? undefined, // Map null to undefined
     // Ensure all properties from frontend Routine interface are present
     // userId is already present from PrismaRoutine
     // completed is already present

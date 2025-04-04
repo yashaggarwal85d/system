@@ -73,7 +73,13 @@ export async function POST(request: Request) {
         completed: false,
         deadline: deadlineDate,
         auraValue: calculateBaseAuraValue("todo"), // Calculate and set aura value
-        // Other fields like isHabit, frequency etc. will be null/default for todos
+        // Explicitly set other Task fields to defaults/null for clarity
+        isHabit: false,
+        // frequency: null, // Omit optional JSON field instead of setting to null
+        isGoodHabit: null,
+        lastCompleted: null,
+        nextDue: null,
+        originalTime: null,
       },
     });
 

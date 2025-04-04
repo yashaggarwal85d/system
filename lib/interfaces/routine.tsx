@@ -10,7 +10,20 @@ export type Frequency = {
 export interface RoutineFormProps {
   initialName?: string;
   onNameChange: (name: string) => void;
-  onSave: (routine: Routine) => void;
+  // Update onSave to expect the Omitted type
+  onSave: (
+    routineData: Omit<
+      Routine,
+      | "id"
+      | "createdAt"
+      | "updatedAt"
+      | "completed"
+      | "nextDue"
+      | "lastCompleted"
+      | "userId"
+      | "auraValue" // Also omit auraValue as it's calculated backend/store side
+    >
+  ) => void;
   onClose: () => void;
   initialRoutine?: Routine;
 }
@@ -25,6 +38,6 @@ export interface Routine {
   nextDue?: Date;
   completed: boolean;
   lastCompleted?: Date;
-  // Removed auraValue
+  auraValue?: number; // Added optional auraValue
   userId: string; // Added from Prisma model
 }

@@ -78,10 +78,21 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    // --- Validation ---
+    // ... (name validation) ...
+    // Add full frequency validation
     if (
       !config ||
-      typeof config !==
-        "object" /* ... add full frequency validation like in habits ... */
+      typeof config !== "object" ||
+      typeof config.count !== "number" ||
+      config.count < 1 ||
+      typeof config.period !== "string" ||
+      !["days", "weeks", "months"].includes(config.period) ||
+      typeof config.value !== "number" ||
+      config.value < 1 ||
+      typeof config.time !== "string" ||
+      !/^\d{2}:\d{2}$/.test(config.time)
+      // Note: Routines don't have isGoodHabit in their frequency config
     ) {
       return NextResponse.json(
         { error: "Invalid routine frequency configuration" },

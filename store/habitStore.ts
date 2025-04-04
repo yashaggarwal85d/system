@@ -3,7 +3,6 @@ import { persist, createJSONStorage, PersistOptions } from "zustand/middleware";
 import { Task } from "@/lib/interfaces/task";
 import { HabitConfig } from "@/lib/interfaces/habit";
 import { calculateNextDueDate } from "@/lib/utils";
-// Import the actual API functions
 import {
   fetchHabitsAPI,
   addHabitAPI,
@@ -92,6 +91,7 @@ const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
           : undefined,
         nextDue: addedHabit.nextDue ? new Date(addedHabit.nextDue) : undefined,
         originalTime: addedHabit.originalTime ?? undefined, // Map null/undefined from API to undefined
+        auraValue: addedHabit.auraValue ?? undefined, // Add auraValue, map null to undefined
         userId: addedHabit.userId || "unknown",
       };
 
@@ -115,6 +115,8 @@ const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
     let optimisticCompleted: boolean | undefined;
     let optimisticNextDue: Date | undefined | null;
     let optimisticLastCompleted: Date | undefined | null;
+    const habit = originalHabits.find((h) => h.id === taskId);
+    if (!habit) return { error: "Habit not found" };
 
     // Optimistic update
     set((state) => ({
@@ -157,14 +159,16 @@ const habitStoreCreator: StateCreator<HabitState> = (set, get) => ({
                 ...h,
                 completed: result.completed,
                 nextDue: result.nextDue ?? undefined, // Convert null to undefined
-                lastCompleted: result.completed ? new Date() : undefined, // Use undefined
-              } // Use API's nextDue, update lastCompleted based on final completed status
+                // Update lastCompleted based on final completed status from API
+                lastCompleted: result.completed ? new Date() : undefined,
+              }
             : h
         ),
       }));
+
       return {
         completed: result.completed,
-        auraChange: result.auraChange,
+        auraChange: result.auraChange || habit.auraValue || 0, // Return calculated aura change
         nextDue: result.nextDue,
       };
     } catch (err) {

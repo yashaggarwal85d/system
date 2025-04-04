@@ -219,12 +219,14 @@ const routineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
 
     let itemCompleted = false;
     let routineCompleted = routine.completed;
-    let auraChange = 0; // Example aura change
+    let auraChangeForItem = 0; // Aura change for this specific item toggle
 
     const updatedChecklist = routine.checklist.map((item) => {
       if (item.id === itemId) {
         itemCompleted = !item.completed;
-        auraChange = itemCompleted ? 5 : -5;
+        // Assign a fixed aura value per checklist item for now
+        // Positive when completing, negative when uncompleting
+        auraChangeForItem = itemCompleted ? 5 : -5;
         return { ...item, completed: itemCompleted };
       }
       return item;
@@ -271,11 +273,11 @@ const routineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
         error: null,
       }));
 
-      // Return results
+      // Return results, including the calculated aura change for the item
       return {
         itemCompleted,
         routineCompleted,
-        auraChange,
+        auraChange: auraChangeForItem, // Return the change for this item
         nextDue: updatedRoutineResult.nextDue,
       };
     } catch (err) {

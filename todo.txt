@@ -1,4 +1,12 @@
-1. Add one more field to the player named as player description. Make its default as "You are weak".
-2. Where you show the player title, make it use TextScramble and show the player title, description, username
-3. Write a function in the bacend to randomly assign aura value to routine, task, habits when they are created based on the configs provided.
-4. Write a function in the backend to get all the corresponding data for a player.
+Where you show the player title in the header, make it use TextScramble and show the player title, description, username
+Make header aura bar better
+    Error when creating habit
+    Error when creating todo
+    Error when creating Routine
+    Error when editing Routine
+Fix next due date calculation
+Code review
+Test suite
+AI integration
+Intregated testing
+Deployment

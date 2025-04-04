@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react"; // Ensure useEffect and useMemo are imported
+import { useState, useRef, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -17,19 +17,19 @@ import {
   getRemainingTime,
 } from "@/lib/utils";
 import { containerVariants } from "@/lib/utils/animations";
-import { useSession } from "next-auth/react"; // Import useSession
+import { useSession } from "next-auth/react";
 
 const HabitsContainer = () => {
-  const { data: session, status } = useSession(); // Get session status
+  const { data: session, status } = useSession();
   const {
     habits,
     addHabit,
     updateHabit,
     deleteHabit,
     toggleHabit,
-    fetchHabits, // Get fetch action
+    fetchHabits,
     isLoading,
-    error: habitError, // Get loading/error state
+    error: habitError,
   } = useHabitStore();
   const { addAura, subtractAura } = useDashboardStore();
 
@@ -50,13 +50,14 @@ const HabitsContainer = () => {
     };
   });
   const [editingHabit, setEditingHabit] = useState<Task | null>(null);
+  const [lastCompletedAura, setLastCompletedAura] = useState<{
+    [key: string]: number;
+  }>({});
 
-  // Fetch habits when component mounts and user is authenticated
   useEffect(() => {
     if (status === "authenticated") {
       fetchHabits();
     }
-    // Optionally clear habits if status becomes unauthenticated?
   }, [status, fetchHabits]);
 
   const handleEditHabit = (habit: Task) => {
@@ -69,19 +70,6 @@ const HabitsContainer = () => {
         value: habit.frequency.value,
         time: habit.frequency.time,
         isGoodHabit: habit.isGoodHabit || false,
-      });
-    } else {
-      // Reset to default if frequency is missing
-      const now = new Date();
-      now.setMinutes(now.getMinutes() + 5);
-      const hours = now.getHours().toString().padStart(2, "0");
-      const minutes = now.getMinutes().toString().padStart(2, "0");
-      setHabitConfig({
-        count: 1,
-        period: "days",
-        value: 1,
-        time: `${hours}:${minutes}`,
-        isGoodHabit: true,
       });
     }
     setShowHabitForm(true);
@@ -105,14 +93,6 @@ const HabitsContainer = () => {
 
     setShowHabitForm(false);
     setNewTaskText("");
-    const currentTime = habitConfig.time;
-    setHabitConfig({
-      count: 1,
-      period: "days",
-      value: 1,
-      time: currentTime,
-      isGoodHabit: true,
-    });
     setEditingHabit(null);
     inputRef.current?.focus();
   };
@@ -127,11 +107,29 @@ const HabitsContainer = () => {
       return;
     }
 
-    // Use auraChange from the result
-    if (result.auraChange && result.auraChange > 0) {
-      addAura(result.auraChange);
-    } else if (result.auraChange && result.auraChange < 0) {
-      subtractAura(Math.abs(result.auraChange));
+    // Apply aura change to player
+    if (result.auraChange) {
+      if (result.auraChange > 0) {
+        addAura(result.auraChange);
+      } else {
+        subtractAura(Math.abs(result.auraChange));
+      }
+    }
+
+    // Store the aura change for display, regardless of sign
+    if (result.auraChange !== undefined) {
+      setLastCompletedAura((prev) => ({
+        ...prev,
+        [taskId]: result.auraChange ?? 0,
+      }));
+      // Removed the setTimeout that cleared the aura display
+    } else {
+      // Clear aura display state if uncompleted or no change reported
+      setLastCompletedAura((prev) => {
+        const newState = { ...prev };
+        delete newState[taskId];
+        return newState;
+      });
     }
   };
 
@@ -141,18 +139,6 @@ const HabitsContainer = () => {
 
   const openAddHabitForm = () => {
     setEditingHabit(null);
-    // Reset config to default, keeping the time
-    const now = new Date();
-    now.setMinutes(now.getMinutes() + 5);
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    setHabitConfig({
-      count: 1,
-      period: "days",
-      value: 1,
-      time: `${hours}:${minutes}`,
-      isGoodHabit: true,
-    });
     setShowHabitForm(true);
   };
 
@@ -203,7 +189,7 @@ const HabitsContainer = () => {
           onChange={(e) => setNewTaskText(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && newTaskText.trim()) {
-              openAddHabitForm();
+              handleSaveHabit();
             }
           }}
           className="bg-[#0A1A2F]/60 border-[#4ADEF6]/20 focus:border-[#4ADEF6]/50 placeholder:text-[#4ADEF6]/30"
@@ -263,6 +249,7 @@ const HabitsContainer = () => {
               onUpdate={(id, newTitle) => updateHabit(id, newTitle)} // Basic update, config needs form
               onDelete={() => handleDeleteHabit(task.id)}
               onEdit={() => handleEditHabit(task)}
+              lastCompletedAura={lastCompletedAura[task.id]} // Pass down aura change
               getDaysRemaining={(d: Date | undefined) =>
                 getDaysRemaining(d) ?? Infinity
               } // Use Infinity for sorting if no date

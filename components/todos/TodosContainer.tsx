@@ -49,6 +49,9 @@ const TodosContainer = () => {
   const [deadlineText, setDeadlineText] = useState(formattedToday);
   const [deadlineError, setDeadlineError] = useState("");
   const [editingTodo, setEditingTodo] = useState<Task | null>(null);
+  const [lastCompletedAura, setLastCompletedAura] = useState<{
+    [key: string]: number;
+  }>({}); // State to store aura change per task
 
   // Fetch todos when the component mounts and user is authenticated
   useEffect(() => {
@@ -172,10 +175,27 @@ const TodosContainer = () => {
       // TODO: Show error toast to user
       return;
     }
-    if (result.auraChange && result.auraChange > 0) {
+    if (result.auraChange && result.completed) {
       addAura(result.auraChange);
-    } else if (result.auraChange && result.auraChange < 0) {
+      // Store the positive aura change for display
+      setLastCompletedAura((prev) => ({
+        ...prev,
+        [taskId]: result.auraChange ?? 0,
+      }));
+    } else if (result.auraChange && !result.completed) {
       subtractAura(Math.abs(result.auraChange));
+      // Store the negative aura change for display (though todos shouldn't be negative)
+      setLastCompletedAura((prev) => ({
+        ...prev,
+        [taskId]: result.auraChange ?? 0,
+      }));
+    } else {
+      // Clear aura if uncompleted or no change
+      setLastCompletedAura((prev) => {
+        const newState = { ...prev };
+        delete newState[taskId];
+        return newState;
+      });
     }
   };
 
@@ -318,6 +338,7 @@ const TodosContainer = () => {
               onUpdate={(id, newTitle) => updateTodo(id, newTitle)} // Simplified update call for TaskItem
               onDelete={() => handleDeleteTodo(task.id)}
               onEdit={() => handleEditTodo(task)}
+              lastCompletedAura={lastCompletedAura[task.id]} // Pass down the aura change
               // Provide a default number if getDaysRemaining returns null
               getDaysRemaining={(d: Date | undefined) =>
                 getDaysRemaining(d) ?? Infinity

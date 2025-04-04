@@ -1,7 +1,5 @@
 import { create, StateCreator } from "zustand";
 import { Player } from "@/lib/interfaces/player";
-// We will need API fetching functions later
-// import { fetchPlayerData, updatePlayerDataAPI } from '@/lib/api';
 
 interface DashboardState {
   activeTab: string;
@@ -10,14 +8,11 @@ interface DashboardState {
   error: string | null;
 
   setActiveTab: (tab: string) => void;
-  // setPlayer: (player: Player | ((prev: Player | null) => Player | null)) => void; // Direct setPlayer might be removed/internalized
   fetchPlayer: (userId: string) => Promise<void>;
-  addAura: (amount: number) => Promise<void>; // Actions become async
-  subtractAura: (amount: number) => Promise<void>; // Actions become async
-  // _hasHydrated?: boolean; // No longer needed
+  addAura: (amount: number) => Promise<void>;
+  subtractAura: (amount: number) => Promise<void>;
 }
 
-// Define the state initializer function separately using StateCreator
 const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
   activeTab: "todos",
   player: null, // Initialize player as null
@@ -25,14 +20,6 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
   error: null,
 
   setActiveTab: (tab) => set({ activeTab: tab }),
-
-  // Internal function to update player state, might be called by fetch/update actions
-  _updatePlayerState: (playerData: Partial<Player>) =>
-    set((state) => ({
-      player: state.player ? { ...state.player, ...playerData } : null, // Merge updates or handle null case
-      isLoading: false,
-      error: null,
-    })),
 
   fetchPlayer: async (userId) => {
     set({ isLoading: true, error: null });
@@ -85,31 +72,6 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
     }
     set({ player: optimisticPlayer }); // Update UI immediately
     // --- End Optimistic Update ---
-
-    try {
-      // --- TODO: Replace with actual API call ---
-      console.log(
-        `TODO: Call API to add ${amount} aura for player ${currentPlayer.id}`
-      );
-      // const updatedPlayer = await updatePlayerDataAPI(currentPlayer.id, { auraIncrement: amount });
-      // set({ player: updatedPlayer, error: null }); // Update with confirmed data from backend
-      // Simulating backend update for now - just log
-      await new Promise((resolve) => setTimeout(resolve, 500)); // Simulate network delay
-      console.log("Simulated backend aura update successful.");
-      // In real scenario, fetch updated player or trust optimistic update if API returns minimal response
-      // For now, we keep the optimistic state unless an error occurs
-      // --- End TODO ---
-    } catch (err) {
-      console.error("Failed to add aura:", err);
-      const errorMsg =
-        err instanceof Error ? err.message : "An unknown error occurred";
-      // --- Rollback Optimistic Update ---
-      set({
-        player: currentPlayer,
-        error: `Failed to update aura: ${errorMsg}`,
-      });
-      // --- End Rollback ---
-    }
   },
 
   subtractAura: async (amount) => {
@@ -129,28 +91,6 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
     }
     set({ player: optimisticPlayer });
     // --- End Optimistic Update ---
-
-    try {
-      // --- TODO: Replace with actual API call ---
-      console.log(
-        `TODO: Call API to subtract ${amount} aura for player ${currentPlayer.id}`
-      );
-      // const updatedPlayer = await updatePlayerDataAPI(currentPlayer.id, { auraDecrement: amount });
-      // set({ player: updatedPlayer, error: null });
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      console.log("Simulated backend aura subtraction successful.");
-      // --- End TODO ---
-    } catch (err) {
-      console.error("Failed to subtract aura:", err);
-      const errorMsg =
-        err instanceof Error ? err.message : "An unknown error occurred";
-      // --- Rollback Optimistic Update ---
-      set({
-        player: currentPlayer,
-        error: `Failed to update aura: ${errorMsg}`,
-      });
-      // --- End Rollback ---
-    }
   },
 });
 
