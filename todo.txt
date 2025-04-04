@@ -1,12 +1,6 @@
-Where you show the player title in the header, make it use TextScramble and show the player title, description, username
-Errors - 
-    Error when creating habit
-    Error when creating todo
-    Error when creating Routine
-    Error when editing Routine
 Fix next due date calculation
-Code review
+Fix frontend
 Test suite
 AI integration
-Intregated testing
-Deployment
+CI/CD
+Deployment - Amazon
