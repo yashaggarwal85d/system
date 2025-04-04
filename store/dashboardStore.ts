@@ -22,26 +22,34 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
   setActiveTab: (tab) => set({ activeTab: tab }),
 
   fetchPlayer: async (userId) => {
+    if (!userId) {
+      set({
+        error: "User ID is required to fetch player data.",
+        isLoading: false,
+        player: null,
+      });
+      return;
+    }
     set({ isLoading: true, error: null });
     try {
-      // --- TODO: Replace with actual API call ---
-      console.log(`TODO: Fetch player data for userId: ${userId}`);
-      // const playerData = await fetchPlayerData(userId);
-      // Simulating fetched data for now
-      const simulatedPlayerData: Player = {
-        id: userId, // Use the provided userId (or fetch based on it)
-        name: "FETCHED_USER", // Placeholder name
-        level: 5,
-        aura: 50,
-        auraToNextLevel: 500,
-        title: "Adept",
-        playerDescription: "Simulated player description", // Added placeholder description
-        createdAt: new Date(), // Added placeholder
-        updatedAt: new Date(), // Added placeholder
-        userId: userId, // Link back to user
-      };
-      set({ player: simulatedPlayerData, isLoading: false });
-      // --- End TODO ---
+      const response = await fetch(
+        `/api/player-data?userId=${encodeURIComponent(userId)}`
+      );
+      if (!response.ok) {
+        let errorMsg = `HTTP error! status: ${response.status}`;
+        try {
+          const errorData = await response.json();
+          errorMsg = errorData.error || errorMsg;
+        } catch (jsonError) {
+          // Ignore if response is not JSON
+        }
+        throw new Error(errorMsg);
+      }
+      const playerData: Player = await response.json();
+      // Ensure dates are Date objects if they come as strings
+      playerData.createdAt = new Date(playerData.createdAt);
+      playerData.updatedAt = new Date(playerData.updatedAt);
+      set({ player: playerData, isLoading: false });
     } catch (err) {
       console.error("Failed to fetch player data:", err);
       const errorMsg =

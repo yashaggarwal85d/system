@@ -14,6 +14,7 @@ export default function Home() {
   const router = useRouter();
   const fetchPlayer = useDashboardStore((state) => state.fetchPlayer);
   const [isVaultPopupOpen, setIsVaultPopupOpen] = useState(false); // State for popup
+  const [hasVaultPopupBeenShown, setHasVaultPopupBeenShown] = useState(false); // Track if shown
   const player = useDashboardStore((state) => state.player);
   const isLoadingStore = useDashboardStore((state) => state.isLoading); // Keep track of store loading
   const storeError = useDashboardStore((state) => state.error);
@@ -30,16 +31,20 @@ export default function Home() {
     // Dependencies are now more stable
   }, [status, userId, player, fetchPlayer, router]); // Use userId instead of session
 
-  // Effect to show popup every time when authenticated and player loaded
+  // Effect to show popup once when authenticated and player loaded
   useEffect(() => {
-    if (status === "authenticated" && player) {
-      // Removed sessionStorage check
+    if (status === "authenticated" && player && !hasVaultPopupBeenShown) {
+      // Only open if authenticated, player loaded, AND not shown yet
       setIsVaultPopupOpen(true);
-    } else {
-      // Ensure popup is closed if not authenticated or player not loaded
-      setIsVaultPopupOpen(false);
+      setHasVaultPopupBeenShown(true); // Mark as shown for this session/load
+    } else if (status !== "authenticated" || !player) {
+      // Reset if user logs out or player data is lost, allowing popup on next valid session
+      setIsVaultPopupOpen(false); // Ensure it's closed
+      setHasVaultPopupBeenShown(false); // Reset shown status
     }
-  }, [status, player]); // Run when status or player changes
+    // If already shown (hasVaultPopupBeenShown is true), do nothing to isVaultPopupOpen
+    // It can be closed manually by the user via onOpenChange
+  }, [status, player, hasVaultPopupBeenShown]); // Add hasVaultPopupBeenShown to dependencies
 
   // Show loading if session status is loading OR if authenticated but player data is still loading from the store
   if (

@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Adjust path
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/lib/prisma";
-import { Task } from "@prisma/client"; // Import generated Task type
-import { HabitConfig } from "@/lib/interfaces/habit"; // For validation
-import { calculateNextDueDate, calculateBaseAuraValue } from "@/lib/utils"; // Import utils
+import { HabitConfig } from "@/lib/interfaces/habit";
+import { calculateNextDueDate, calculateBaseAuraValue } from "@/lib/utils";
 
 // GET /api/habits - Fetch user's habits
 export async function GET(request: Request) {
@@ -19,10 +18,10 @@ export async function GET(request: Request) {
     const habits = await prisma.task.findMany({
       where: {
         userId: userId,
-        category: "habit", // Filter for habits
+        category: "habit",
       },
       orderBy: {
-        createdAt: "desc", // Or order as needed
+        createdAt: "desc",
       },
     });
 
@@ -36,7 +35,6 @@ export async function GET(request: Request) {
       }
       return habit; // Return unchanged if not completed or not past due
     });
-
     return NextResponse.json(processedHabits);
   } catch (error) {
     console.error("Error fetching habits:", error);
