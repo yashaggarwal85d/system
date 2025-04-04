@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 import { Routine, ChecklistItem } from "@prisma/client"; // Import generated types
 import { HabitConfig } from "@/lib/interfaces/habit"; // Frequency uses similar structure
 import { ChecklistItemData } from "@/components/ui/checklist-item"; // For input type validation
-import { calculateNextDueDate } from "@/lib/utils";
+import { calculateNextDueDate, calculateBaseAuraValue } from "@/lib/utils"; // Import utils
 
 // GET /api/routines - Fetch user's routines (including checklist items)
 export async function GET(request: Request) {
@@ -116,6 +116,7 @@ export async function POST(request: Request) {
           frequency: config, // Store frequency config
           completed: false,
           nextDue: initialNextDue ?? null,
+          auraValue: calculateBaseAuraValue("routine", config), // Calculate and set aura value
           // lastCompleted is null by default
         },
       });

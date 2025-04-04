@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Adjust path as needed
 import prisma from "@/lib/prisma";
 import { Task } from "@prisma/client"; // Import generated Task type
+import { calculateBaseAuraValue } from "@/lib/utils"; // Import aura calculation
 
 // GET /api/todos - Fetch user's todos
 export async function GET(request: Request) {
@@ -71,6 +72,7 @@ export async function POST(request: Request) {
         category: "todo",
         completed: false,
         deadline: deadlineDate,
+        auraValue: calculateBaseAuraValue("todo"), // Calculate and set aura value
         // Other fields like isHabit, frequency etc. will be null/default for todos
       },
     });

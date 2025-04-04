@@ -48,6 +48,7 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
         aura: 50,
         auraToNextLevel: 500,
         title: "Adept",
+        playerDescription: "Simulated player description", // Added placeholder description
         createdAt: new Date(), // Added placeholder
         updatedAt: new Date(), // Added placeholder
         userId: userId, // Link back to user

@@ -4,7 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route"; // Adjust path
 import prisma from "@/lib/prisma";
 import { Task } from "@prisma/client"; // Import generated Task type
 import { HabitConfig } from "@/lib/interfaces/habit"; // For validation
-import { calculateNextDueDate } from "@/lib/utils"; // For calculating initial nextDue
+import { calculateNextDueDate, calculateBaseAuraValue } from "@/lib/utils"; // Import utils
 
 // GET /api/habits - Fetch user's habits
 export async function GET(request: Request) {
@@ -106,6 +106,7 @@ export async function POST(request: Request) {
         isGoodHabit: config.isGoodHabit,
         originalTime: config.time,
         nextDue: initialNextDue,
+        auraValue: calculateBaseAuraValue("habit", config), // Calculate and set aura value
         // deadline, lastCompleted are null by default
       },
     });

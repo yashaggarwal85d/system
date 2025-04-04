@@ -71,6 +71,7 @@ model Player {
   aura            Float    @default(0)
   auraToNextLevel Float    @default(100)
   title           String   @default("Initiate")
+  playerDescription String @default("You are weak") // Added player description
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
@@ -93,6 +94,7 @@ model Task {
   lastCompleted DateTime?
   nextDue     DateTime?
   originalTime String?
+  auraValue   Float? // Added field for base aura value
 
   user   User   @relation(fields: [userId], references: [id])
   userId String
@@ -107,6 +109,7 @@ model Routine {
   nextDue       DateTime?
   completed     Boolean  @default(false)
   lastCompleted DateTime?
+  auraValue     Float? // Added field for base aura value
 
   user   User   @relation(fields: [userId], references: [id])
   userId String

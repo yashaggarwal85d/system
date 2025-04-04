@@ -5,6 +5,7 @@ export interface Player {
   aura: number; // Use number (covers Float)
   auraToNextLevel: number; // Use number (covers Float)
   title: string;
+  playerDescription: string; // Added player description
   createdAt: Date; // Added missing field
   updatedAt: Date; // Added missing field
   userId: string; // Added from Prisma model

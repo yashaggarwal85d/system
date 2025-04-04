@@ -196,3 +196,34 @@ export const formatResetTime = (nextDueDate?: Date | string): string => {
   };
   return `Resets ${validNextDue.toLocaleString("en-US", options)}`;
 };
+
+// Function to calculate a base aura value for a new task/habit/routine
+// TODO: Refine this logic based on actual game design
+export const calculateBaseAuraValue = (
+  category: "todo" | "habit" | "routine",
+  config?: HabitConfig | Routine["frequency"] // Config for habits/routines
+): number => {
+  let baseAura = 10; // Default for todo
+
+  if (category === "habit" && config) {
+    baseAura = 15; // Base for habits
+    // Add complexity bonus? e.g., based on frequency value/period
+    if (config.period === "days" && config.value === 1) baseAura += 5; // Daily bonus
+    if (config.period === "weeks") baseAura += 10;
+    if (config.period === "months") baseAura += 15;
+    // Check isGoodHabit only for habits
+    if ("isGoodHabit" in config && !config.isGoodHabit) {
+      baseAura = 5; // Lower base for bad habits
+    }
+  } else if (category === "routine" && config) {
+    baseAura = 20; // Base for routines
+    // Add complexity bonus? e.g., based on checklist length or frequency
+    if (config.period === "days" && config.value === 1) baseAura += 10; // Daily bonus
+    if (config.period === "weeks") baseAura += 15;
+    if (config.period === "months") baseAura += 20;
+  }
+
+  // Add a small random element
+  const randomBonus = Math.floor(Math.random() * 6); // 0-5 bonus
+  return baseAura + randomBonus;
+};
