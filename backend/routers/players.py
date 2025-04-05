@@ -1,13 +1,16 @@
+import requests
+import random
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
 
-from typing import List
+from typing import List, Dict, Any
 
 from pydantic import BaseModel
-from .. import models, database, auth
+from .. import models, database, auth, neural_vault_cache
 
-# --- New Response Model ---
+
+# --- Response Models ---
 
 class PlayerFullInfo(BaseModel):
     player: models.Player # Consider creating a PlayerOut model without password
@@ -15,10 +18,41 @@ class PlayerFullInfo(BaseModel):
     tasks: List[models.Task]
     routines: List[models.Routine]
 
+class NeuralVaultEntry(BaseModel):
+    fileName: str
+    content: str
+
+
 router = APIRouter(
     prefix="/players",
     tags=["players"],
 )
+
+
+# --- Neural Vault Endpoint (Uses Cache) ---
+
+@router.get("/neural-vault", response_model=NeuralVaultEntry)
+async def get_random_neural_vault_entry_cached():
+    """Fetches a random markdown file entry from the local Neural Vault cache."""
+    cached_entry = neural_vault_cache.get_random_cached_entry()
+
+    if cached_entry is None:
+        # Attempt to update cache if it's empty or failed to load
+        print("Cache miss or error, attempting cache update...")
+        try:
+            neural_vault_cache.update_cache()
+            cached_entry = neural_vault_cache.get_random_cached_entry()
+            if cached_entry is None:
+                 raise HTTPException(status_code=404, detail="Neural Vault cache is empty or could not be populated.")
+        except Exception as e:
+             # Catch potential errors during the update_cache call itself
+             print(f"Error during cache update attempt: {e}")
+             raise HTTPException(status_code=500, detail=f"Failed to update or access Neural Vault cache: {e}")
+
+    filename, content = cached_entry
+    return NeuralVaultEntry(fileName=filename, content=content)
+
+
 
 # --- Authentication Endpoints ---
 

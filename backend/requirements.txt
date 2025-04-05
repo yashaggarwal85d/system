@@ -8,3 +8,5 @@ python-jose[cryptography]
 pytest
 pytest-cov
 python-multipart
+requests
+apscheduler

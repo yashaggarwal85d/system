@@ -15,9 +15,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
 } from "@/components/common/dialog";
-import { Button } from "@/components/common/button";
 import { ScrollArea } from "@/components/common/scroll-area"; // For scrollable content
 
 interface NeuralVaultPopupProps {
@@ -45,13 +43,38 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
         setIsLoading(true);
         setError(null);
         try {
-          const response = await fetch("/api/neural-vault");
+          // Update the fetch URL to point to the backend endpoint
+          const response = await fetch(
+            "http://localhost:8000/players/neural-vault"
+          );
+
           if (!response.ok) {
-            const errorData = await response.json();
+            let errorText = `HTTP error! status: ${response.status}`;
+            try {
+              // Check content type before parsing
+              const contentType = response.headers.get("content-type");
+              if (contentType && contentType.includes("application/json")) {
+                const errorData = await response.json();
+                errorText = errorData.error || JSON.stringify(errorData);
+              } else {
+                // If not JSON, read as text
+                errorText = await response.text();
+              }
+            } catch (parseError) {
+              // Fallback if parsing fails for any reason
+              errorText = `Failed to parse error response: ${response.statusText}`;
+            }
+            throw new Error(errorText);
+          }
+
+          // Check content type for successful response too
+          const contentType = response.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
             throw new Error(
-              errorData.error || `HTTP error! status: ${response.status}`
+              `Expected JSON response but received ${contentType || "unknown"}`
             );
           }
+
           let data: VaultData = await response.json();
 
           // Preprocess content to replace Obsidian image links with GitHub raw URLs

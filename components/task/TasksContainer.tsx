@@ -92,6 +92,7 @@ const TasksContainer = () => {
       setEditingTask(null);
       inputRef.current?.focus();
     }
+    console.log(deadlineError);
   };
 
   const handleToggleTask = async (taskId: string | null) => {
@@ -164,6 +165,7 @@ const TasksContainer = () => {
           onChange={(e) => setNewTaskText(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && newTaskText.trim()) {
+              console.log("Enter key pressed");
               setEditingTask(null);
               handleSaveTask();
             }

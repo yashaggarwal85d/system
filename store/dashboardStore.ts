@@ -18,7 +18,7 @@ interface DashboardState {
 }
 
 const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
-  activeTab: "task",
+  activeTab: "tasks",
   player: null, // Initialize player as null
   isLoading: false,
   error: null,

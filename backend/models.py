@@ -18,7 +18,7 @@ class Player(BaseModel):
     username: str
     level: int = 0
     aura: int = 0
-    description: str
+    description: str = "You are weak, You lack consistency, You need to work hard, Future You would be dissapointed if you stay like this"
     password: str
 
 # Model for updating player profile (excluding username and password)

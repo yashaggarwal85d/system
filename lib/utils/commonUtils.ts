@@ -94,11 +94,7 @@ export const isDateWithinOneYearRange = (date: Date): boolean => {
   oneYearFromNow.setFullYear(today.getFullYear() + 1);
   today.setHours(0, 0, 0, 0);
   oneYearFromNow.setHours(0, 0, 0, 0);
-  // Ensure date is also a Date object before comparison
-  if (!(date instanceof Date) || isNaN(date.getTime())) return false;
-  const checkDate = new Date(date);
-  checkDate.setHours(0, 0, 0, 0);
-  return checkDate >= today && checkDate <= oneYearFromNow;
+  return date >= today && date <= oneYearFromNow;
 };
 
 export const getDaysRemaining = (deadline: Date): number => {

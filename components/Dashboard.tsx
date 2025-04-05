@@ -17,7 +17,6 @@ import RoutinesContainer from "./routine/RoutinesContainer";
 
 const Dashboard = () => {
   const { activeTab, setActiveTab, player } = useDashboardStore();
-
   return (
     <div className="container mx-auto p-6 relative z-10 max-w-6xl">
       <motion.div
