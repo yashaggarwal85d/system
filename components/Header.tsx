@@ -1,4 +1,4 @@
-import { Player } from "@/lib/interfaces/player";
+import { Player } from "@/lib/utils/interfaces";
 import { Card, CardContent } from "./common/card";
 
 interface TopBarProps {
@@ -6,7 +6,7 @@ interface TopBarProps {
 }
 
 const Header: React.FC<TopBarProps> = ({ player }) => {
-  const progressPercentage = (player.aura / player.auraToNextLevel) * 100;
+  const progressPercentage = player.aura / (player.level + 1);
 
   return (
     <Card className="mb-8 border-none bg-transparent shadow-none">

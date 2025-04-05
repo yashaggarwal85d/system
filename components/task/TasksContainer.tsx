@@ -10,14 +10,7 @@ import TaskForm from "./TaskForm";
 import useTaskStore from "@/store/taskStore";
 import useDashboardStore from "@/store/dashboardStore";
 import { Task } from "@/lib/utils/interfaces";
-import {
-  getDaysRemaining,
-  getDeadlineColor,
-  getDeadlineText,
-  getRemainingTime,
-  isDateWithinOneYearRange,
-  parseDate,
-} from "@/lib/utils/commonUtils";
+import { getDeadlineColor, getDeadlineText } from "@/lib/utils/commonUtils";
 import { containerVariants } from "@/lib/utils/animationUtils";
 
 const TasksContainer = () => {
@@ -30,85 +23,134 @@ const TasksContainer = () => {
   const [newTaskText, setNewTaskText] = useState("");
   const [showTaskForm, setShowTaskForm] = useState(false);
 
+  // Date state management
   const today = new Date();
-  const day = today.getDate().toString().padStart(2, "0");
-  const month = (today.getMonth() + 1).toString().padStart(2, "0");
-  const year = today.getFullYear().toString().slice(-2);
-  const formattedToday = `${day}-${month}-${year}`;
-
-  const [deadlineText, setDeadlineText] = useState(formattedToday);
+  const currentDay = today.getDate();
+  const currentMonth = today.getMonth() + 1;
+  const currentYear = today.getFullYear();
+  const currentYearShort = parseInt(currentYear.toString().slice(-2));
+  const [selectedDay, setSelectedDay] = useState(currentDay);
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+  const [selectedYear, setSelectedYear] = useState(currentYearShort);
   const [deadlineError, setDeadlineError] = useState("");
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
-  useEffect(() => {}, [tasks]);
+  useEffect(() => {
+    // Optional: You might want effect logic here if needed
+  }, [tasks]);
 
   const handleEditTask = (task: Task) => {
     setEditingTask(task);
     setNewTaskText(task.name);
-    const deadlineDate = task.due_date;
-    const day = deadlineDate.getDate().toString().padStart(2, "0");
-    const month = (deadlineDate.getMonth() + 1).toString().padStart(2, "0");
-    const year = deadlineDate.getFullYear().toString().slice(-2);
-    setDeadlineText(`${day}-${month}-${year}`);
+    const deadlineDate = new Date(task.due_date);
+    setSelectedDay(deadlineDate.getDate());
+    setSelectedMonth(deadlineDate.getMonth() + 1);
+    setSelectedYear(parseInt(deadlineDate.getFullYear().toString().slice(-2)));
     setDeadlineError("");
     setShowTaskForm(true);
   };
 
-  const validateDate = (text: string) => {
+  // Updated validation logic for day, month, year
+  const validateDate = (day: number, month: number, yearShort: number) => {
+    const yearFull = 2000 + yearShort; // Convert yy to yyyy
+    const daysInMonth = new Date(yearFull, month, 0).getDate(); // Month is 1-based here
+
+    if (day < 1 || day > daysInMonth) {
+      setDeadlineError(`Invalid day for the selected month (1-${daysInMonth})`);
+      return false;
+    }
+
+    const selectedDate = new Date(yearFull, month - 1, day); // Month is 0-based for Date constructor
+    selectedDate.setHours(0, 0, 0, 0);
+
     const checkToday = new Date();
     checkToday.setHours(0, 0, 0, 0);
-    if (
-      text.length !== 8 ||
-      !/^\d{2}-\d{2}-\d{2}$/.test(text) ||
-      !/^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-(\d{2})$/.test(text) ||
-      parseDate(text) === null
-    ) {
-      setDeadlineError("Please enter a valid deadline in dd-mm-yy format");
+
+    const oneYearFromToday = new Date(checkToday);
+    oneYearFromToday.setFullYear(checkToday.getFullYear() + 1);
+
+    if (selectedDate < checkToday) {
+      setDeadlineError("Deadline cannot be in the past");
       return false;
-    } else if (isDateWithinOneYearRange(parseDate(text)!)) {
+    }
+    if (selectedDate >= oneYearFromToday) {
       setDeadlineError("The deadline must be within one year from today");
       return false;
-    } else if (parseDate(text)! < checkToday) {
-      setDeadlineError("Deadline cannot be in the past");
-    } else {
-      return true;
     }
+
+    setDeadlineError(""); // Clear error if valid
+    return true;
   };
 
   const handleSaveTask = () => {
     if (!newTaskText.trim()) {
-      setDeadlineError("Please enter a name");
+      setDeadlineError("Please enter a task name");
       return;
     }
-    if (validateDate(deadlineText)) {
+
+    // Validate using the new function
+    if (validateDate(selectedDay, selectedMonth, selectedYear)) {
+      // Construct the date string in dd-mm-yy format for addTask
+      const dayStr = selectedDay.toString().padStart(2, "0");
+      const monthStr = selectedMonth.toString().padStart(2, "0");
+      const yearStr = selectedYear.toString().padStart(2, "0");
+      const formattedDateString = `${dayStr}-${monthStr}-${yearStr}`;
+
+      console.log("Editing Task:", editingTask);
       if (editingTask && editingTask.id) {
-        updateTask(editingTask.id, editingTask);
+        const updatedTaskDetails = {
+          ...editingTask,
+          name: newTaskText,
+          due_date: formattedDateString,
+        };
+        console.log("Updated Task Details:", updatedTaskDetails);
+        updateTask(editingTask.id, updatedTaskDetails);
       } else {
-        addTask(newTaskText, parseDate(deadlineText)!);
+        addTask(newTaskText, formattedDateString);
       }
+
       setDeadlineError("");
       setShowTaskForm(false);
       setNewTaskText("");
       setEditingTask(null);
       inputRef.current?.focus();
     }
-    console.log(deadlineError);
   };
 
-  const handleToggleTask = async (taskId: string | null) => {
-    if (taskId) {
-      await updateTask(taskId, { completed: true });
-    }
-    if (!taskId || error) {
-      console.error("Failed to toggle task:", error);
+  const handleToggleTask = async (taskId: string | undefined) => {
+    if (!taskId) {
+      console.error("Task ID is undefined, cannot toggle.");
+      setError("Failed to toggle task: Missing ID.");
       return;
-    } else {
-      const task = tasks.filter((task) => task.id === taskId)[0];
-      modifyAura(task.aura);
+    }
+
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) {
+      console.error("Task not found:", taskId);
+      setError("Failed to toggle task: Task not found.");
+      return;
+    }
+
+    const newCompletedState = !task.completed;
+    try {
+      await updateTask(taskId, { completed: newCompletedState });
+      if (newCompletedState) {
+        modifyAura(task.aura);
+      } else {
+        modifyAura(-task.aura);
+      }
+    } catch (updateError) {
+      console.error("Failed to update task state:", updateError);
+      setError(
+        `Failed to update task: ${
+          updateError instanceof Error ? updateError.message : "Unknown error"
+        }`
+      );
     }
   };
 
-  const handleDeleteTask = (taskId: string | null) => {
+  const handleDeleteTask = (taskId: string | undefined) => {
+    // Changed type to string | undefined
     if (taskId) {
       deleteTask(taskId);
     } else {
@@ -117,31 +159,16 @@ const TasksContainer = () => {
     }
   };
 
-  const handleDeadlineChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDeadlineError("");
-    const input = e.target.value.replace(/\D/g, ""); // Remove all non-digit characters
-    let formattedInput = "";
-
-    if (input.length > 0) {
-      formattedInput += input.substring(0, 2);
-    }
-    if (input.length >= 3) {
-      formattedInput += "-" + input.substring(2, 4);
-    }
-    if (input.length >= 5) {
-      formattedInput += "-" + input.substring(4, 6);
-    }
-
-    // Limit to dd-mm-yy format (8 characters)
-    setDeadlineText(formattedInput.substring(0, 8));
-  };
+  // handleDeadlineChange is no longer needed
 
   const sortedTasks = useMemo(() => {
     return [...tasks].sort((a, b) => {
       if (a.completed !== b.completed) {
         return a.completed ? 1 : -1;
       }
-      return a.due_date.getTime() - b.due_date.getTime();
+      const a_date = new Date(a.due_date);
+      const b_date = new Date(b.due_date);
+      return a_date.getTime() - b_date.getTime();
     });
   }, [tasks]);
 
@@ -193,14 +220,13 @@ const TasksContainer = () => {
       >
         {sortedTasks.map((task) => (
           <TaskItem
+            key={task.id} // Added key prop
             {...task}
             onToggle={() => handleToggleTask(task.id)}
             onDelete={() => handleDeleteTask(task.id)}
             onEdit={() => handleEditTask(task)}
-            getDaysRemaining={() => getDaysRemaining(task.due_date)}
             getDeadlineColor={() => getDeadlineColor(task.due_date)}
             getDeadlineText={() => getDeadlineText(task.due_date)}
-            getRemainingTime={() => getRemainingTime(task.due_date)}
           />
         ))}
       </motion.div>
@@ -216,16 +242,19 @@ const TasksContainer = () => {
           <TaskForm
             newTaskText={newTaskText}
             setNewTaskText={setNewTaskText}
-            deadlineText={deadlineText}
-            setDeadlineText={setDeadlineText}
+            selectedDay={selectedDay}
+            setSelectedDay={setSelectedDay}
+            selectedMonth={selectedMonth}
+            setSelectedMonth={setSelectedMonth}
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
             deadlineError={deadlineError}
             setDeadlineError={setDeadlineError}
-            handleDeadlineChange={handleDeadlineChange}
             handleSaveTask={handleSaveTask}
             setShowTaskForm={setShowTaskForm}
             setEditingTask={setEditingTask}
             editingTask={editingTask}
-            formattedToday={formattedToday}
+            currentYear={currentYear}
           />
         </motion.div>
       )}

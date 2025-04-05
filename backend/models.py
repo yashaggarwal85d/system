@@ -1,8 +1,8 @@
-from pydantic import BaseModel, Field
-from typing import Optional
+from pydantic import BaseModel, Field, field_validator
+from typing import List, Optional, Union
 from enum import Enum
 import uuid
-from datetime import date
+from datetime import date, datetime
 
 # Define an Enum
 class Occurence(str, Enum):
@@ -10,9 +10,19 @@ class Occurence(str, Enum):
     MONTHS = "months"
     DAYS = "days"
 
-# Helper function to generate UUIDs
 def generate_uuid():
     return str(uuid.uuid4())
+
+def validate_date_format(v: Union[str, date]) -> Union[str, date]:
+    """Allow DD-MM-YY format in addition to default YYYY-MM-DD."""
+    if isinstance(v, date):
+        return v  
+    if isinstance(v, str):
+        try:
+            return datetime.strptime(v, '%d-%m-%y').date()
+        except ValueError:
+            return v
+    return v
 
 class Player(BaseModel):
     username: str
@@ -21,7 +31,6 @@ class Player(BaseModel):
     description: str = "You are weak, You lack consistency, You need to work hard, Future You would be dissapointed if you stay like this"
     password: str
 
-# Model for updating player profile (excluding username and password)
 class PlayerUpdate(BaseModel):
     level: Optional[int] = None
     aura: Optional[int] = None
@@ -38,13 +47,32 @@ class Habit(BaseModel):
     x_occurence: int # Number of units of occurence
     repeat: int # Number of times to repeat the occurence
 
+    _validate_habit_dates = field_validator('next_due_date', 'start_date', mode='before')(validate_date_format)
+
+class HabitUpdate(BaseModel):
+    name: Optional[str] = None
+    aura: Optional[int] = None
+    next_due_date: Optional[str] = None
+    start_date: Optional[str] = None
+    occurence: Optional[Occurence] = None
+    x_occurence: Optional[int] = None
+    repeat: Optional[int] = None
+
 class Task(BaseModel):
     id: str = Field(default_factory=generate_uuid)
     userId: str
     name: str
     due_date: date
-    aura_value: int = 5 
+    aura: int = 5
     completed: bool = False
+
+    _validate_task_date = field_validator('due_date', mode='before')(validate_date_format)
+
+class TaskUpdate(BaseModel):
+    name: Optional[str] = None
+    due_date: Optional[str] = None
+    aura: Optional[int] = None
+    completed: Optional[bool] = None
 
 class Routine(BaseModel):
     id: str = Field(default_factory=generate_uuid)
@@ -57,3 +85,29 @@ class Routine(BaseModel):
     x_occurence: int # Number of units of occurence
     repeat: int # Number of times to repeat the occurence
     checklist: str
+
+    # Apply reusable validator
+    _validate_routine_dates = field_validator('next_due_date', 'start_date', mode='before')(validate_date_format)
+
+
+class RoutineUpdate(BaseModel):
+    name: Optional[str] = None
+    aura: Optional[int] = None
+    next_due_date: Optional[str] = None
+    start_date: Optional[str] = None
+    occurence: Optional[Occurence] = None
+    x_occurence: Optional[int] = None
+    repeat: Optional[int] = None
+    checklist: Optional[str] = None 
+
+
+
+class PlayerFullInfo(BaseModel):
+    player: Player 
+    habits: List[Habit]
+    tasks: List[Task]
+    routines: List[Routine]
+
+class NeuralVaultEntry(BaseModel):
+    fileName: str
+    content: str

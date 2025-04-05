@@ -19,16 +19,6 @@ def habit_key(user_id: str, habit_id: str) -> str:
 def user_habits_pattern(user_id: str) -> str:
     return f"habit:{user_id}:*"
 
-# Optional Pydantic model for updates (allows partial updates)
-class HabitUpdate(BaseModel):
-    name: Optional[str] = None
-    aura: Optional[int] = None
-    next_due_date: Optional[str] = None
-    start_date: Optional[str] = None
-    occurence: Optional[models.Occurence] = None
-    x_occurence: Optional[int] = None
-    repeat: Optional[int] = None
-
 
 @router.post("/", response_model=models.Habit, status_code=status.HTTP_201_CREATED)
 async def create_habit(habit_data: models.Habit, current_username: str = Depends(get_current_username)):
@@ -68,7 +58,7 @@ async def read_habit(habit_id: str, current_username: str = Depends(get_current_
     return habit
 
 @router.put("/{habit_id}", response_model=models.Habit)
-async def update_habit(habit_id: str, habit_update: HabitUpdate, current_username: str = Depends(get_current_username)):
+async def update_habit(habit_id: str, habit_update: models.HabitUpdate, current_username: str = Depends(get_current_username)):
     """Updates a specific habit by ID for the current user."""
     r = await database.get_redis_connection()
     key = habit_key(current_username, habit_id)

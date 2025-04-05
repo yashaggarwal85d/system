@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper"; // Import the wrapper
+import { ThemeProvider } from "@/components/providers/theme-provider"; // Import ThemeProvider
 
 export const metadata: Metadata = {
   title: "Flickering Letters",
@@ -24,11 +25,17 @@ export default function RootLayout({
         />
       </head>
       <body className="font-inter">
-        <SessionProviderWrapper>
-          {" "}
-          {/* Use the client component wrapper */}
-          {children}
-        </SessionProviderWrapper>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark" // Assuming dark is the default, adjust if needed
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SessionProviderWrapper>
+            {/* Use the client component wrapper */}
+            {children}
+          </SessionProviderWrapper>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from typing import List, Optional
-from pydantic import BaseModel
+from typing import List
 
 from .. import models, database, auth
 from .players import get_current_username # Reuse the dependency
@@ -18,12 +17,6 @@ def task_key(user_id: str, task_id: str) -> str:
 # Redis key pattern for scanning user's tasks
 def user_tasks_pattern(user_id: str) -> str:
     return f"task:{user_id}:*"
-
-# Optional Pydantic model for updates
-class TaskUpdate(BaseModel):
-    name: Optional[str] = None
-    due_date: Optional[str] = None
-    aura_value: Optional[int] = None
 
 @router.post("/", response_model=models.Task, status_code=status.HTTP_201_CREATED)
 async def create_task(task_data: models.Task, current_username: str = Depends(get_current_username)):
@@ -58,9 +51,10 @@ async def read_task(task_id: str, current_username: str = Depends(get_current_us
     return task
 
 @router.put("/{task_id}", response_model=models.Task)
-async def update_task(task_id: str, task_update: TaskUpdate, current_username: str = Depends(get_current_username)):
+async def update_task(task_id: str, task_update: models.TaskUpdate, current_username: str = Depends(get_current_username)):
     """Updates a specific task by ID for the current user."""
     r = await database.get_redis_connection()
+    print(task_update)
     key = task_key(current_username, task_id)
 
     updated_task = await database.redis_update(

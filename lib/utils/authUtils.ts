@@ -33,13 +33,18 @@ export const fetchWithAuth = async (
   });
 
   if (response.status === 401) {
-    console.error("Unauthorized request - Token might be invalid or expired.");
-    // Clear token and redirect?
-    // localStorage.removeItem("accessToken");
-    // localStorage.removeItem("tokenType");
-    // window.location.href = '/login'; // Force redirect
-    // Or throw a specific error to be caught by the caller
-    // throw new Error("Unauthorized");
+    console.error(
+      "Unauthorized request - Token might be invalid or expired. Redirecting to login."
+    );
+    // Clear token and redirect
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("accessToken");
+      // Assuming tokenType might also be stored, uncomment if needed
+      // localStorage.removeItem("tokenType");
+      window.location.href = "/login"; // Force redirect
+    }
+    // Throw an error to stop further processing in the calling function
+    throw new Error("Unauthorized");
   }
   return response;
 };

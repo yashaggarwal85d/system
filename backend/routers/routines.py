@@ -19,17 +19,6 @@ def routine_key(user_id: str, routine_id: str) -> str:
 def user_routines_pattern(user_id: str) -> str:
     return f"routine:{user_id}:*"
 
-# Optional Pydantic model for updates
-class RoutineUpdate(BaseModel):
-    name: Optional[str] = None
-    aura: Optional[int] = None
-    next_due_date: Optional[str] = None
-    start_date: Optional[str] = None
-    occurence: Optional[models.Occurence] = None
-    x_occurence: Optional[int] = None
-    repeat: Optional[int] = None
-    checklist: Optional[str] = None # Allow updating the checklist string
-
 @router.post("/", response_model=models.Routine, status_code=status.HTTP_201_CREATED)
 async def create_routine(routine_data: models.Routine, current_username: str = Depends(get_current_username)):
     """Creates a new routine for the current user."""
@@ -63,7 +52,7 @@ async def read_routine(routine_id: str, current_username: str = Depends(get_curr
     return routine
 
 @router.put("/{routine_id}", response_model=models.Routine)
-async def update_routine(routine_id: str, routine_update: RoutineUpdate, current_username: str = Depends(get_current_username)):
+async def update_routine(routine_id: str, routine_update: models.RoutineUpdate, current_username: str = Depends(get_current_username)):
     """Updates a specific routine by ID for the current user."""
     r = await database.get_redis_connection()
     key = routine_key(current_username, routine_id)

@@ -94,27 +94,55 @@ def update_cache():
     Clears the existing cache and fetches fresh files from GitHub.
     """
     print("Starting Neural Vault cache update...")
-    # Ensure cache directory exists, clear if it does
-    if CACHE_DIR.exists():
-        print(f"Clearing existing cache directory: {CACHE_DIR}")
-        shutil.rmtree(CACHE_DIR)
-    CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    print(f"Created cache directory: {CACHE_DIR}")
 
+    # --- Step 1: Fetch list of all files to download ---
     all_files_to_download: List[Tuple[str, str]] = []
+    print("Fetching file lists from GitHub...")
+    fetch_error = False
     for folder in TARGET_FOLDERS:
         folder_url = f"{REPO_API_URL}{folder}"
-        print(f"Fetching file list from: {folder}...")
-        all_files_to_download.extend(_get_files_recursive(folder_url, f"{folder}/"))
+        print(f"  - Fetching from: {folder}...")
+        try:
+            # Assuming _get_files_recursive handles its own errors and returns []
+            files_in_folder = _get_files_recursive(folder_url, f"{folder}/")
+            if not files_in_folder and folder_url == f"{REPO_API_URL}{folder}": # Basic check if top-level fetch failed
+                 # More robust error checking might be needed inside _get_files_recursive
+                 # For now, we just note if a top-level folder returned nothing.
+                 print(f"Warning: Could not fetch or find files in folder: {folder}")
+                 # Decide if this is a critical error: fetch_error = True
+            all_files_to_download.extend(files_in_folder)
+        except Exception as e: # Catch broader exceptions during fetch planning
+            print(f"Error during file list fetching for {folder}: {e}")
+            fetch_error = True
+            break # Stop fetching if one folder causes a major issue
 
-    if not all_files_to_download:
-        print("Warning: No markdown files found to download.")
+    if fetch_error:
+        print("Aborting cache update due to errors during file list fetching.")
         return
 
-    print(f"Found {len(all_files_to_download)} markdown files to download.")
+    if not all_files_to_download:
+        print("No markdown files found in target folders. Cache update not needed.")
+        return
+
+    print(f"Successfully fetched list of {len(all_files_to_download)} markdown files.")
+
+    # --- Step 2: Clear existing cache (only if file list fetch succeeded) ---
+    print("Preparing local cache directory...")
+    try:
+        if CACHE_DIR.exists():
+            print(f"Clearing existing cache directory: {CACHE_DIR}")
+            shutil.rmtree(CACHE_DIR)
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        print(f"Ensured cache directory exists: {CACHE_DIR}")
+    except OSError as e:
+        print(f"Error managing cache directory {CACHE_DIR}: {e}")
+        print("Aborting cache update.")
+        return
+
+    # --- Step 3: Download and save files ---
+    print("Downloading files...")
     saved_count = 0
     failed_count = 0
-
     for relative_save_path, download_url in all_files_to_download:
         local_save_path = CACHE_DIR / relative_save_path
         if _fetch_and_save_file(download_url, local_save_path):

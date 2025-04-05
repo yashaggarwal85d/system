@@ -48,7 +48,7 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
 
   modifyAura: async (amount) => {
     const currentPlayer = get().player;
-    if (!currentPlayer || amount <= 0) return;
+    if (!currentPlayer) return;
 
     let optimisticPlayer = { ...currentPlayer };
     const newAura = optimisticPlayer.aura + amount;

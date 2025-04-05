@@ -5,6 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// Function to format a Date object into YYYY-MM-DD string
+export const formatDateToYYYYMMDD = (date: Date): string => {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
+  const day = date.getDate().toString().padStart(2, "0");
+  return `${year}-${month}-${day}`;
+};
+
 // TODO - Make this dynamic
 export const getAuraValue = <T>(
   category: "habit" | "task" | "routine",
@@ -88,16 +96,19 @@ export function calculatePreviousDueDate(
 }
 
 // For task deadline
-export const isDateWithinOneYearRange = (date: Date): boolean => {
+export const isDateWithinOneYearRange = (date: string): boolean => {
   const today = new Date();
   const oneYearFromNow = new Date();
+  const deadline = new Date(date);
   oneYearFromNow.setFullYear(today.getFullYear() + 1);
+  deadline.setHours(0, 0, 0, 0);
   today.setHours(0, 0, 0, 0);
   oneYearFromNow.setHours(0, 0, 0, 0);
-  return date >= today && date <= oneYearFromNow;
+  return deadline >= today && deadline <= oneYearFromNow;
 };
 
-export const getDaysRemaining = (deadline: Date): number => {
+export const getDaysRemaining = (date: string): number => {
+  const deadline = new Date(date);
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Compare dates only
   const deadlineDate = new Date(deadline); // Use the validated Date object
@@ -107,15 +118,15 @@ export const getDaysRemaining = (deadline: Date): number => {
   return diffDays;
 };
 
-export const getDeadlineColor = (deadline: Date): string => {
-  const daysRemaining = getDaysRemaining(deadline);
+export const getDeadlineColor = (date: string): string => {
+  const daysRemaining = getDaysRemaining(date);
   if (daysRemaining === null) return "text-[#4ADEF6]/70"; // No deadline
   if (daysRemaining < 0) return "text-red-500"; // Overdue
   if (daysRemaining <= 3) return "text-yellow-500"; // Due soon
   return "text-green-500"; // Due later
 };
 
-export const getDeadlineText = (deadline: Date): string => {
+export const getDeadlineText = (deadline: string): string => {
   const daysRemaining = getDaysRemaining(deadline);
   if (daysRemaining === null) return "No deadline";
   if (daysRemaining < 0) return `Overdue by ${Math.abs(daysRemaining)} day(s)`;
@@ -123,9 +134,10 @@ export const getDeadlineText = (deadline: Date): string => {
   return `Due in ${daysRemaining} day(s)`;
 };
 
-export const getRemainingTime = (nextDue: Date): string => {
+export const getRemainingTime = (date: string): string => {
   const now = new Date();
-  const diff = nextDue.getTime() - now.getTime(); // Use validated date
+  const nextDue = new Date(date);
+  const diff = nextDue.getTime() - now.getTime();
 
   if (diff < 0) return "Overdue";
 

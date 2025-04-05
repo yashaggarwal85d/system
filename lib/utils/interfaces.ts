@@ -19,19 +19,19 @@ export interface Player {
 }
 
 export interface Task {
-  id: string | null;
+  id?: string;
   name: string;
-  due_date: Date;
+  due_date: string;
   aura: number;
   completed: boolean;
 }
 
 export interface Habit {
-  id: string | null;
+  id?: string;
   name: string;
   aura: number;
-  next_due_date: Date;
-  start_date: Date;
+  next_due_date: string;
+  start_date: string;
   occurence: "weeks" | "months" | "days";
   x_occurence: number;
   repeat: number;
@@ -45,11 +45,11 @@ export interface PlayerFullInfo {
 }
 
 export interface Routine {
-  id: string | null;
+  id?: string;
   name: string;
   aura: number;
-  next_due_date: Date;
-  start_date: Date;
+  next_due_date: string;
+  start_date: string;
   occurence: "weeks" | "months" | "days";
   x_occurence: number;
   repeat: number;

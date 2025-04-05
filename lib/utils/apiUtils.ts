@@ -9,8 +9,12 @@ export const fetchPlayerFullInfoAPI = async (): Promise<PlayerFullInfo> => {
 
 // Generic function for adding, updating, and deleting entities
 export const addEntityAPI = async <T>(entity: string, data: T): Promise<T> => {
+  console.log(data);
   const response = await fetchWithAuth(`${API_BASE}/${entity}`, {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
   return await handleResponse<T>(response);
@@ -23,6 +27,9 @@ export const updateEntityAPI = async <T>(
 ): Promise<T> => {
   const response = await fetchWithAuth(`${API_BASE}/${entity}/${id}`, {
     method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(data),
   });
   return await handleResponse<T>(response);

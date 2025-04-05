@@ -7,6 +7,7 @@ import {
   updateEntityAPI,
 } from "@/lib/utils/apiUtils";
 import { getAuraValue } from "@/lib/utils/commonUtils";
+import useDashboardStore from "./dashboardStore"; // Import dashboard store
 
 interface TaskState {
   tasks: Task[];
@@ -15,7 +16,7 @@ interface TaskState {
 
   setError: (error: string | null) => void;
   setTasks: (tasks: Task[]) => void;
-  addTask: (name: string, due_date: Date) => void;
+  addTask: (name: string, due_date: string) => void;
   updateTask: (id: string, task: Partial<Task>) => void;
   deleteTask: (id: string) => void;
 }
@@ -26,7 +27,6 @@ type PersistedTaskState = {
 
 const taskStoreCreator: StateCreator<TaskState> = (set, get) => ({
   tasks: [],
-  lastSelectedDate: new Date(),
   isLoading: false,
   error: null,
 
@@ -35,9 +35,10 @@ const taskStoreCreator: StateCreator<TaskState> = (set, get) => ({
 
   addTask: async (name, due_date) => {
     set({ isLoading: true });
+    const player = useDashboardStore.getState().player;
     try {
-      const taskPayload: Task = {
-        id: null,
+      const taskPayloadToSend = {
+        userId: player?.username,
         name: name,
         due_date: due_date,
         aura: getAuraValue("task", {
@@ -46,7 +47,8 @@ const taskStoreCreator: StateCreator<TaskState> = (set, get) => ({
         }),
         completed: false,
       };
-      const addedTask = await addEntityAPI<Task>("task", taskPayload);
+      // Use the specific payload type when calling the API
+      const addedTask = await addEntityAPI<Task>("tasks", taskPayloadToSend);
       set((currentState) => ({
         tasks: [addedTask, ...currentState.tasks],
         isLoading: false,
@@ -61,7 +63,8 @@ const taskStoreCreator: StateCreator<TaskState> = (set, get) => ({
   },
   updateTask: async (id, task) => {
     try {
-      const updatedTask = await updateEntityAPI<Task>("task", id, task);
+      const updatedTask = await updateEntityAPI<Task>("tasks", id, task);
+      console.log(updatedTask);
       set((state) => ({
         tasks: state.tasks.map((t) =>
           t.id === id
@@ -82,7 +85,7 @@ const taskStoreCreator: StateCreator<TaskState> = (set, get) => ({
 
   deleteTask: async (id) => {
     try {
-      await deleteEntityAPI("task", id);
+      await deleteEntityAPI("tasks", id);
       set((state) => ({
         tasks: state.tasks.filter((task) => task.id !== id),
         error: null,
@@ -115,14 +118,8 @@ const useTaskStore = create<TaskState>()(
           state.tasks = state.tasks.map((t: any) => ({
             // Use any temporarily
             ...t,
-            category: "task", // Ensure category is correct on rehydration
-            createdAt: new Date(t.createdAt),
-            updatedAt: t.updatedAt ? new Date(t.updatedAt) : new Date(),
-            deadline: t.deadline ? new Date(t.deadline) : undefined,
-            lastCompleted: t.lastCompleted
-              ? new Date(t.lastCompleted)
-              : undefined,
-            nextDue: t.nextDue ? new Date(t.nextDue) : undefined,
+            category: "tasks", // Ensure category is correct on rehydration
+            due_date: t.due_date,
           }));
           state.isLoading = false;
           state.error = null;

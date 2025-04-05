@@ -11,11 +11,9 @@ import { Task } from "@/lib/utils/interfaces";
 interface TaskItemProps extends Task {
   onToggle: () => void;
   onDelete: () => void;
-  onEdit?: () => void; // Incompatible usage removed below
-  getDaysRemaining: () => number;
+  onEdit?: () => void;
   getDeadlineColor: () => string;
   getDeadlineText: () => string;
-  getRemainingTime: () => string;
 }
 
 export const TaskItem = ({
@@ -27,10 +25,8 @@ export const TaskItem = ({
   onToggle,
   onDelete,
   onEdit,
-  getDaysRemaining,
   getDeadlineColor,
   getDeadlineText,
-  getRemainingTime,
 }: TaskItemProps) => {
   const handleToggle = () => id && onToggle();
   const handleDelete = () => id && onDelete();
@@ -79,18 +75,6 @@ export const TaskItem = ({
               {due_date && ( // Use due_date
                 <span className={`text-xs ${getDeadlineColor()}`}>
                   {getDeadlineText()} {/* Use due_date */}
-                </span>
-              )}
-              {/* Display Remaining Time using due_date */}
-              {due_date && getRemainingTime && (
-                <span
-                  className={`text-xs ml-2 ${
-                    getRemainingTime() === "Overdue"
-                      ? "text-red-500"
-                      : "text-[#4ADEF6]/70"
-                  }`}
-                >
-                  ({getRemainingTime()})
                 </span>
               )}
             </div>

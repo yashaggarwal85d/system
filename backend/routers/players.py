@@ -1,37 +1,17 @@
-import requests
-import random
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from datetime import timedelta
+from typing import List
 
-from typing import List, Dict, Any
-
-from pydantic import BaseModel
 from .. import models, database, auth, neural_vault_cache
-
-
-# --- Response Models ---
-
-class PlayerFullInfo(BaseModel):
-    player: models.Player # Consider creating a PlayerOut model without password
-    habits: List[models.Habit]
-    tasks: List[models.Task]
-    routines: List[models.Routine]
-
-class NeuralVaultEntry(BaseModel):
-    fileName: str
-    content: str
-
 
 router = APIRouter(
     prefix="/players",
     tags=["players"],
 )
 
-
 # --- Neural Vault Endpoint (Uses Cache) ---
-
-@router.get("/neural-vault", response_model=NeuralVaultEntry)
+@router.get("/neural-vault", response_model=models.NeuralVaultEntry)
 async def get_random_neural_vault_entry_cached():
     """Fetches a random markdown file entry from the local Neural Vault cache."""
     cached_entry = neural_vault_cache.get_random_cached_entry()
@@ -50,7 +30,7 @@ async def get_random_neural_vault_entry_cached():
              raise HTTPException(status_code=500, detail=f"Failed to update or access Neural Vault cache: {e}")
 
     filename, content = cached_entry
-    return NeuralVaultEntry(fileName=filename, content=content)
+    return models.NeuralVaultEntry(fileName=filename, content=content)
 
 
 
@@ -125,7 +105,7 @@ async def read_players_me(current_username: str = Depends(get_current_username))
     return player.model_copy(update={"password": "hidden"})
 
 
-@router.get("/me/full", response_model=PlayerFullInfo)
+@router.get("/me/full", response_model=models.PlayerFullInfo)
 async def read_player_full_info(current_username: str = Depends(get_current_username)):
     """Gets the profile, habits, tasks, and routines for the currently logged-in player."""
     r = await database.get_redis_connection()
@@ -148,7 +128,7 @@ async def read_player_full_info(current_username: str = Depends(get_current_user
     player_routines = [rt for rt in all_routines if rt.userId == current_username]
 
     # 5. Construct Response
-    return PlayerFullInfo(
+    return models.PlayerFullInfo(
         player=player.model_copy(update={"password": "hidden"}), # Exclude password
         habits=player_habits,
         tasks=player_tasks,
