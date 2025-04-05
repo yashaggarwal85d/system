@@ -17,7 +17,7 @@ export default function RootLayout({
   // However, wrapping the body content is generally fine in the App Router layout.
   // For more complex scenarios needing session on the server, refer to next-auth docs.
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"

@@ -1,12 +1,14 @@
-import { Player } from "@/lib/utils/interfaces";
 import { Card, CardContent } from "./common/card";
+import useDashboardStore from "@/store/dashboardStore";
+const Header: React.FC = () => {
+  const playerAura = useDashboardStore((state) => state.player?.aura);
+  const playerLevel = useDashboardStore((state) => state.player?.level);
 
-interface TopBarProps {
-  player: Player;
-}
+  if (playerAura === undefined || playerLevel === undefined) {
+    return null;
+  }
 
-const Header: React.FC<TopBarProps> = ({ player }) => {
-  const progressPercentage = player.aura / (player.level + 1);
+  const progressPercentage = playerAura / (playerLevel + 1);
 
   return (
     <Card className="mb-8 border-none bg-transparent shadow-none">

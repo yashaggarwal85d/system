@@ -1,7 +1,7 @@
 export class TextScramble {
   el: HTMLElement;
   chars: string;
-  queue: Array<{
+  private queue: Array<{
     from: string;
     to: string;
     start: number;
@@ -9,9 +9,10 @@ export class TextScramble {
     char?: string;
     color?: string;
   }>;
-  frame: number;
-  frameRequest: number;
-  resolve: (value: void | PromiseLike<void>) => void;
+  private frame: number;
+  private frameRequest: number;
+  private resolve: (value: void | PromiseLike<void>) => void;
+  private spans: HTMLSpanElement[]; // Store references to character spans
 
   constructor(el: HTMLElement) {
     this.el = el;
@@ -20,6 +21,7 @@ export class TextScramble {
     this.frame = 0;
     this.frameRequest = 0;
     this.resolve = () => {};
+    this.spans = []; // Initialize spans array
     this.update = this.update.bind(this);
   }
 
@@ -53,10 +55,20 @@ export class TextScramble {
   }
 
   setText(newText: string) {
-    const oldText = this.el.innerText;
+    const oldText = this.el.textContent || ""; // Use textContent for consistency
     const length = Math.max(oldText.length, newText.length);
     const promise = new Promise<void>((resolve) => (this.resolve = resolve));
     this.queue = [];
+
+    // Clear existing content and prepare spans
+    this.el.innerHTML = ""; // Clear previous content
+    this.spans = []; // Reset spans array
+    for (let i = 0; i < length; i++) {
+      const span = document.createElement("span");
+      span.textContent = oldText[i] || ""; // Set initial character
+      this.el.appendChild(span);
+      this.spans.push(span);
+    }
 
     for (let i = 0; i < length; i++) {
       const from = oldText[i] || "";
@@ -73,14 +85,18 @@ export class TextScramble {
   }
 
   update() {
-    let output = "";
     let complete = 0;
 
     for (let i = 0, n = this.queue.length; i < n; i++) {
       let { from, to, start, end, char, color } = this.queue[i];
+      const span = this.spans[i];
+
+      if (!span) continue; // Safety check
+
       if (this.frame >= end) {
         complete++;
-        output += to;
+        span.textContent = to;
+        span.style.color = ""; // Reset color
       } else if (this.frame >= start) {
         if (!char || Math.random() < 0.28) {
           char = this.chars[Math.floor(Math.random() * this.chars.length)];
@@ -88,13 +104,16 @@ export class TextScramble {
           this.queue[i].char = char;
           this.queue[i].color = color;
         }
-        output += `<span style="color: ${color}">${char}</span>`;
+        span.textContent = char;
+        span.style.color = color || ""; // Apply color
       } else {
-        output += from;
+        span.textContent = from;
+        span.style.color = ""; // Reset color
       }
     }
 
-    this.el.innerHTML = output;
+    // No need to update innerHTML anymore
+
     if (complete === this.queue.length) {
       this.resolve();
     } else {

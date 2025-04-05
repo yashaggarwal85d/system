@@ -16,7 +16,10 @@ import HabitsContainer from "./habit/HabitsContainer";
 import RoutinesContainer from "./routine/RoutinesContainer";
 
 const Dashboard = () => {
-  const { activeTab, setActiveTab, player } = useDashboardStore();
+  const activeTab = useDashboardStore((state) => state.activeTab);
+  const setActiveTab = useDashboardStore((state) => state.setActiveTab);
+  const playerExists = useDashboardStore((state) => !!state.player);
+
   return (
     <div className="container mx-auto p-6 relative z-10 max-w-6xl">
       <motion.div
@@ -24,7 +27,7 @@ const Dashboard = () => {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
       >
-        {player && <Header player={player} />}
+        {playerExists && <Header />}
         <ScrambledText />
 
         <Tabs
