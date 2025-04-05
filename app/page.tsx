@@ -2,80 +2,92 @@
 
 import React, { useEffect, useState } from "react"; // Import useState
 import { useRouter } from "next/navigation";
-import RainingLetters from "@/components/ui/RainingLetters";
-import NeuralVaultPopup from "@/components/ui/NeuralVaultPopup"; // Import the popup
+import RainingLetters from "@/components/common/RainingLetters";
+import NeuralVaultPopup from "@/components/common/NeuralVaultPopup";
 import Dashboard from "@/components/Dashboard";
 import useDashboardStore from "@/store/dashboardStore";
-import { useSession, signIn } from "next-auth/react"; // Import useSession and signIn
-import { Button } from "@/components/ui/button"; // For potential sign in button
+// import { useSession, signIn } from "next-auth/react"; // Remove useSession and signIn
+import { Button } from "@/components/common/button"; // Keep Button if needed for other purposes
 
 export default function Home() {
-  const { data: session, status } = useSession(); // Use next-auth session hook
+  // const { data: session, status } = useSession(); // Remove useSession
   const router = useRouter();
-  const fetchPlayer = useDashboardStore((state) => state.fetchPlayer);
-  const [isVaultPopupOpen, setIsVaultPopupOpen] = useState(false); // State for popup
-  const [hasVaultPopupBeenShown, setHasVaultPopupBeenShown] = useState(false); // Track if shown
+  const fetchPlayer = useDashboardStore((state) => state.fetchPlayer); // Keep fetchPlayer, but its usage might change
+  const [isVaultPopupOpen, setIsVaultPopupOpen] = useState(false);
+  const [hasVaultPopupBeenShown, setHasVaultPopupBeenShown] = useState(false);
   const player = useDashboardStore((state) => state.player);
-  const isLoadingStore = useDashboardStore((state) => state.isLoading); // Keep track of store loading
+  const isLoadingStore = useDashboardStore((state) => state.isLoading);
   const storeError = useDashboardStore((state) => state.error);
-  const userId = session?.user?.id; // Extract userId, which is more stable than the whole session object
+  // const userId = session?.user?.id; // Remove userId derived from session
+
+  // State to track authentication based on token presence
+  const [authStatus, setAuthStatus] = useState<
+    "loading" | "authenticated" | "unauthenticated"
+  >("loading");
 
   useEffect(() => {
-    // Use the extracted userId in the condition
-    if (status === "authenticated" && userId && !player) {
-      // If authenticated and player data is not in the store yet, trigger fetch.
-      fetchPlayer(userId);
-    } else if (status === "unauthenticated") {
-      router.replace("/login");
+    // Check for token in localStorage on mount
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      setAuthStatus("authenticated");
+      // If authenticated and player data isn't loaded, fetch it
+      // Assumes fetchPlayer now fetches '/players/me' using the token
+      if (!player) {
+        fetchPlayer(); // Call fetchPlayer without userId
+      }
+    } else {
+      setAuthStatus("unauthenticated");
+      router.replace("/login"); // Redirect if no token
     }
-    // Dependencies are now more stable
-  }, [status, userId, player, fetchPlayer, router]); // Use userId instead of session
+  }, [fetchPlayer, player, router]); // Add dependencies
 
   // Effect to show popup once when authenticated and player loaded
   useEffect(() => {
-    if (status === "authenticated" && player && !hasVaultPopupBeenShown) {
-      // Only open if authenticated, player loaded, AND not shown yet
+    if (authStatus === "authenticated" && player && !hasVaultPopupBeenShown) {
       setIsVaultPopupOpen(true);
-      setHasVaultPopupBeenShown(true); // Mark as shown for this session/load
-    } else if (status !== "authenticated" || !player) {
-      // Reset if user logs out or player data is lost, allowing popup on next valid session
-      setIsVaultPopupOpen(false); // Ensure it's closed
-      setHasVaultPopupBeenShown(false); // Reset shown status
+      setHasVaultPopupBeenShown(true);
+    } else if (authStatus !== "authenticated" || !player) {
+      setIsVaultPopupOpen(false);
+      setHasVaultPopupBeenShown(false);
     }
-    // If already shown (hasVaultPopupBeenShown is true), do nothing to isVaultPopupOpen
-    // It can be closed manually by the user via onOpenChange
-  }, [status, player, hasVaultPopupBeenShown]); // Add hasVaultPopupBeenShown to dependencies
+  }, [authStatus, player, hasVaultPopupBeenShown]);
 
-  // Show loading if session status is loading OR if authenticated but player data is still loading from the store
+  // Show loading based on auth check OR store loading state
   if (
-    status === "loading" ||
-    (status === "authenticated" && isLoadingStore && !player)
+    authStatus === "loading" ||
+    (authStatus === "authenticated" && isLoadingStore && !player)
   ) {
     return (
       <main className="min-h-screen">
         <RainingLetters />
-        {/* Optional: Add a subtle loading indicator */}
         <p className="text-center text-muted-foreground">Initializing...</p>
       </main>
     );
   }
 
-  // Handle store error state
+  // Handle store error state (keep this logic)
   if (storeError) {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center">
         <RainingLetters />
         <p className="text-red-500">Error loading player data: {storeError}</p>
-        {/* Optionally add a button to retry or sign out */}
-        <Button onClick={() => signIn()} className="mt-4">
-          Try Again
+        {/* Button might need different action now, e.g., clear token and reload? */}
+        <Button
+          onClick={() => {
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("tokenType");
+            router.replace("/login"); // Or window.location.reload();
+          }}
+          className="mt-4"
+        >
+          Logout & Try Again
         </Button>
       </main>
     );
   }
 
   // If authenticated and player data is loaded, show dashboard
-  if (status === "authenticated" && player) {
+  if (authStatus === "authenticated" && player) {
     return (
       <main className="min-h-screen">
         <RainingLetters />

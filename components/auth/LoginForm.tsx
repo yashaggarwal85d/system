@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Button } from "@/components/common/button";
+import { Input } from "@/components/common/input";
+import { Label } from "@/components/common/label";
 import {
   Card,
   CardContent,
@@ -12,9 +12,14 @@ import {
   CardTitle,
   CardFooter,
   CardDescription, // Import CardDescription
-} from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Import Tabs components
-import { signIn } from "next-auth/react";
+} from "@/components/common/card";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/common/tabs";
+// import { signIn } from "next-auth/react"; // Remove next-auth signIn
 
 // Combined Login/Signup Form Component
 const AuthForm = () => {
@@ -40,26 +45,59 @@ const AuthForm = () => {
     }
 
     try {
-      const result = await signIn("credentials", {
-        redirect: false,
-        username: username,
-        password: password,
+      // Prepare form data for the backend
+      const formData = new URLSearchParams();
+      formData.append("username", username);
+      formData.append("password", password);
+
+      const response = await fetch("http://localhost:8000/players/login", {
+        // TODO: Use env variable
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: formData.toString(),
       });
 
-      if (result?.error) {
-        setError("Invalid username or password.");
+      if (!response.ok) {
+        // Handle login failure (e.g., 401 Unauthorized)
+        let errorMessage = "Login failed.";
+        try {
+          const errorData = await response.json();
+          errorMessage =
+            errorData.detail || `Login failed (Status: ${response.status})`;
+        } catch (parseError) {
+          errorMessage = `Login failed: ${response.statusText} (Status: ${response.status})`;
+        }
+        setError(errorMessage);
         setIsLoading(false);
-      } else if (result?.ok) {
+        return; // Stop execution on failure
+      }
+
+      // Handle login success
+      const data = await response.json();
+      const { access_token, token_type } = data;
+
+      if (access_token && token_type === "bearer") {
+        // Store the token (e.g., in localStorage - consider security implications)
+        localStorage.setItem("accessToken", access_token);
+        localStorage.setItem("tokenType", token_type);
+
+        // Redirect to the main page or dashboard
         router.push("/");
-        router.refresh();
+        // router.refresh(); // May not be needed if redirect handles state update
       } else {
-        setError("Login failed. Please try again.");
+        setError("Login successful, but token was not received correctly.");
         setIsLoading(false);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error("Login Error:", err);
-      setError("An unexpected error occurred during login.");
-      setIsLoading(false);
+      setError(
+        `An unexpected error occurred during login: ${
+          err.message || "Unknown error"
+        }`
+      );
+      setIsLoading(false); // Ensure loading state is reset on error
     }
   };
 
@@ -82,28 +120,41 @@ const AuthForm = () => {
     // Add password strength validation if desired
 
     try {
-      const response = await fetch("/api/auth/signup", {
+      // Call the FastAPI backend signup endpoint
+      const response = await fetch("http://localhost:8000/players/signup", {
+        // TODO: Use env variable for base URL
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
+        // Include all required fields from the backend Player model
+        body: JSON.stringify({ username, password, description: "" }), // Added default description
       });
 
-      const data = await response.json();
-
+      // Check if the request was successful (status code 2xx)
       if (!response.ok) {
-        setError(data.message || "Signup failed.");
+        // Try to parse error message from backend response
+        let errorMessage = "Signup failed.";
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.detail || errorMessage; // FastAPI often uses 'detail' for errors
+        } catch (parseError) {
+          // If parsing fails, use the status text
+          errorMessage = `Signup failed: ${response.statusText} (Status: ${response.status})`;
+        }
+        setError(errorMessage);
       } else {
         setSuccess("Signup successful! Please log in.");
-        // Optionally switch to login tab automatically
-        setActiveTab("login");
-        // Clear form fields after successful signup
+        setActiveTab("login"); // Switch to login tab
+        // Clear only signup-related fields if needed, or all
         setUsername("");
         setPassword("");
         setConfirmPassword("");
       }
-    } catch (err) {
+    } catch (err: any) {
+      // Catch specific error types if needed
       console.error("Signup Error:", err);
-      setError("An unexpected error occurred during signup.");
+      setError(
+        `An unexpected error occurred: ${err.message || "Unknown error"}`
+      );
     } finally {
       setIsLoading(false);
     }

@@ -1,14 +1,19 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/common/tabs";
 import { ListTodo, Repeat } from "lucide-react";
 import useDashboardStore from "@/store/dashboardStore";
 import ScrambledText from "./ScrambledText";
 import Header from "./Header";
-import TodosContainer from "./todos/TodosContainer";
-import HabitsContainer from "./habits/HabitsContainer";
-import RoutinesContainer from "./routines/RoutinesContainer";
+import TasksContainer from "./task/TasksContainer";
+import HabitsContainer from "./habit/HabitsContainer";
+import RoutinesContainer from "./routine/RoutinesContainer";
 
 const Dashboard = () => {
   const { activeTab, setActiveTab, player } = useDashboardStore();
@@ -30,11 +35,11 @@ const Dashboard = () => {
         >
           <TabsList className="grid w-full grid-cols-3 bg-[#0A1A2F]/60 border border-[#4ADEF6]/20">
             <TabsTrigger
-              value="todos"
+              value="tasks"
               className="data-[state=active]:bg-[#4ADEF6]/20 data-[state=active]:text-[#4ADEF6] data-[state=active]:border-b-2 data-[state=active]:border-[#4ADEF6]"
             >
               <ListTodo className="h-4 w-4 mr-2" />
-              Todos
+              Tasks
             </TabsTrigger>
             <TabsTrigger
               value="habits"
@@ -52,8 +57,8 @@ const Dashboard = () => {
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="todos" className="mt-6">
-            <TodosContainer />
+          <TabsContent value="tasks" className="mt-6">
+            <TasksContainer />
           </TabsContent>
 
           <TabsContent value="habits" className="mt-6">

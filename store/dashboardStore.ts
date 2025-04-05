@@ -1,55 +1,39 @@
 import { create, StateCreator } from "zustand";
-import { Player } from "@/lib/interfaces/player";
+import { Player, PlayerFullInfo } from "@/lib/utils/interfaces"; // Import PlayerFullInfo
+import { fetchPlayerFullInfoAPI } from "@/lib/utils/apiUtils"; // Import the new API function
+import useTaskStore from "./taskStore";
+import useHabitStore from "./habitStore";
+import useRoutineStore from "./routineStore";
+import useScrambleStore from "./scrambleStore";
 
 interface DashboardState {
   activeTab: string;
-  player: Player | null; // Player can be null initially
+  player: Player | null;
   isLoading: boolean;
   error: string | null;
 
   setActiveTab: (tab: string) => void;
-  fetchPlayer: (userId: string) => Promise<void>;
-  addAura: (amount: number) => Promise<void>;
-  subtractAura: (amount: number) => Promise<void>;
+  fetchPlayer: () => void;
+  modifyAura: (amount: number) => void;
 }
 
 const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
-  activeTab: "todos",
+  activeTab: "task",
   player: null, // Initialize player as null
-  isLoading: false, // Start with isLoading: false
+  isLoading: false,
   error: null,
 
   setActiveTab: (tab) => set({ activeTab: tab }),
 
-  fetchPlayer: async (userId) => {
-    if (!userId) {
-      set({
-        error: "User ID is required to fetch player data.",
-        isLoading: false,
-        player: null,
-      });
-      return;
-    }
-    set({ isLoading: true, error: null });
+  fetchPlayer: async () => {
     try {
-      const response = await fetch(
-        `/api/player-data?userId=${encodeURIComponent(userId)}`
-      );
-      if (!response.ok) {
-        let errorMsg = `HTTP error! status: ${response.status}`;
-        try {
-          const errorData = await response.json();
-          errorMsg = errorData.error || errorMsg;
-        } catch (jsonError) {
-          // Ignore if response is not JSON
-        }
-        throw new Error(errorMsg);
-      }
-      const playerData: Player = await response.json();
-      // Ensure dates are Date objects if they come as strings
-      playerData.createdAt = new Date(playerData.createdAt);
-      playerData.updatedAt = new Date(playerData.updatedAt);
-      set({ player: playerData, isLoading: false });
+      const fullPlayerData: PlayerFullInfo = await fetchPlayerFullInfoAPI();
+      set({ isLoading: true, error: null, player: fullPlayerData.player });
+      useHabitStore.getState().setHabits(fullPlayerData.habits);
+      useTaskStore.getState().setTasks(fullPlayerData.tasks);
+      useRoutineStore.getState().setRoutines(fullPlayerData.routines);
+      const scramble = fullPlayerData.player.description.split(",");
+      useScrambleStore.getState().setPhrases(scramble);
     } catch (err) {
       console.error("Failed to fetch player data:", err);
       const errorMsg =
@@ -62,43 +46,19 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
     }
   },
 
-  addAura: async (amount) => {
+  modifyAura: async (amount) => {
     const currentPlayer = get().player;
     if (!currentPlayer || amount <= 0) return;
 
-    // --- Optimistic Update (Optional but good UX) ---
-    // Calculate potential new state locally first
     let optimisticPlayer = { ...currentPlayer };
     const newAura = optimisticPlayer.aura + amount;
-    if (newAura >= optimisticPlayer.auraToNextLevel) {
-      // Simplified level up logic for optimistic update - real logic on backend
+    if (newAura >= optimisticPlayer.level * 100) {
       optimisticPlayer.level += 1;
-      optimisticPlayer.aura = newAura - optimisticPlayer.auraToNextLevel; // Rough estimate
-      // Don't update title/nextAura optimistically, let backend handle it
-    } else {
-      optimisticPlayer.aura = newAura;
+      optimisticPlayer.description =
+        optimisticPlayer.description + "," + "You have levelled up!";
     }
-    set({ player: optimisticPlayer }); // Update UI immediately
-    // --- End Optimistic Update ---
-  },
-
-  subtractAura: async (amount) => {
-    const currentPlayer = get().player;
-    if (!currentPlayer || amount <= 0) return;
-
-    // --- Optimistic Update ---
-    let optimisticPlayer = { ...currentPlayer };
-    let newAura = optimisticPlayer.aura - amount;
-    // Simplified de-level logic for optimistic update
-    if (newAura < 0 && optimisticPlayer.level > 1) {
-      optimisticPlayer.level -= 1;
-      // Don't try to calculate previous threshold optimistically
-      optimisticPlayer.aura = 0; // Reset to 0 on de-level for simplicity
-    } else {
-      optimisticPlayer.aura = Math.max(0, newAura); // Ensure aura doesn't go below 0
-    }
+    optimisticPlayer.aura = newAura;
     set({ player: optimisticPlayer });
-    // --- End Optimistic Update ---
   },
 });
 

@@ -1,5 +1,5 @@
 import { Player } from "@/lib/interfaces/player";
-import { Card, CardContent } from "./ui/card";
+import { Card, CardContent } from "./common/card";
 
 interface TopBarProps {
   player: Player;

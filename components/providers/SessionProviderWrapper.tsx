@@ -1,15 +1,15 @@
 "use client"; // Mark this component as a Client Component
 
-import { SessionProvider } from "next-auth/react";
+// import { SessionProvider } from "next-auth/react"; // Remove next-auth provider
 import React from "react";
 
-// Define props if needed, though SessionProvider often doesn't require explicit props passed down like this
+// Define props
 interface Props {
   children: React.ReactNode;
-  // session?: any; // You might pass session from server components if needed, but usually SessionProvider fetches it
 }
 
 export default function SessionProviderWrapper({ children }: Props) {
-  // You can add other providers here too if needed (e.g., ThemeProvider)
-  return <SessionProvider>{children}</SessionProvider>;
+  // Return children directly, removing the SessionProvider wrapper
+  // Other providers (like ThemeProvider) could still be added here if needed
+  return <>{children}</>; // Use React Fragment or just return children
 }

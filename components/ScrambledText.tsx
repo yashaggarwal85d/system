@@ -2,16 +2,14 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import useScrambleStore from "@/store/scrambleStore";
-import { useSession } from "next-auth/react";
-import { TextScramble } from "@/lib/utils/scrambled";
+import { TextScramble } from "@/lib/utils/scrambledClass";
 
 const ScrambledText: React.FC = () => {
   const elementRef = useRef<HTMLHeadingElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
   const [mounted, setMounted] = useState(false);
-  useSession();
 
-  const { getNextPhrase, fetchPhrases, isLoading, error } = useScrambleStore();
+  const { getNextPhrase, isLoading, error, phrases } = useScrambleStore();
 
   useEffect(() => {
     if (elementRef.current && !scramblerRef.current) {
@@ -20,9 +18,7 @@ const ScrambledText: React.FC = () => {
     }
   }, []);
 
-  useEffect(() => {
-    fetchPhrases();
-  }, [fetchPhrases]);
+  useEffect(() => {}, [phrases]);
 
   useEffect(() => {
     if (mounted && scramblerRef.current && !isLoading && !error) {

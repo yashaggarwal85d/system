@@ -1,5 +1,8 @@
 Fix next due date calculation
+Aura will keep on dicreasing until an overdue item is marked completed
 Fix frontend
+Make theme dynamic
+Rewrite backend testcases
 Test suite
 AI integration
 CI/CD
