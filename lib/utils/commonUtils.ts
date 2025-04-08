@@ -1,16 +1,16 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { Habit } from "./interfaces";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-// Function to format a Date object into YYYY-MM-DD string
-export const formatDateToYYYYMMDD = (date: Date): string => {
-  const year = date.getFullYear();
-  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Months are 0-indexed
+export const formatDateToDDMMYY = (date: Date): string => {
   const day = date.getDate().toString().padStart(2, "0");
-  return `${year}-${month}-${day}`;
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const year = date.getFullYear().toString().slice(-2);
+  return `${day}-${month}-${year}`;
 };
 
 // TODO - Make this dynamic
@@ -33,66 +33,57 @@ export const getAuraValue = <T>(
 export const parseDate = (s: string) => {
   const [d, m, y] = s.split("-").map(Number);
   const t = new Date(2000 + y, m - 1, d);
-  return t.getDate() === d &&
-    t.getMonth() === m - 1 &&
-    t.getFullYear() === 2000 + y
-    ? t
-    : null;
+  return t;
 };
 
 // Calculates the next due date based on a base date and frequency settings.
 // For Habit and Routine
 
 export function calculateNextDueDate(
-  startDate: Date,
+  startDate: string,
   occurence: "weeks" | "months" | "days",
-  x_occurence: number,
-  repeat: number
-): Date {
-  const nextDue = startDate;
-
+  x_occurence: number
+): string {
+  const nextDue = parseDate(startDate);
+  nextDue.setHours(0, 0, 0, 0);
   switch (occurence) {
     case "days":
-      nextDue.setDate(nextDue.getDate() + x_occurence / repeat);
+      nextDue.setDate(nextDue.getDate() + x_occurence);
       break;
     case "weeks":
-      nextDue.setDate(nextDue.getDate() + (x_occurence / repeat) * 7);
+      nextDue.setDate(nextDue.getDate() + x_occurence * 7);
       break;
     case "months":
-      nextDue.setMonth(nextDue.getMonth() + (x_occurence / repeat) * 30);
+      nextDue.setMonth(nextDue.getMonth() + x_occurence * 30);
       break;
     default:
       console.error("Error calculating next due date.");
       break;
   }
-  return nextDue;
+  return formatDateToDDMMYY(nextDue);
 }
 
 export function calculatePreviousDueDate(
-  nextDueDate: Date,
+  nextDueDate: string,
   occurence: "weeks" | "months" | "days",
-  x_occurence: number,
-  repeat: number
-): Date {
-  const previousDue = nextDueDate;
-
+  x_occurence: number
+): string {
+  const previousDue = parseDate(nextDueDate);
   switch (occurence) {
     case "days":
-      previousDue.setDate(previousDue.getDate() - x_occurence / repeat);
+      previousDue.setDate(previousDue.getDate() - x_occurence);
       break;
     case "weeks":
-      previousDue.setDate(previousDue.getDate() - (x_occurence / repeat) * 7);
+      previousDue.setDate(previousDue.getDate() - x_occurence * 7);
       break;
     case "months":
-      previousDue.setMonth(
-        previousDue.getMonth() - (x_occurence / repeat) * 30
-      );
+      previousDue.setMonth(previousDue.getMonth() - x_occurence * 30);
       break;
     default:
       console.error("Error calculating previous due date.");
       break;
   }
-  return previousDue;
+  return formatDateToDDMMYY(previousDue);
 }
 
 // For task deadline
@@ -150,3 +141,8 @@ export const getRemainingTime = (date: string): string => {
   if (minutes > 0) return `in ${minutes}m`;
   return "Due now";
 };
+
+// export const habitUpdateNeeded = (habit: Habit) => {
+//   const today = new Date();
+//   if(calculateNextDueDate)
+// }

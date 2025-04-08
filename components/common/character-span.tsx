@@ -1,26 +1,29 @@
+import React from "react";
+import { Character } from "@/lib/utils/interfaces"; // Import Character type
 
-import React from 'react';
+// Define props directly here or import if defined elsewhere
+interface SimplifiedCharacterSpanProps {
+  character: Character;
+  index: number;
+  // isActive prop removed
+}
 
-const CharacterSpan: React.FC<CharacterSpanProps> = ({ character, index, isActive }) => {
+const CharacterSpan: React.FC<SimplifiedCharacterSpanProps> = ({
+  character,
+  index,
+}) => {
   return (
     <span
       key={index}
-      className={`absolute font-mono transition-all duration-200 ${
-        isActive
-          ? "text-[#4ADEF6] scale-150 z-10 font-bold animate-pulse"
-          : "text-[#4ADEF6]/30"
-      }`}
+      className="absolute font-mono text-[#4ADEF6]/50" // Simplified base class
       style={{
         left: `${character.x}%`,
         top: `${character.y}%`,
-        transform: `translate(-50%, -50%) ${isActive ? "scale(1.5)" : "scale(1)"}`,
-        textShadow: isActive
-          ? "0 0 8px rgba(74, 222, 246, 0.8), 0 0 12px rgba(74, 222, 246, 0.4)"
-          : "0 0 4px rgba(74, 222, 246, 0.2)",
-        opacity: isActive ? 1 : 0.4,
-        transition: "all 0.2s ease-out",
-        willChange: "transform, top",
-        fontSize: "1.4rem",
+        transform: `translate(-50%, -50%)`, // Simplified transform
+        opacity: 0.6, // Simplified opacity
+        willChange: "transform, top", // Keep will-change
+        fontSize: "1.4rem", // Keep font size
+        // Removed transition, textShadow, conditional scale
       }}
     >
       {character.char}
@@ -28,4 +31,5 @@ const CharacterSpan: React.FC<CharacterSpanProps> = ({ character, index, isActiv
   );
 };
 
+// Still memoize for performance, though props are simpler now
 export default React.memo(CharacterSpan);

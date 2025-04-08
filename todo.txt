@@ -1,9 +1,13 @@
-Fix next due date calculation
-Aura will keep on dicreasing until an overdue item is marked completed
-Fix frontend
-Make theme dynamic
-Rewrite backend testcases
+Fix Habits
+Fix Routines
+Fix Aura update
+    Aura will keep on dicreasing until an overdue item is marked completed
+Make theme dynamic and fetch from backend
+Make Login form better
+Make use of Mp4s
+Cleanup
 Test suite
+    Rewrite backend testcases
 AI integration
 CI/CD
 Deployment - Amazon

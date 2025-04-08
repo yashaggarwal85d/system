@@ -41,22 +41,19 @@ class Habit(BaseModel):
     userId: str
     name: str
     aura: int = 5
-    next_due_date: date
     start_date: date
+    last_completed: date
     occurence: Occurence
     x_occurence: int # Number of units of occurence
-    repeat: int # Number of times to repeat the occurence
-
-    _validate_habit_dates = field_validator('next_due_date', 'start_date', mode='before')(validate_date_format)
+    
+    _validate_habit_dates = field_validator('start_date', 'last_completed', mode='before')(validate_date_format)
 
 class HabitUpdate(BaseModel):
     name: Optional[str] = None
     aura: Optional[int] = None
-    next_due_date: Optional[str] = None
     start_date: Optional[str] = None
     occurence: Optional[Occurence] = None
     x_occurence: Optional[int] = None
-    repeat: Optional[int] = None
 
 class Task(BaseModel):
     id: str = Field(default_factory=generate_uuid)
@@ -79,25 +76,21 @@ class Routine(BaseModel):
     userId: str
     name: str
     aura: int = 5
-    next_due_date: date
     start_date: date
     occurence: Occurence
     x_occurence: int # Number of units of occurence
-    repeat: int # Number of times to repeat the occurence
     checklist: str
 
     # Apply reusable validator
-    _validate_routine_dates = field_validator('next_due_date', 'start_date', mode='before')(validate_date_format)
+    _validate_routine_dates = field_validator('start_date', mode='before')(validate_date_format)
 
 
 class RoutineUpdate(BaseModel):
     name: Optional[str] = None
     aura: Optional[int] = None
-    next_due_date: Optional[str] = None
     start_date: Optional[str] = None
     occurence: Optional[Occurence] = None
     x_occurence: Optional[int] = None
-    repeat: Optional[int] = None
     checklist: Optional[str] = None 
 
 

@@ -1,181 +1,159 @@
 "use client";
 
-import { useState, useRef, useEffect, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { PlusCircle } from "lucide-react";
 import { Input } from "@/components/common/input";
 import { Button } from "@/components/common/button";
-import { TaskItem } from "@/components/common/task-item";
 import HabitForm from "./HabitForm";
 import useHabitStore from "@/store/habitStore";
 import useDashboardStore from "@/store/dashboardStore";
-import { Task } from "@/lib/interfaces/task";
-import { HabitConfig } from "@/lib/interfaces/habit";
+import { Habit } from "@/lib/utils/interfaces";
 import {
-  getDaysRemaining,
-  getDeadlineText,
-  getRemainingTime,
+  calculateNextDueDate,
+  calculatePreviousDueDate,
+  formatDateToDDMMYY,
 } from "@/lib/utils/commonUtils";
 import { containerVariants } from "@/lib/utils/animationUtils";
-import { useSession } from "next-auth/react";
+import { HabitItem } from "./habit-item";
+import { start } from "repl";
 
 const HabitsContainer = () => {
-  const { data: session, status } = useSession();
   const {
-    habits,
+    Habits,
     addHabit,
     updateHabit,
     deleteHabit,
-    toggleHabit,
-    fetchHabits,
     isLoading,
-    error: habitError,
+    setError,
+    error,
   } = useHabitStore();
-  const { addAura, subtractAura } = useDashboardStore();
-
-  const [newTaskText, setNewTaskText] = useState("");
+  const { modifyAura } = useDashboardStore();
   const inputRef = useRef<HTMLInputElement>(null);
-  const [showHabitForm, setShowHabitForm] = useState(false);
-  const [habitConfig, setHabitConfig] = useState<HabitConfig>(() => {
-    const now = new Date();
-    now.setMinutes(now.getMinutes() + 5);
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    return {
-      count: 1,
-      period: "days",
-      value: 1,
-      isGoodHabit: true,
-      time: `${hours}:${minutes}`,
-    };
+
+  const [habitText, setHabitText] = useState("");
+  const [habitConfig, setHabitConfig] = useState({
+    period: "days" as "days" | "weeks" | "months",
+    value: 1,
+    isGoodHabit: true,
   });
-  const [editingHabit, setEditingHabit] = useState<Task | null>(null);
-  const [lastCompletedAura, setLastCompletedAura] = useState<{
-    [key: string]: number;
-  }>({});
+  const [showHabitForm, setShowHabitForm] = useState(false);
+  const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
+  const [formError, setFormError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (status === "authenticated") {
-      fetchHabits();
-    }
-  }, [status, fetchHabits]);
+  useEffect(() => {}, [Habits]);
 
-  const handleEditHabit = (habit: Task) => {
+  const handleEditHabit = (habit: Habit) => {
     setEditingHabit(habit);
-    setNewTaskText(habit.title);
-    if (habit.frequency) {
-      setHabitConfig({
-        count: habit.frequency.count,
-        period: habit.frequency.period,
-        value: habit.frequency.value,
-        time: habit.frequency.time,
-        isGoodHabit: habit.isGoodHabit || false,
-      });
-    }
+    setHabitText(habit.name);
+    setHabitConfig({
+      period: habit.occurence,
+      value: habit.x_occurence,
+      isGoodHabit: habit.aura >= 0, // Simplified check
+    });
+    setFormError(null);
     setShowHabitForm(true);
   };
 
   const handleSaveHabit = () => {
-    if (!newTaskText.trim()) {
-      alert("Please enter a name");
+    if (!habitText?.trim()) {
+      setFormError("Please enter a habit name");
       return;
     }
-    if (!habitConfig.time || habitConfig.count < 1 || habitConfig.value < 1) {
-      alert("Please configure all habit settings");
-      return;
-    }
-
-    if (editingHabit) {
-      updateHabit(editingHabit.id, newTaskText, habitConfig);
+    console.log(editingHabit);
+    if (editingHabit && editingHabit.id) {
+      updateHabit(editingHabit.id, {
+        occurence: habitConfig.period,
+        x_occurence: habitConfig.value,
+        aura: Math.abs(editingHabit.aura) * (habitConfig.isGoodHabit ? 1 : -1),
+      });
     } else {
-      addHabit(newTaskText, habitConfig); // Corrected call
+      addHabit(
+        habitText,
+        habitConfig.period,
+        habitConfig.value,
+        habitConfig.isGoodHabit
+      );
     }
 
     setShowHabitForm(false);
-    setNewTaskText("");
     setEditingHabit(null);
+    setHabitText("");
+    setFormError(null);
     inputRef.current?.focus();
   };
 
-  // Make the handler async to await the result
-  const handleToggleHabit = async (taskId: string) => {
-    const result = await toggleHabit(taskId); // Await the promise
-
-    if (result.error) {
-      console.error("Failed to toggle habit:", result.error);
-      // TODO: Show error toast
+  const handleToggleHabit = (
+    habitId: string | undefined,
+    completed: boolean
+  ) => {
+    const habit = Habits.find((h) => h.id === habitId);
+    if (!habitId || !habit) {
+      setError("Habit ID is undefined, cannot toggle.");
       return;
     }
-
-    // Apply aura change to player
-    if (result.auraChange) {
-      if (result.auraChange > 0) {
-        addAura(result.auraChange);
+    try {
+      if (!completed) {
+        updateHabit(habitId, {
+          start_date: habit.start_date,
+        });
+        modifyAura(-habit.aura);
       } else {
-        subtractAura(Math.abs(result.auraChange));
+        updateHabit(habitId, {
+          last_completed: calculateNextDueDate(
+            habit.start_date,
+            habit.occurence,
+            habit.x_occurence
+          ),
+        });
+        modifyAura(habit.aura);
       }
+    } catch (updateError) {
+      setError("Failed to update habit state");
     }
+  };
 
-    // Store the aura change for display, regardless of sign
-    if (result.auraChange !== undefined) {
-      setLastCompletedAura((prev) => ({
-        ...prev,
-        [taskId]: result.auraChange ?? 0,
-      }));
-      // Removed the setTimeout that cleared the aura display
+  const handleDeleteHabit = (habitId: string | undefined) => {
+    if (habitId) {
+      deleteHabit(habitId);
     } else {
-      // Clear aura display state if uncompleted or no change reported
-      setLastCompletedAura((prev) => {
-        const newState = { ...prev };
-        delete newState[taskId];
-        return newState;
+      console.error("Cannot delete habit without ID");
+    }
+  };
+
+  const handleRefresh = (habit: Habit) => {
+    if (habit.id) {
+      updateHabit(habit.id, {
+        start_date: formatDateToDDMMYY(new Date()),
+        last_completed: formatDateToDDMMYY(new Date()),
       });
     }
   };
 
-  const handleDeleteHabit = (taskId: string) => {
-    deleteHabit(taskId); // Fire-and-forget is okay
-  };
-
-  const openAddHabitForm = () => {
-    setEditingHabit(null);
-    setShowHabitForm(true);
-  };
-
-  // Sort habits: by completion status (incomplete first), then by nextDue date (ascending, null/undefined last)
   const sortedHabits = useMemo(() => {
-    return [...habits].sort((a, b) => {
-      // Handle completed status first (false comes before true)
-      if (a.completed !== b.completed) {
-        return a.completed ? 1 : -1;
-      }
+    return [...Habits].sort((a, b) => {
+      const startDateA = a.start_date
+        ? new Date(a.start_date).getTime()
+        : Infinity;
+      const startDateB = b.start_date
+        ? new Date(b.start_date).getTime()
+        : Infinity;
 
-      // Handle nextDue dates (treat null/undefined as very far in the future)
-      const nextDueA = a.nextDue ? new Date(a.nextDue).getTime() : Infinity;
-      const nextDueB = b.nextDue ? new Date(b.nextDue).getTime() : Infinity;
+      const validStartDateA = isNaN(startDateA) ? Infinity : startDateA;
+      const validStartDateB = isNaN(startDateB) ? Infinity : startDateB;
 
-      if (nextDueA !== nextDueB) {
-        return nextDueA - nextDueB;
-      }
-
-      // Fallback sort by creation date if nextDue dates are the same/both undefined
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      return validStartDateA - validStartDateB;
     });
-  }, [habits]);
+  }, [Habits]);
 
-  // Render Loading/Error states
-  if (isLoading && !sortedHabits.length) {
-    // Check sortedHabits length
-    // Show loading only on initial load
+  if (isLoading && !Habits.length) {
     return (
       <p className="text-center text-muted-foreground">Loading habits...</p>
     );
   }
-  if (habitError) {
+  if (error) {
     return (
-      <p className="text-center text-red-500">
-        Error loading habits: {habitError}
-      </p>
+      <p className="text-center text-red-500">Error loading habits: {error}</p>
     );
   }
 
@@ -184,18 +162,24 @@ const HabitsContainer = () => {
       <div className="flex gap-4">
         <Input
           ref={inputRef}
-          placeholder="New habit..."
-          value={newTaskText}
-          onChange={(e) => setNewTaskText(e.target.value)}
+          placeholder="New habit name..."
+          value={habitText}
+          onChange={(e) => setHabitText(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && newTaskText.trim()) {
+            if (e.key === "Enter" && habitText.trim()) {
+              setEditingHabit(null);
               handleSaveHabit();
             }
           }}
           className="bg-[#0A1A2F]/60 border-[#4ADEF6]/20 focus:border-[#4ADEF6]/50 placeholder:text-[#4ADEF6]/30"
         />
         <Button
-          onClick={openAddHabitForm}
+          onClick={() => {
+            setEditingHabit(null);
+            setHabitText("");
+            setFormError(null);
+            setShowHabitForm(true);
+          }}
           className="gap-2 bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50 whitespace-nowrap"
         >
           <PlusCircle className="h-4 w-4" /> Add Habit
@@ -209,62 +193,20 @@ const HabitsContainer = () => {
         className="space-y-4"
         layout
       >
-        {sortedHabits.map(
-          (
-            task // Map over sortedHabits
-          ) => (
-            <TaskItem
-              key={task.id}
-              {...task}
-              // Ensure dates passed to TaskItem are Date objects or undefined
-              createdAt={
-                typeof task.createdAt === "string"
-                  ? new Date(task.createdAt)
-                  : task.createdAt
-              }
-              updatedAt={
-                typeof task.updatedAt === "string"
-                  ? new Date(task.updatedAt)
-                  : task.updatedAt
-              }
-              deadline={
-                task.deadline &&
-                (typeof task.deadline === "string"
-                  ? new Date(task.deadline)
-                  : task.deadline)
-              }
-              lastCompleted={
-                task.lastCompleted &&
-                (typeof task.lastCompleted === "string"
-                  ? new Date(task.lastCompleted)
-                  : task.lastCompleted)
-              }
-              nextDue={
-                task.nextDue &&
-                (typeof task.nextDue === "string"
-                  ? new Date(task.nextDue)
-                  : task.nextDue)
-              }
-              onToggle={() => handleToggleHabit(task.id)}
-              onUpdate={(id, newTitle) => updateHabit(id, newTitle)} // Basic update, config needs form
-              onDelete={() => handleDeleteHabit(task.id)}
-              onEdit={() => handleEditHabit(task)}
-              lastCompletedAura={lastCompletedAura[task.id]} // Pass down aura change
-              getDaysRemaining={(d: Date | undefined) =>
-                getDaysRemaining(d) ?? Infinity
-              } // Use Infinity for sorting if no date
-              getDeadlineColor={(days: number | null) => {
-                // Accept null
-                if (days === null) return "text-[#4ADEF6]/70"; // Handle null case
-                if (days < 0) return "text-red-500";
-                if (days <= 1) return "text-yellow-500";
-                return "text-green-500";
-              }}
-              getDeadlineText={(d: Date | undefined) => getDeadlineText(d)}
-              getRemainingTime={(d: Date | undefined) => getRemainingTime(d)}
-            />
-          )
-        )}
+        {sortedHabits
+          .filter((habit): habit is Habit & { id: string } => !!habit.id)
+          .map((habit) => {
+            return (
+              <HabitItem
+                key={habit.id}
+                {...habit}
+                refreshHabit={() => handleRefresh(habit)}
+                onToggle={(completed) => handleToggleHabit(habit.id, completed)}
+                onDelete={() => handleDeleteHabit(habit.id)}
+                onEdit={() => handleEditHabit(habit)}
+              />
+            );
+          })}
       </motion.div>
 
       {showHabitForm && (
@@ -276,13 +218,15 @@ const HabitsContainer = () => {
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
         >
           <HabitForm
-            newTaskText={newTaskText}
-            setNewTaskText={setNewTaskText}
+            habitText={habitText}
+            setHabitText={setHabitText}
             habitConfig={habitConfig}
             setHabitConfig={setHabitConfig}
-            setShowHabitConfig={setShowHabitForm}
-            setEditingHabit={setEditingHabit}
+            error={formError}
+            setError={setFormError}
             handleSaveHabit={handleSaveHabit}
+            setShowHabitForm={setShowHabitForm}
+            setEditingHabit={setEditingHabit}
             editingHabit={editingHabit}
           />
         </motion.div>

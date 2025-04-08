@@ -5,12 +5,6 @@ export interface Character {
   speed: number;
 }
 
-export interface CharacterSpanProps {
-  character: Character;
-  index: number;
-  isActive: boolean;
-}
-
 export interface Player {
   username?: string;
   level: number;
@@ -30,11 +24,16 @@ export interface Habit {
   id?: string;
   name: string;
   aura: number;
-  next_due_date: string;
   start_date: string;
   occurence: "weeks" | "months" | "days";
   x_occurence: number;
-  repeat: number;
+  last_completed: string;
+}
+
+export interface HabitConfig {
+  period: "days" | "weeks" | "months";
+  value: number;
+  isGoodHabit: boolean;
 }
 
 export interface PlayerFullInfo {
@@ -48,10 +47,9 @@ export interface Routine {
   id?: string;
   name: string;
   aura: number;
-  next_due_date: string;
   start_date: string;
   occurence: "weeks" | "months" | "days";
   x_occurence: number;
-  repeat: number;
+  last_completed: string;
   checklist: string;
 }

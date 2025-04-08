@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { PlusCircle } from "lucide-react";
 import { Input } from "@/components/common/input";
 import { Button } from "@/components/common/button";
-import { TaskItem } from "@/components/common/task-item";
+import { TaskItem } from "@/components/task/task-item";
 import TaskForm from "./TaskForm";
 import useTaskStore from "@/store/taskStore";
 import useDashboardStore from "@/store/dashboardStore";
@@ -35,9 +35,7 @@ const TasksContainer = () => {
   const [deadlineError, setDeadlineError] = useState("");
   const [editingTask, setEditingTask] = useState<Task | null>(null);
 
-  useEffect(() => {
-    // Optional: You might want effect logic here if needed
-  }, [tasks]);
+  useEffect(() => {}, [tasks]);
 
   const handleEditTask = (task: Task) => {
     setEditingTask(task);
@@ -50,7 +48,6 @@ const TasksContainer = () => {
     setShowTaskForm(true);
   };
 
-  // Updated validation logic for day, month, year
   const validateDate = (day: number, month: number, yearShort: number) => {
     const yearFull = 2000 + yearShort; // Convert yy to yyyy
     const daysInMonth = new Date(yearFull, month, 0).getDate(); // Month is 1-based here
@@ -87,10 +84,7 @@ const TasksContainer = () => {
       setDeadlineError("Please enter a task name");
       return;
     }
-
-    // Validate using the new function
     if (validateDate(selectedDay, selectedMonth, selectedYear)) {
-      // Construct the date string in dd-mm-yy format for addTask
       const dayStr = selectedDay.toString().padStart(2, "0");
       const monthStr = selectedMonth.toString().padStart(2, "0");
       const yearStr = selectedYear.toString().padStart(2, "0");
@@ -150,7 +144,6 @@ const TasksContainer = () => {
   };
 
   const handleDeleteTask = (taskId: string | undefined) => {
-    // Changed type to string | undefined
     if (taskId) {
       deleteTask(taskId);
     } else {
@@ -158,8 +151,6 @@ const TasksContainer = () => {
       console.error(error);
     }
   };
-
-  // handleDeadlineChange is no longer needed
 
   const sortedTasks = useMemo(() => {
     return [...tasks].sort((a, b) => {
@@ -172,7 +163,6 @@ const TasksContainer = () => {
     });
   }, [tasks]);
 
-  // Render Loading/Error states
   if (isLoading && !sortedTasks.length) {
     return (
       <p className="text-center text-muted-foreground">Loading tasks...</p>

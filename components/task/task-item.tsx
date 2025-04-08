@@ -72,11 +72,12 @@ export const TaskItem = ({
               >
                 {name}
               </span>
-              {due_date && ( // Use due_date
-                <span className={`text-xs ${getDeadlineColor()}`}>
-                  {getDeadlineText()} {/* Use due_date */}
-                </span>
-              )}
+              {!completed &&
+                due_date && ( // Use due_date
+                  <span className={`text-xs ${getDeadlineColor()}`}>
+                    {getDeadlineText()} {/* Use due_date */}
+                  </span>
+                )}
             </div>
           </div>
           <div className="flex items-center gap-2">

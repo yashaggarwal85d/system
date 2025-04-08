@@ -6,22 +6,25 @@ import {
   deleteEntityAPI,
   updateEntityAPI,
 } from "@/lib/utils/apiUtils";
-import { calculateNextDueDate, getAuraValue } from "@/lib/utils/commonUtils";
+import {
+  calculateNextDueDate,
+  formatDateToDDMMYY,
+  getAuraValue,
+} from "@/lib/utils/commonUtils";
+import useDashboardStore from "./dashboardStore";
 
 interface HabitState {
   Habits: Habit[];
-  lastSelectedDate: Date;
   isLoading: boolean;
   error: string | null;
 
   setHabits: (Habits: Habit[]) => void;
-  setLastSelectedDate: (date: Date) => void;
+  setError: (error: string | null) => void;
   addHabit: (
     name: string,
-    start_date: Date,
     occurence: "weeks" | "months" | "days",
     x_occurence: number,
-    repeat: number
+    isGoodHabit: boolean
   ) => void;
   updateHabit: (id: string, Habit: Partial<Habit>) => void;
   deleteHabit: (id: string) => void;
@@ -29,41 +32,34 @@ interface HabitState {
 
 type PersistedHabitState = {
   Habits: Habit[];
-  lastSelectedDate: Date;
 };
 
 const HabitStoreCreator: StateCreator<HabitState> = (set, get) => ({
   Habits: [],
-  lastSelectedDate: new Date(),
   isLoading: false,
   error: null,
 
+  setError: (error) => set({ error, isLoading: false }),
   setHabits: (Habits) => set({ Habits, isLoading: false, error: null }),
-  setLastSelectedDate: (date) => set({ lastSelectedDate: date }),
-
-  addHabit: async (name, start_date, occurence, x_occurence, repeat) => {
+  // Removed time from addHabit signature and implementation
+  addHabit: async (name, occurence, x_occurence, isGoodHabit) => {
     set({ isLoading: true });
+    const player = useDashboardStore.getState().player;
     try {
-      const HabitPayload: Habit = {
-        id: null,
-        name: name,
-        start_date: start_date,
+      let aura = getAuraValue("habit", {
         occurence: occurence,
         x_occurence: x_occurence,
-        repeat: repeat,
-        next_due_date: calculateNextDueDate(
-          start_date,
-          occurence,
-          x_occurence,
-          repeat
-        ),
-        aura: getAuraValue("habit", {
-          occurence: occurence,
-          x_occurence: x_occurence,
-          repeat: repeat,
-        }),
+      });
+      const HabitPayload = {
+        name: name,
+        start_date: formatDateToDDMMYY(new Date()),
+        occurence: occurence,
+        x_occurence: x_occurence,
+        aura: isGoodHabit ? aura : -aura,
+        userId: player?.username,
+        last_completed: formatDateToDDMMYY(new Date()),
       };
-      const addedHabit = await addEntityAPI<Habit>("Habit", HabitPayload);
+      const addedHabit = await addEntityAPI<Habit>("habits", HabitPayload);
       set((currentState) => ({
         Habits: [addedHabit, ...currentState.Habits],
         isLoading: false,
@@ -78,7 +74,7 @@ const HabitStoreCreator: StateCreator<HabitState> = (set, get) => ({
   },
   updateHabit: async (id, Habit) => {
     try {
-      const updatedHabit = await updateEntityAPI("Habit", id, Habit);
+      const updatedHabit = await updateEntityAPI("habits", id, Habit);
       set((state) => ({
         Habits: state.Habits.map((t) =>
           t.id === id
@@ -99,7 +95,7 @@ const HabitStoreCreator: StateCreator<HabitState> = (set, get) => ({
 
   deleteHabit: async (id) => {
     try {
-      await deleteEntityAPI("Habit", id);
+      await deleteEntityAPI("habits", id);
       set((state) => ({
         Habits: state.Habits.filter((Habit) => Habit.id !== id),
         error: null,
@@ -120,7 +116,6 @@ const useHabitStore = create<HabitState>()(
     storage: createJSONStorage(() => localStorage),
     partialize: (state): PersistedHabitState => ({
       Habits: state.Habits,
-      lastSelectedDate: state.lastSelectedDate,
     }),
     onRehydrateStorage: () => {
       console.log("Attempting hydration for Habits...");
@@ -131,18 +126,8 @@ const useHabitStore = create<HabitState>()(
         }
         if (state) {
           state.Habits = state.Habits.map((t: any) => ({
-            // Use any temporarily
             ...t,
-            category: "Habit", // Ensure category is correct on rehydration
-            createdAt: new Date(t.createdAt),
-            updatedAt: t.updatedAt ? new Date(t.updatedAt) : new Date(),
-            deadline: t.deadline ? new Date(t.deadline) : undefined,
-            lastCompleted: t.lastCompleted
-              ? new Date(t.lastCompleted)
-              : undefined,
-            nextDue: t.nextDue ? new Date(t.nextDue) : undefined,
           }));
-          state.lastSelectedDate = new Date(state.lastSelectedDate);
           state.isLoading = false;
           state.error = null;
           console.log("Habit hydration successful.");

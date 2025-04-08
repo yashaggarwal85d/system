@@ -13,9 +13,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  // Note: SessionProvider requires a client component boundary if used directly here.
-  // However, wrapping the body content is generally fine in the App Router layout.
-  // For more complex scenarios needing session on the server, refer to next-auth docs.
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
@@ -31,10 +28,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <SessionProviderWrapper>
-            {/* Use the client component wrapper */}
-            {children}
-          </SessionProviderWrapper>
+          <SessionProviderWrapper>{children}</SessionProviderWrapper>
         </ThemeProvider>
       </body>
     </html>
