@@ -11,12 +11,10 @@ import useDashboardStore from "@/store/dashboardStore";
 import { Habit } from "@/lib/utils/interfaces";
 import {
   calculateNextDueDate,
-  calculatePreviousDueDate,
   formatDateToDDMMYY,
 } from "@/lib/utils/commonUtils";
 import { containerVariants } from "@/lib/utils/animationUtils";
 import { HabitItem } from "./habit-item";
-import { start } from "repl";
 
 const HabitsContainer = () => {
   const {
@@ -40,7 +38,6 @@ const HabitsContainer = () => {
   const [showHabitForm, setShowHabitForm] = useState(false);
   const [editingHabit, setEditingHabit] = useState<Habit | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
-
   useEffect(() => {}, [Habits]);
 
   const handleEditHabit = (habit: Habit) => {
@@ -93,9 +90,17 @@ const HabitsContainer = () => {
       return;
     }
     try {
+      console.log(
+        habit,
+        calculateNextDueDate(
+          habit.start_date,
+          habit.occurence,
+          habit.x_occurence
+        )
+      );
       if (!completed) {
         updateHabit(habitId, {
-          start_date: habit.start_date,
+          last_completed: habit.start_date,
         });
         modifyAura(-habit.aura);
       } else {
@@ -132,17 +137,31 @@ const HabitsContainer = () => {
 
   const sortedHabits = useMemo(() => {
     return [...Habits].sort((a, b) => {
-      const startDateA = a.start_date
-        ? new Date(a.start_date).getTime()
-        : Infinity;
-      const startDateB = b.start_date
-        ? new Date(b.start_date).getTime()
-        : Infinity;
+      if (a.last_completed !== b.last_completed) {
+        const startDateA = a.last_completed
+          ? new Date(a.last_completed).getTime()
+          : Infinity;
+        const startDateB = b.last_completed
+          ? new Date(b.last_completed).getTime()
+          : Infinity;
 
-      const validStartDateA = isNaN(startDateA) ? Infinity : startDateA;
-      const validStartDateB = isNaN(startDateB) ? Infinity : startDateB;
+        const validStartDateA = isNaN(startDateA) ? Infinity : startDateA;
+        const validStartDateB = isNaN(startDateB) ? Infinity : startDateB;
 
-      return validStartDateA - validStartDateB;
+        return validStartDateA - validStartDateB;
+      } else {
+        const startDateA = a.start_date
+          ? new Date(a.start_date).getTime()
+          : Infinity;
+        const startDateB = b.start_date
+          ? new Date(b.start_date).getTime()
+          : Infinity;
+
+        const validStartDateA = isNaN(startDateA) ? Infinity : startDateA;
+        const validStartDateB = isNaN(startDateB) ? Infinity : startDateB;
+
+        return validStartDateA - validStartDateB;
+      }
     });
   }, [Habits]);
 

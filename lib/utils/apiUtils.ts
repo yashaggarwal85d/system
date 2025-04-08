@@ -9,7 +9,6 @@ export const fetchPlayerFullInfoAPI = async (): Promise<PlayerFullInfo> => {
 
 // Generic function for adding, updating, and deleting entities
 export const addEntityAPI = async <T>(entity: string, data: T): Promise<T> => {
-  console.log(data);
   const response = await fetchWithAuth(`${API_BASE}/${entity}`, {
     method: "POST",
     headers: {

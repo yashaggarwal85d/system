@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, field_serializer
 from typing import List, Optional, Union
 from enum import Enum
 import uuid
@@ -45,15 +45,25 @@ class Habit(BaseModel):
     last_completed: date
     occurence: Occurence
     x_occurence: int # Number of units of occurence
-    
     _validate_habit_dates = field_validator('start_date', 'last_completed', mode='before')(validate_date_format)
+
+    @field_serializer('start_date', 'last_completed')
+    def serialize_date(self, v: date):
+        return v.strftime('%d-%m-%y')
 
 class HabitUpdate(BaseModel):
     name: Optional[str] = None
     aura: Optional[int] = None
-    start_date: Optional[str] = None
+    start_date: Optional[date] = None
     occurence: Optional[Occurence] = None
     x_occurence: Optional[int] = None
+    last_completed: Optional[date] = None
+
+    _validate_routine_dates = field_validator('start_date','last_completed', mode='before')(validate_date_format)
+    
+    @field_serializer('start_date', 'last_completed')
+    def serialize_date(self, v: date):
+        return v.strftime('%d-%m-%y')
 
 class Task(BaseModel):
     id: str = Field(default_factory=generate_uuid)
@@ -62,8 +72,11 @@ class Task(BaseModel):
     due_date: date
     aura: int = 5
     completed: bool = False
-
     _validate_task_date = field_validator('due_date', mode='before')(validate_date_format)
+
+    @field_serializer('due_date')
+    def serialize_date(self, v: date):
+        return v.strftime('%d-%m-%y')
 
 class TaskUpdate(BaseModel):
     name: Optional[str] = None
@@ -79,21 +92,30 @@ class Routine(BaseModel):
     start_date: date
     occurence: Occurence
     x_occurence: int # Number of units of occurence
+    last_completed: date
     checklist: str
 
     # Apply reusable validator
-    _validate_routine_dates = field_validator('start_date', mode='before')(validate_date_format)
+    _validate_routine_dates = field_validator('start_date','last_completed', mode='before')(validate_date_format)
 
+    @field_serializer('start_date', 'last_completed')
+    def serialize_date(self, v: date):
+        return v.strftime('%d-%m-%y')
 
 class RoutineUpdate(BaseModel):
     name: Optional[str] = None
     aura: Optional[int] = None
-    start_date: Optional[str] = None
+    start_date: Optional[date] = None
     occurence: Optional[Occurence] = None
     x_occurence: Optional[int] = None
     checklist: Optional[str] = None 
+    last_completed: Optional[date] = None
 
-
+    _validate_routine_dates = field_validator('start_date','last_completed', mode='before')(validate_date_format)
+    
+    @field_serializer('start_date', 'last_completed')
+    def serialize_date(self, v: date):
+        return v.strftime('%d-%m-%y')
 
 class PlayerFullInfo(BaseModel):
     player: Player 

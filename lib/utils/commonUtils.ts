@@ -63,29 +63,6 @@ export function calculateNextDueDate(
   return formatDateToDDMMYY(nextDue);
 }
 
-export function calculatePreviousDueDate(
-  nextDueDate: string,
-  occurence: "weeks" | "months" | "days",
-  x_occurence: number
-): string {
-  const previousDue = parseDate(nextDueDate);
-  switch (occurence) {
-    case "days":
-      previousDue.setDate(previousDue.getDate() - x_occurence);
-      break;
-    case "weeks":
-      previousDue.setDate(previousDue.getDate() - x_occurence * 7);
-      break;
-    case "months":
-      previousDue.setMonth(previousDue.getMonth() - x_occurence * 30);
-      break;
-    default:
-      console.error("Error calculating previous due date.");
-      break;
-  }
-  return formatDateToDDMMYY(previousDue);
-}
-
 // For task deadline
 export const isDateWithinOneYearRange = (date: string): boolean => {
   const today = new Date();
@@ -99,10 +76,10 @@ export const isDateWithinOneYearRange = (date: string): boolean => {
 };
 
 export const getDaysRemaining = (date: string): number => {
-  const deadline = new Date(date);
+  const deadline = parseDate(date);
   const today = new Date();
-  today.setHours(0, 0, 0, 0); // Compare dates only
-  const deadlineDate = new Date(deadline); // Use the validated Date object
+  today.setHours(0, 0, 0, 0);
+  const deadlineDate = new Date(deadline);
   deadlineDate.setHours(0, 0, 0, 0);
   const diffTime = deadlineDate.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -123,6 +100,34 @@ export const getDeadlineText = (deadline: string): string => {
   if (daysRemaining < 0) return `Overdue by ${Math.abs(daysRemaining)} day(s)`;
   if (daysRemaining === 0) return "Due today";
   return `Due in ${daysRemaining} day(s)`;
+};
+
+export const getRefreshColor = (
+  start_date: string,
+  occurence: "weeks" | "months" | "days",
+  x_occurence: number
+): string => {
+  const daysRemaining = getDaysRemaining(
+    calculateNextDueDate(start_date, occurence, x_occurence)
+  );
+  if (daysRemaining === null) return "text-[#4ADEF6]/70"; // No deadline
+  if (daysRemaining < 0) return "text-red-500"; // Overdue
+  if (daysRemaining <= 3) return "text-yellow-500"; // Due soon
+  return "text-green-500"; // Due later
+};
+
+export const getRefreshText = (
+  start_date: string,
+  occurence: "weeks" | "months" | "days",
+  x_occurence: number
+): string => {
+  const daysRemaining = getDaysRemaining(
+    calculateNextDueDate(start_date, occurence, x_occurence)
+  );
+  if (daysRemaining === null) return "No deadline";
+  if (daysRemaining < 0) return ` Overdue by ${Math.abs(daysRemaining)} day(s)`;
+  if (daysRemaining === 0) return "es today";
+  return `es in ${daysRemaining} day(s)`;
 };
 
 export const getRemainingTime = (date: string): string => {

@@ -13,6 +13,8 @@ import {
   formatDateToDDMMYY,
   getDeadlineColor,
   getDeadlineText,
+  getRefreshColor,
+  getRefreshText,
   getRemainingTime,
   parseDate,
 } from "@/lib/utils/commonUtils";
@@ -39,7 +41,10 @@ export const HabitItem = ({
 }: HabitItemProps) => {
   const [isCompleted, setIsCompleted] = useState(false);
 
-  const handleToggle = () => onToggle(isCompleted);
+  const handleToggle = () => {
+    onToggle(!isCompleted);
+    setIsCompleted(!isCompleted);
+  };
   const handleDelete = () => onDelete();
 
   useEffect(() => {
@@ -47,7 +52,7 @@ export const HabitItem = ({
     var sd = parseDate(start_date);
     lc.setHours(0, 0, 0, 0);
     sd.setHours(0, 0, 0, 0);
-    if (lc.getTime() < sd.getTime()) {
+    if (lc.getTime() <= sd.getTime()) {
       setIsCompleted(false);
     } else {
       setIsCompleted(true);
@@ -65,10 +70,6 @@ export const HabitItem = ({
       refreshHabit();
     }
   }, [isCompleted]);
-
-  const getFrequencyText = () => {
-    return `Every ${x_occurence} ${occurence}`;
-  };
 
   const is_good = aura >= 0; // Determine if habit is good based on aura
   const due_date = calculateNextDueDate(start_date, occurence, x_occurence);
@@ -122,13 +123,24 @@ export const HabitItem = ({
               {/* Show frequency and next due only if not completed */}
               {!isCompleted && (
                 <>
-                  <span className="text-xs text-muted-foreground">
-                    {getFrequencyText()}
+                  <span className="text-xs text-orange-500">
+                    Every {x_occurence} {occurence}
                   </span>
                   <span className={`text-xs ${getDeadlineColor(due_date)}`}>
                     Next due: {getDeadlineText(due_date)}
                   </span>
                 </>
+              )}
+              {isCompleted && (
+                <span
+                  className={`text-xs ${getRefreshColor(
+                    start_date,
+                    occurence,
+                    x_occurence
+                  )}`}
+                >
+                  Refresh{getRefreshText(start_date, occurence, x_occurence)}
+                </span>
               )}
             </div>
           </div>
@@ -157,7 +169,7 @@ export const HabitItem = ({
             )}
 
             {/* Edit Button */}
-            {onEdit && (
+            {onEdit && !isCompleted && (
               <Button
                 onClick={onEdit}
                 variant="ghost"

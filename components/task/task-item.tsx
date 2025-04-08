@@ -82,6 +82,7 @@ export const TaskItem = ({
           </div>
           <div className="flex items-center gap-2">
             {onEdit &&
+              completed &&
               id && ( // Check if onEdit is provided and id is not null
                 <Button
                   onClick={() => onEdit()}

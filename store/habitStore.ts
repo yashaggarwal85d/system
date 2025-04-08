@@ -74,7 +74,9 @@ const HabitStoreCreator: StateCreator<HabitState> = (set, get) => ({
   },
   updateHabit: async (id, Habit) => {
     try {
+      console.log(Habit);
       const updatedHabit = await updateEntityAPI("habits", id, Habit);
+      console.log(updatedHabit);
       set((state) => ({
         Habits: state.Habits.map((t) =>
           t.id === id
