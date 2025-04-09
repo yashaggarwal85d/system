@@ -1,4 +1,4 @@
-import { PlayerFullInfo } from "./interfaces"; // Import the new interface
+import { PlayerFullInfo } from "./interfaces";
 import { API_BASE, fetchWithAuth, handleResponse } from "./authUtils";
 
 export const fetchPlayerFullInfoAPI = async (): Promise<PlayerFullInfo> => {
@@ -7,7 +7,6 @@ export const fetchPlayerFullInfoAPI = async (): Promise<PlayerFullInfo> => {
   return fullInfo;
 };
 
-// Generic function for adding, updating, and deleting entities
 export const addEntityAPI = async <T>(entity: string, data: T): Promise<T> => {
   const response = await fetchWithAuth(`${API_BASE}/${entity}`, {
     method: "POST",

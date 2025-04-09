@@ -41,7 +41,7 @@ const HabitStoreCreator: StateCreator<HabitState> = (set, get) => ({
 
   setError: (error) => set({ error, isLoading: false }),
   setHabits: (Habits) => set({ Habits, isLoading: false, error: null }),
-  // Removed time from addHabit signature and implementation
+
   addHabit: async (name, occurence, x_occurence, isGoodHabit) => {
     set({ isLoading: true });
     const player = useDashboardStore.getState().player;
@@ -74,9 +74,7 @@ const HabitStoreCreator: StateCreator<HabitState> = (set, get) => ({
   },
   updateHabit: async (id, Habit) => {
     try {
-      console.log(Habit);
       const updatedHabit = await updateEntityAPI("habits", id, Habit);
-      console.log(updatedHabit);
       set((state) => ({
         Habits: state.Habits.map((t) =>
           t.id === id
@@ -111,7 +109,6 @@ const HabitStoreCreator: StateCreator<HabitState> = (set, get) => ({
   },
 });
 
-// Create the store WITH persist middleware applied correctly
 const useHabitStore = create<HabitState>()(
   persist(HabitStoreCreator, {
     name: "Habit-storage",

@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/common/card";
 import { Checkbox } from "@/components/common/checkbox";
 import { Badge } from "@/components/common/badge";
 import { Button } from "@/components/common/button";
-import { Sparkles, Trash2, Pencil, TimerReset } from "lucide-react"; // Added TimerReset
+import { Sparkles, Trash2, Pencil, TimerReset } from "lucide-react";
 import { motion } from "framer-motion";
 import { Task } from "@/lib/utils/interfaces";
 
@@ -72,25 +72,22 @@ export const TaskItem = ({
               >
                 {name}
               </span>
-              {!completed &&
-                due_date && ( // Use due_date
-                  <span className={`text-xs ${getDeadlineColor()}`}>
-                    {getDeadlineText()} {/* Use due_date */}
-                  </span>
-                )}
+              {!completed && due_date && (
+                <span className={`text-xs ${getDeadlineColor()}`}>
+                  {getDeadlineText()} {/* Use due_date */}
+                </span>
+              )}
             </div>
           </div>
           <div className="flex items-center gap-2">
-            {onEdit &&
-              completed &&
-              id && ( // Check if onEdit is provided and id is not null
-                <Button
-                  onClick={() => onEdit()}
-                  className="h-8 w-8 p-0 bg-[#4ADEF6]/20 hover:bg-[#4ADEF6]/30 border-[#4ADEF6]/50 text-[#4ADEF6]"
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-              )}
+            {onEdit && !completed && id && (
+              <Button
+                onClick={() => onEdit()}
+                className="h-8 w-8 p-0 bg-[#4ADEF6]/20 hover:bg-[#4ADEF6]/30 border-[#4ADEF6]/50 text-[#4ADEF6]"
+              >
+                <Pencil className="h-4 w-4" />
+              </Button>
+            )}
             {completed && (
               <motion.div
                 initial={{ scale: 0, opacity: 0 }}
@@ -99,7 +96,7 @@ export const TaskItem = ({
               >
                 <Badge
                   variant="outline"
-                  className="bg-[#4ADEF6]/10 border-[#4ADEF6]/30 text-[#4ADEF6]" // Simplified class, removed habit logic
+                  className="bg-[#4ADEF6]/10 border-[#4ADEF6]/30 text-[#4ADEF6]"
                 >
                   +{aura} Aura
                 </Badge>

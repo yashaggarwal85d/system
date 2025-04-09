@@ -1,11 +1,9 @@
 import React from "react";
-import { Character } from "@/lib/utils/interfaces"; // Import Character type
+import { Character } from "@/lib/utils/interfaces";
 
-// Define props directly here or import if defined elsewhere
 interface SimplifiedCharacterSpanProps {
   character: Character;
   index: number;
-  // isActive prop removed
 }
 
 const CharacterSpan: React.FC<SimplifiedCharacterSpanProps> = ({
@@ -15,15 +13,14 @@ const CharacterSpan: React.FC<SimplifiedCharacterSpanProps> = ({
   return (
     <span
       key={index}
-      className="absolute font-mono text-[#4ADEF6]/50" // Simplified base class
+      className="absolute font-mono text-[#4ADEF6]/50"
       style={{
         left: `${character.x}%`,
         top: `${character.y}%`,
-        transform: `translate(-50%, -50%)`, // Simplified transform
-        opacity: 0.6, // Simplified opacity
-        willChange: "transform, top", // Keep will-change
-        fontSize: "1.4rem", // Keep font size
-        // Removed transition, textShadow, conditional scale
+        transform: `translate(-50%, -50%)`,
+        opacity: 0.6,
+        willChange: "transform, top",
+        fontSize: "1.4rem",
       }}
     >
       {character.char}
@@ -31,5 +28,4 @@ const CharacterSpan: React.FC<SimplifiedCharacterSpanProps> = ({
   );
 };
 
-// Still memoize for performance, though props are simpler now
 export default React.memo(CharacterSpan);

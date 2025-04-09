@@ -46,7 +46,7 @@ const HabitsContainer = () => {
     setHabitConfig({
       period: habit.occurence,
       value: habit.x_occurence,
-      isGoodHabit: habit.aura >= 0, // Simplified check
+      isGoodHabit: habit.aura >= 0, 
     });
     setFormError(null);
     setShowHabitForm(true);

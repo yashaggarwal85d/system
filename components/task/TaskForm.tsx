@@ -1,12 +1,10 @@
-import React from "react"; // Import React
+import React from "react";
 import { Card, CardContent } from "@/components/common/card";
 import { Input } from "@/components/common/input";
 import { Button } from "@/components/common/button";
-import { Task } from "@/lib/utils/interfaces"; // Import Task interface
-import { NumberWheelPicker } from "@/components/common/number-wheel-picker"; // Import the picker
+import { Task } from "@/lib/utils/interfaces";
+import { NumberWheelPicker } from "@/components/common/number-wheel-picker";
 
-// Define the props interface
-// Define the props interface - Updated for day/month/year pickers
 interface TodoFormProps {
   newTaskText: string;
   setNewTaskText: (value: string) => void;
@@ -42,10 +40,9 @@ const TodoForm: React.FC<TodoFormProps> = ({
   editingTask,
   currentYear,
 }) => {
-  // Function to handle picker changes and clear error
   const handlePickerChange =
     (setter: (value: number) => void) => (value: number) => {
-      setDeadlineError(""); // Clear error on any picker change
+      setDeadlineError("");
       setter(value);
     };
 
@@ -73,7 +70,7 @@ const TodoForm: React.FC<TodoFormProps> = ({
                 value={selectedDay}
                 onChange={handlePickerChange(setSelectedDay)}
                 min={1}
-                max={31} // Basic validation, more complex needed for month length
+                max={31}
                 label="Day"
               />
               <NumberWheelPicker
@@ -86,8 +83,8 @@ const TodoForm: React.FC<TodoFormProps> = ({
               <NumberWheelPicker
                 value={selectedYear}
                 onChange={handlePickerChange(setSelectedYear)}
-                min={currentYear} // Start from current year
-                max={currentYear + 1} // Allow selection up to next year
+                min={currentYear}
+                max={currentYear + 1}
                 label="Year"
               />
             </div>
@@ -110,7 +107,7 @@ const TodoForm: React.FC<TodoFormProps> = ({
             Cancel
           </Button>
           <Button
-            onClick={handleSaveTask} // Renamed from handleSaveTodo
+            onClick={handleSaveTask}
             className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
           >
             {editingTask ? "Save Changes" : "Add Todo"} {/* Use editingTask */}

@@ -1,6 +1,6 @@
 import { create, StateCreator } from "zustand";
-import { Player, PlayerFullInfo } from "@/lib/utils/interfaces"; // Import PlayerFullInfo
-import { fetchPlayerFullInfoAPI } from "@/lib/utils/apiUtils"; // Import the new API function
+import { Player, PlayerFullInfo } from "@/lib/utils/interfaces";
+import { fetchPlayerFullInfoAPI } from "@/lib/utils/apiUtils";
 import useTaskStore from "./taskStore";
 import useHabitStore from "./habitStore";
 import useRoutineStore from "./routineStore";
@@ -19,7 +19,7 @@ interface DashboardState {
 
 const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
   activeTab: "tasks",
-  player: null, // Initialize player as null
+  player: null,
   isLoading: false,
   error: null,
 
@@ -62,7 +62,6 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
   },
 });
 
-// Create the store WITHOUT persist
 const useDashboardStore = create(dashboardStoreCreator);
 
 export default useDashboardStore;

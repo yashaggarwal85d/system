@@ -7,8 +7,6 @@ interface SessionProviderWrapperProps {
   children: React.ReactNode;
 }
 
-// This wrapper component ensures that SessionProvider, which uses context,
-// is treated as a client component.
 export default function SessionProviderWrapper({
   children,
 }: SessionProviderWrapperProps) {

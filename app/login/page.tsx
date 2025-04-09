@@ -1,5 +1,5 @@
 import React from "react";
-import AuthForm from "@/components/auth/LoginForm"; // Import the renamed component
+import AuthForm from "@/components/auth/LoginForm"; 
 
 const LoginPage = () => {
   return (

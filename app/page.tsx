@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import NeuralVaultPopup from "@/components/common/NeuralVaultPopup";
+import NeuralVaultPopup from "@/components/providers/NeuralVaultPopup";
 import Dashboard from "@/components/Dashboard";
 import useDashboardStore from "@/store/dashboardStore";
 import { Button } from "@/components/common/button";
 
 export default function Home() {
   const router = useRouter();
-  const fetchPlayer = useDashboardStore((state) => state.fetchPlayer); // Keep fetchPlayer, but its usage might change
+  const fetchPlayer = useDashboardStore((state) => state.fetchPlayer);
   const [isVaultPopupOpen, setIsVaultPopupOpen] = useState(false);
   const [hasVaultPopupBeenShown, setHasVaultPopupBeenShown] = useState(false);
   const player = useDashboardStore((state) => state.player);

@@ -5,10 +5,10 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-// import remarkBreaks from "remark-breaks"; // Removed remark-breaks
-import rehypeRaw from "rehype-raw"; // Import rehype-raw
+
+import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism"; // Choose a theme
+import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/common/dialog";
-import { ScrollArea } from "@/components/common/scroll-area"; // For scrollable content
+import { ScrollArea } from "@/components/common/scroll-area";
 
 interface NeuralVaultPopupProps {
   isOpen: boolean;
@@ -37,13 +37,11 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Fetch data only when the dialog is opened
     if (isOpen && !vaultData && !isLoading) {
       const fetchData = async () => {
         setIsLoading(true);
         setError(null);
         try {
-          // Update the fetch URL to point to the backend endpoint
           const response = await fetch(
             "http://localhost:8000/players/neural-vault"
           );
@@ -51,23 +49,19 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
           if (!response.ok) {
             let errorText = `HTTP error! status: ${response.status}`;
             try {
-              // Check content type before parsing
               const contentType = response.headers.get("content-type");
               if (contentType && contentType.includes("application/json")) {
                 const errorData = await response.json();
                 errorText = errorData.error || JSON.stringify(errorData);
               } else {
-                // If not JSON, read as text
                 errorText = await response.text();
               }
             } catch (parseError) {
-              // Fallback if parsing fails for any reason
               errorText = `Failed to parse error response: ${response.statusText}`;
             }
             throw new Error(errorText);
           }
 
-          // Check content type for successful response too
           const contentType = response.headers.get("content-type");
           if (!contentType || !contentType.includes("application/json")) {
             throw new Error(
@@ -77,17 +71,15 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
 
           let data: VaultData = await response.json();
 
-          // Preprocess content to replace Obsidian image links with GitHub raw URLs
           const githubRawUrlBase =
             "https://raw.githubusercontent.com/yashaggarwal85d/Neural-Vault/main/zassets/";
           data.content = data.content.replace(
             /!\[\[([^\]]+)\]\]/g,
             (match, filename) => {
-              // Trim whitespace from filename just in case
               const trimmedFilename = filename.trim();
-              // Encode the filename part of the URL
+
               const encodedFilename = encodeURIComponent(trimmedFilename);
-              return `![](${githubRawUrlBase}${encodedFilename})`; // Standard Markdown image link
+              return `![](${githubRawUrlBase}${encodedFilename})`;
             }
           );
 
@@ -105,12 +97,12 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
       };
       fetchData();
     }
-    // Reset data if dialog is closed, so it fetches fresh data next time
+
     if (!isOpen) {
       setVaultData(null);
       setError(null);
     }
-  }, [isOpen, vaultData, isLoading]); // Rerun effect if isOpen changes
+  }, [isOpen, vaultData, isLoading]);
 
   const handleClose = () => {
     onOpenChange(false);
@@ -140,54 +132,44 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
               {" "}
               {/* Added markdown-content class */}
               <ReactMarkdown
-                remarkPlugins={[remarkGfm]} // Removed remarkBreaks
-                rehypePlugins={[rehypeRaw]} // Add rehypeRaw to allow HTML like <mark>
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
                 components={{
-                  // Custom renderer for images
                   img: ({ node, src, alt, title, ...props }) => {
-                    // Destructure title here
                     if (alt === "Video" && src) {
-                      // If alt text is "Video", render as a link
                       return (
                         <a
                           href={src}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="markdown-content-link text-purple-400 hover:underline" // Added basic link styling
-                          title={title} // Pass title if it exists
+                          className="markdown-content-link text-purple-400 hover:underline"
+                          title={title}
                         >
                           Video Link 🎬 {/* Or simply use alt: {alt} */}
                         </a>
                       );
                     }
-                    // Otherwise, render as a normal image (handles GitHub images)
-                    // Pass only relevant/safe props to img
+
                     return <img src={src} alt={alt} title={title} />;
                   },
-                  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
                   code({ node, className, children, ...props }) {
-                    // Destructure node but don't use it in spread
                     const match = /language-(\w+)/.exec(className || "");
                     return match ? (
                       <SyntaxHighlighter
-                        // Pass only relevant props, excluding potential conflicts like 'node' or invalid HTML attrs
-                        style={vscDarkPlus} // Apply the theme
+                        style={vscDarkPlus}
                         language={match[1]}
                         PreTag="div"
-                        wrapLongLines={true} // Optional: wrap long lines
-                        // {...props} // Avoid spreading unknown props
+                        wrapLongLines={true}
                       >
                         {String(children).replace(/\n$/, "")}
                       </SyntaxHighlighter>
                     ) : (
-                      // For inline code, pass className and other props might be relevant
                       <code className={className} {...props}>
                         {children}
                       </code>
                     );
                   },
-                  // Optional: Add custom styling for <mark> if needed beyond browser default
-                  // mark: ({children}) => <mark style={{ backgroundColor: '#FFB86CA6', padding: '0.1em 0.3em', borderRadius: '3px' }}>{children}</mark>
                 }}
               >
                 {vaultData.content}

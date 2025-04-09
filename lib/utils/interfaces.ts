@@ -20,6 +20,19 @@ export interface Task {
   completed: boolean;
 }
 
+export interface SimpleChecklistItem {
+  name: string;
+  completed: boolean;
+}
+
+export interface ChecklistItemData {
+  id: string;
+  text: string;
+  completed: boolean;
+  level: number;
+  children: ChecklistItemData[];
+}
+
 export interface Habit {
   id?: string;
   name: string;
@@ -51,5 +64,5 @@ export interface Routine {
   occurence: "weeks" | "months" | "days";
   x_occurence: number;
   last_completed: string;
-  checklist: string;
+  checklist: ChecklistItemData[];
 }

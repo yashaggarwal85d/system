@@ -1,14 +1,14 @@
-import React from "react"; // Import React
+import React from "react"; 
 import { Card, CardContent } from "@/components/common/card";
 import { Input } from "@/components/common/input";
 import { Button } from "@/components/common/button";
 import { Checkbox } from "@/components/common/checkbox";
-// Removed TimePicker import
+
 import { NumberWheelPicker } from "@/components/common/number-wheel-picker";
 import { PeriodWheelPicker } from "@/components/common/period-wheel-picker";
-import { Habit } from "@/lib/utils/interfaces"; // Import Habit interface
+import { Habit } from "@/lib/utils/interfaces"; 
 
-// Define the props interface, mirroring TaskForm structure
+
 interface HabitFormProps {
   habitText: string;
   setHabitText: (value: string) => void;
@@ -71,7 +71,7 @@ const HabitForm: React.FC<HabitFormProps> = ({
             <Input
               value={habitText}
               onChange={(e) => {
-                setError(null); // Clear error on name change
+                setError(null); 
                 setHabitText(e.target.value);
               }}
               className="bg-[#0A1A2F]/60 border-[#4ADEF6]/20 focus:border-[#4ADEF6]/50 placeholder:text-[#4ADEF6]/30"

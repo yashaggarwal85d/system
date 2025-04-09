@@ -23,7 +23,6 @@ const TasksContainer = () => {
   const [newTaskText, setNewTaskText] = useState("");
   const [showTaskForm, setShowTaskForm] = useState(false);
 
-  // Date state management
   const today = new Date();
   const currentDay = today.getDate();
   const currentMonth = today.getMonth() + 1;
@@ -49,15 +48,15 @@ const TasksContainer = () => {
   };
 
   const validateDate = (day: number, month: number, yearShort: number) => {
-    const yearFull = 2000 + yearShort; // Convert yy to yyyy
-    const daysInMonth = new Date(yearFull, month, 0).getDate(); // Month is 1-based here
+    const yearFull = 2000 + yearShort;
+    const daysInMonth = new Date(yearFull, month, 0).getDate();
 
     if (day < 1 || day > daysInMonth) {
       setDeadlineError(`Invalid day for the selected month (1-${daysInMonth})`);
       return false;
     }
 
-    const selectedDate = new Date(yearFull, month - 1, day); // Month is 0-based for Date constructor
+    const selectedDate = new Date(yearFull, month - 1, day);
     selectedDate.setHours(0, 0, 0, 0);
 
     const checkToday = new Date();
@@ -75,7 +74,7 @@ const TasksContainer = () => {
       return false;
     }
 
-    setDeadlineError(""); // Clear error if valid
+    setDeadlineError("");
     return true;
   };
 
@@ -210,7 +209,7 @@ const TasksContainer = () => {
       >
         {sortedTasks.map((task) => (
           <TaskItem
-            key={task.id} // Added key prop
+            key={task.id}
             {...task}
             onToggle={() => handleToggleTask(task.id)}
             onDelete={() => handleDeleteTask(task.id)}

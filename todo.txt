@@ -1,7 +1,7 @@
-Fix Habits
-Fix Routines
-Fix Aura update
-    Aura will keep on dicreasing until an overdue item is marked completed
+Fix refresh
+Aura calculation
+    Aura will keep on dicreasing until an overdue item is marked completed (backend)
+smoothness check
 Make theme dynamic and fetch from backend
 Make Login form better
 Make use of Mp4s

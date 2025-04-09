@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Habit } from "./interfaces";
+import { Habit, ChecklistItemData } from "./interfaces";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -13,7 +13,6 @@ export const formatDateToDDMMYY = (date: Date): string => {
   return `${day}-${month}-${year}`;
 };
 
-// TODO - Make this dynamic
 export const getAuraValue = <T>(
   category: "habit" | "task" | "routine",
   object: T
@@ -35,9 +34,6 @@ export const parseDate = (s: string) => {
   const t = new Date(2000 + y, m - 1, d);
   return t;
 };
-
-// Calculates the next due date based on a base date and frequency settings.
-// For Habit and Routine
 
 export function calculateNextDueDate(
   startDate: string,
@@ -63,7 +59,6 @@ export function calculateNextDueDate(
   return formatDateToDDMMYY(nextDue);
 }
 
-// For task deadline
 export const isDateWithinOneYearRange = (date: string): boolean => {
   const today = new Date();
   const oneYearFromNow = new Date();
@@ -88,10 +83,10 @@ export const getDaysRemaining = (date: string): number => {
 
 export const getDeadlineColor = (date: string): string => {
   const daysRemaining = getDaysRemaining(date);
-  if (daysRemaining === null) return "text-[#4ADEF6]/70"; // No deadline
-  if (daysRemaining < 0) return "text-red-500"; // Overdue
-  if (daysRemaining <= 3) return "text-yellow-500"; // Due soon
-  return "text-green-500"; // Due later
+  if (daysRemaining === null) return "text-[#4ADEF6]/70";
+  if (daysRemaining < 0) return "text-red-500";
+  if (daysRemaining <= 3) return "text-yellow-500";
+  return "text-green-500";
 };
 
 export const getDeadlineText = (deadline: string): string => {
@@ -110,10 +105,10 @@ export const getRefreshColor = (
   const daysRemaining = getDaysRemaining(
     calculateNextDueDate(start_date, occurence, x_occurence)
   );
-  if (daysRemaining === null) return "text-[#4ADEF6]/70"; // No deadline
-  if (daysRemaining < 0) return "text-red-500"; // Overdue
-  if (daysRemaining <= 3) return "text-yellow-500"; // Due soon
-  return "text-green-500"; // Due later
+  if (daysRemaining === null) return "text-[#4ADEF6]/70";
+  if (daysRemaining < 0) return "text-red-500";
+  if (daysRemaining <= 3) return "text-yellow-500";
+  return "text-green-500";
 };
 
 export const getRefreshText = (
@@ -147,7 +142,10 @@ export const getRemainingTime = (date: string): string => {
   return "Due now";
 };
 
-// export const habitUpdateNeeded = (habit: Habit) => {
-//   const today = new Date();
-//   if(calculateNextDueDate)
-// }
+export function stringToChecklist(str: string): ChecklistItemData[] {
+  return JSON.parse(str) as ChecklistItemData[];
+}
+
+export function checklistToString(checklist: ChecklistItemData[]): string {
+  return JSON.stringify(checklist);
+}

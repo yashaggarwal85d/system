@@ -7,7 +7,7 @@ import {
   updateEntityAPI,
 } from "@/lib/utils/apiUtils";
 import { getAuraValue } from "@/lib/utils/commonUtils";
-import useDashboardStore from "./dashboardStore"; // Import dashboard store
+import useDashboardStore from "./dashboardStore";
 
 interface TaskState {
   tasks: Task[];
@@ -47,7 +47,7 @@ const taskStoreCreator: StateCreator<TaskState> = (set, get) => ({
         }),
         completed: false,
       };
-      // Use the specific payload type when calling the API
+
       const addedTask = await addEntityAPI<Task>("tasks", taskPayloadToSend);
       set((currentState) => ({
         tasks: [addedTask, ...currentState.tasks],
@@ -99,7 +99,6 @@ const taskStoreCreator: StateCreator<TaskState> = (set, get) => ({
   },
 });
 
-// Create the store WITH persist middleware applied correctly
 const useTaskStore = create<TaskState>()(
   persist(taskStoreCreator, {
     name: "task-storage",
@@ -116,9 +115,8 @@ const useTaskStore = create<TaskState>()(
         }
         if (state) {
           state.tasks = state.tasks.map((t: any) => ({
-            // Use any temporarily
             ...t,
-            category: "tasks", // Ensure category is correct on rehydration
+            category: "tasks",
             due_date: t.due_date,
           }));
           state.isLoading = false;

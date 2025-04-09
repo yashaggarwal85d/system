@@ -12,7 +12,7 @@ export class TextScramble {
   private frame: number;
   private frameRequest: number;
   private resolve: (value: void | PromiseLike<void>) => void;
-  private spans: HTMLSpanElement[]; // Store references to character spans
+  private spans: HTMLSpanElement[];
 
   constructor(el: HTMLElement) {
     this.el = el;
@@ -21,7 +21,7 @@ export class TextScramble {
     this.frame = 0;
     this.frameRequest = 0;
     this.resolve = () => {};
-    this.spans = []; // Initialize spans array
+    this.spans = [];
     this.update = this.update.bind(this);
   }
 
@@ -55,17 +55,16 @@ export class TextScramble {
   }
 
   setText(newText: string) {
-    const oldText = this.el.textContent || ""; // Use textContent for consistency
+    const oldText = this.el.textContent || "";
     const length = Math.max(oldText.length, newText.length);
     const promise = new Promise<void>((resolve) => (this.resolve = resolve));
     this.queue = [];
 
-    // Clear existing content and prepare spans
-    this.el.innerHTML = ""; // Clear previous content
-    this.spans = []; // Reset spans array
+    this.el.innerHTML = "";
+    this.spans = [];
     for (let i = 0; i < length; i++) {
       const span = document.createElement("span");
-      span.textContent = oldText[i] || ""; // Set initial character
+      span.textContent = oldText[i] || "";
       this.el.appendChild(span);
       this.spans.push(span);
     }
@@ -91,12 +90,12 @@ export class TextScramble {
       let { from, to, start, end, char, color } = this.queue[i];
       const span = this.spans[i];
 
-      if (!span) continue; // Safety check
+      if (!span) continue;
 
       if (this.frame >= end) {
         complete++;
         span.textContent = to;
-        span.style.color = ""; // Reset color
+        span.style.color = "";
       } else if (this.frame >= start) {
         if (!char || Math.random() < 0.28) {
           char = this.chars[Math.floor(Math.random() * this.chars.length)];
@@ -105,14 +104,12 @@ export class TextScramble {
           this.queue[i].color = color;
         }
         span.textContent = char;
-        span.style.color = color || ""; // Apply color
+        span.style.color = color || "";
       } else {
         span.textContent = from;
-        span.style.color = ""; // Reset color
+        span.style.color = "";
       }
     }
-
-    // No need to update innerHTML anymore
 
     if (complete === this.queue.length) {
       this.resolve();

@@ -1,298 +1,522 @@
-"use client";
-
-import { useState } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 import { Card, CardContent } from "@/components/common/card";
 import { Input } from "@/components/common/input";
 import { Button } from "@/components/common/button";
-import { TimePicker } from "@/components/common/time-picker";
+import { Checkbox } from "@/components/common/checkbox";
+
 import { NumberWheelPicker } from "@/components/common/number-wheel-picker";
 import { PeriodWheelPicker } from "@/components/common/period-wheel-picker";
+import { Routine, ChecklistItemData } from "@/lib/utils/interfaces";
+import { Trash2, Plus } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
+import { ChecklistItem, ChecklistItemHandle } from "../common/checklist-item"; // Import handle type
 import { Reorder, useDragControls } from "framer-motion";
-import {
-  ChecklistItem,
-  ChecklistItemData,
-} from "@/components/common/checklist-item";
-import { Frequency, Routine, RoutineFormProps } from "@/lib/interfaces/routine";
 
-const createNewChecklistItem = (level: number = 0): ChecklistItemData => ({
-  id: Math.random().toString(36).substring(7),
-  text: "",
-  completed: false,
-  level,
-  children: [],
-});
+interface RoutineFormProps {
+  routineText: string;
+  setRoutineText: (value: string) => void;
+  routineConfig: {
+    period: "days" | "weeks" | "months";
+    value: number;
+    isGoodRoutine: boolean;
+  };
+  setRoutineConfig: (
+    config: Omit<RoutineFormProps["routineConfig"], "checklist">
+  ) => void;
+  error: string | null;
+  setError: (error: string | null) => void;
+  handleSaveRoutine: (checklist: ChecklistItemData[]) => void;
+  setShowRoutineForm: (value: boolean) => void;
+  setEditingRoutine: (routine: Routine | null) => void;
+  editingRoutine: Routine | null;
+}
 
-const RoutineForm = ({
-  initialName = "",
-  onNameChange,
-  onSave,
-  onClose,
-  initialRoutine,
-}: RoutineFormProps) => {
-  const [name, setName] = useState(initialName);
-  const [frequency, setFrequency] = useState<Frequency>(() => {
-    if (initialRoutine?.frequency) {
-      return initialRoutine.frequency;
+const flattenChecklist = (items: ChecklistItemData[]): ChecklistItemData[] => {
+  const flatList: ChecklistItemData[] = [];
+  const traverse = (item: ChecklistItemData) => {
+    flatList.push(item);
+    if (item.children && item.children.length > 0) {
+      item.children.forEach(traverse);
     }
-    const now = new Date();
-    now.setMinutes(now.getMinutes() + 5);
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    return {
-      count: 1,
+  };
+  items.forEach(traverse);
+  return flatList;
+};
+
+const unflattenChecklist = (
+  flatList: ChecklistItemData[]
+): ChecklistItemData[] => {
+  if (!flatList || flatList.length === 0) return [];
+
+  const tree: ChecklistItemData[] = [];
+  const map: { [id: string]: ChecklistItemData } = {};
+  const parentStack: ChecklistItemData[] = [];
+
+  flatList.forEach((item) => {
+    const newItem = { ...item, children: [] };
+    map[newItem.id] = newItem;
+
+    while (
+      parentStack.length > 0 &&
+      newItem.level <= parentStack[parentStack.length - 1].level
+    ) {
+      parentStack.pop();
+    }
+
+    if (parentStack.length === 0) {
+      tree.push(newItem);
+    } else {
+      const parent = parentStack[parentStack.length - 1];
+      parent.children = parent.children || [];
+      parent.children.push(newItem);
+    }
+
+    parentStack.push(newItem);
+  });
+
+  return tree;
+};
+
+const RoutineForm: React.FC<RoutineFormProps> = ({
+  routineText,
+  setRoutineText,
+  routineConfig,
+  setRoutineConfig,
+  error,
+  setError,
+  handleSaveRoutine,
+  setShowRoutineForm,
+  setEditingRoutine,
+  editingRoutine,
+}) => {
+  const [newItemText, setNewItemText] = React.useState("");
+  const [checklistItems, setChecklistItems] = React.useState<
+    ChecklistItemData[]
+  >([]);
+  const dragControls = useDragControls();
+  const itemRefs = React.useRef<Record<string, ChecklistItemHandle | null>>({});
+
+  React.useEffect(() => {
+    if (editingRoutine && editingRoutine.checklist) {
+      setChecklistItems(editingRoutine.checklist);
+    } else {
+      setChecklistItems([]);
+    }
+  }, [editingRoutine]);
+
+  const handleCancel = () => {
+    setShowRoutineForm(false);
+    setRoutineText("");
+    setRoutineConfig({
       period: "days",
       value: 1,
-      time: `${hours}:${minutes}`,
-    };
-  });
-  const [checklist, setChecklist] = useState<ChecklistItemData[]>(() => {
-    if (initialRoutine?.checklist) {
-      return initialRoutine.checklist;
-    }
-    return [
-      {
-        id: Math.random().toString(36).substring(7),
-        text: "",
+      isGoodRoutine: true,
+    });
+    setNewItemText("");
+    setChecklistItems([]);
+    setError(null);
+    setEditingRoutine(null);
+  };
+
+  const handleConfigChange = <
+    K extends keyof Omit<RoutineFormProps["routineConfig"], "checklist">
+  >(
+    key: K,
+    value: Omit<RoutineFormProps["routineConfig"], "checklist">[K]
+  ) => {
+    setError(null);
+    setRoutineConfig({ ...routineConfig, [key]: value });
+  };
+
+  const handleAddChecklistItem = () => {
+    if (newItemText.trim()) {
+      const newItem: ChecklistItemData = {
+        id: uuidv4(),
+        text: newItemText.trim(),
         completed: false,
         level: 0,
         children: [],
-      },
-    ];
-  });
-  const [activeItemId, setActiveItemId] = useState<string | null>(null);
-  const dragControls = useDragControls();
-
-  const handleUpdate = (id: string, updates: Partial<ChecklistItemData>) => {
-    setChecklist((prev) =>
-      prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
-    );
-  };
-
-  const handleDelete = (id: string) => {
-    setChecklist((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const handleIndent = (id: string) => {
-    setChecklist((prev) => {
-      const index = prev.findIndex((item) => item.id === id);
-      if (index <= 0) return prev;
-
-      const prevItem = prev[index - 1];
-      const currentItem = prev[index];
-
-      const newItem = {
-        ...currentItem,
-        level: currentItem.level + 1,
       };
-
-      const newList = [...prev];
-      newList[index] = newItem;
-      return newList;
-    });
-  };
-
-  const handleOutdent = (id: string) => {
-    setChecklist((prev) => {
-      const index = prev.findIndex((item) => item.id === id);
-      if (index === -1) return prev;
-
-      const currentItem = prev[index];
-
-      const newItem = {
-        ...currentItem,
-        level: Math.max(0, currentItem.level - 1),
-      };
-
-      const newList = [...prev];
-      newList[index] = newItem;
-      return newList;
-    });
-  };
-
-  const handleEnter = (id: string, level: number) => {
-    const newItem = createNewChecklistItem(level);
-    setChecklist((prev) => {
-      if (prev.length === 0 || !id) {
-        return [{ ...newItem, level: 0 }];
-      }
-
-      const index = prev.findIndex((item) => item.id === id);
-      if (index === -1) {
-        return [...prev, newItem];
-      }
-
-      const newList = [...prev];
-      newList.splice(index + 1, 0, newItem);
-      return newList;
-    });
-    setActiveItemId(newItem.id);
-  };
-
-  const handleReorder = (newOrder: ChecklistItemData[]) => {
-    if (!Array.isArray(newOrder)) return;
-    setChecklist(
-      newOrder.map((item) => ({
-        ...item,
-        level: item.level || 0,
-        children: item.children || [],
-      }))
-    );
-  };
-
-  const handleSave = () => {
-    if (!name.trim()) {
-      // Basic validation, could add more for checklist items if needed
-      alert("Please enter a routine name.");
-      return;
+      setChecklistItems((prev) => [...prev, newItem]);
+      setNewItemText("");
+      requestAnimationFrame(() => {
+        itemRefs.current[newItem.id]?.focusItem();
+      });
     }
+  };
 
-    // Construct only the data needed for creation/update
-    const routineDataForSave = {
-      name,
-      frequency,
-      checklist: checklist.map((item) => ({
-        id: item.id, // Keep ID for updates
-        text: item.text || "",
-        completed: !!item.completed,
-        level: item.level || 0,
-        // No need to pass children
-      })),
-      // Omit fields like id, createdAt, updatedAt, completed, nextDue, lastCompleted, userId, auraValue
-      // as they are handled by the backend or store logic
+  const handleDeleteChecklistItem = (id: string) => {
+    const removeItemRecursively = (
+      items: ChecklistItemData[],
+      targetId: string
+    ): ChecklistItemData[] => {
+      return items.reduce((acc, item) => {
+        if (item.id === targetId) {
+          return acc;
+        }
+        if (item.children && item.children.length > 0) {
+          item.children = removeItemRecursively(item.children, targetId);
+        }
+        acc.push(item);
+        return acc;
+      }, [] as ChecklistItemData[]);
     };
 
-    // Pass the correctly shaped data to the onSave callback
-    // The type assertion might be needed if TS can't infer the Omit type correctly here
-    onSave(
-      routineDataForSave as Omit<
-        Routine,
-        | "id"
-        | "createdAt"
-        | "updatedAt"
-        | "completed"
-        | "nextDue"
-        | "lastCompleted"
-        | "userId"
-        | "auraValue"
-      >
-    );
-    onClose();
+    setChecklistItems((prevItems) => removeItemRecursively(prevItems, id));
   };
 
+  const handleUpdateChecklistItem = (
+    id: string,
+    updates: Partial<Pick<ChecklistItemData, "text" | "completed">>
+  ) => {
+    const updateItemRecursively = (
+      items: ChecklistItemData[]
+    ): ChecklistItemData[] => {
+      return items.map((item) => {
+        if (item.id === id) {
+          return { ...item, ...updates };
+        }
+        if (item.children && item.children.length > 0) {
+          return { ...item, children: updateItemRecursively(item.children) };
+        }
+        return item;
+      });
+    };
+    setChecklistItems((prevItems) => updateItemRecursively(prevItems));
+  };
+
+  const handleReorderChecklist = (newFlatOrder: ChecklistItemData[]) => {
+    const newNestedOrder = unflattenChecklist(newFlatOrder);
+    setChecklistItems(newNestedOrder);
+  };
+
+  const findItemPath = (
+    items: ChecklistItemData[],
+    targetId: string,
+    path: (ChecklistItemData | number)[] = []
+  ): (ChecklistItemData | number)[] | null => {
+    for (let i = 0; i < items.length; i++) {
+      const currentItem = items[i];
+      const currentPath = [...path, currentItem, i];
+
+      if (currentItem.id === targetId) {
+        return currentPath;
+      }
+
+      if (currentItem.children && currentItem.children.length > 0) {
+        const result = findItemPath(
+          currentItem.children,
+          targetId,
+          currentPath
+        );
+        if (result) {
+          return result;
+        }
+      }
+    }
+    return null;
+  };
+
+  const handleIndentChecklistItem = (id: string) => {
+    setChecklistItems((prevItems) => {
+      const path = findItemPath(prevItems, id);
+      if (!path || path.length < 2) return prevItems;
+
+      const itemIndex = path[path.length - 1] as number;
+      if (itemIndex === 0) return prevItems;
+
+      const parentListPath = path.slice(0, -2);
+      let parentListRef = prevItems;
+      if (parentListPath.length > 0) {
+        const parentItemRef = parentListPath[
+          parentListPath.length - 2
+        ] as ChecklistItemData;
+        parentListRef = parentItemRef.children || [];
+      }
+
+      const previousSibling = parentListRef[itemIndex - 1];
+      if (!previousSibling) return prevItems;
+
+      const itemsCopy = JSON.parse(JSON.stringify(prevItems));
+
+      const copiedPath = findItemPath(itemsCopy, id);
+      if (!copiedPath) return itemsCopy;
+
+      const copiedItemIndex = copiedPath[copiedPath.length - 1] as number;
+      let copiedParentList = itemsCopy;
+      let copiedPreviousSibling: ChecklistItemData | null = null;
+
+      if (copiedPath.length > 2) {
+        const copiedParentPath = copiedPath.slice(0, -2);
+        const copiedParentItem = copiedParentPath[
+          copiedParentPath.length - 2
+        ] as ChecklistItemData;
+        copiedParentList = copiedParentItem.children!;
+      }
+      copiedPreviousSibling = copiedParentList[copiedItemIndex - 1];
+
+      if (!copiedPreviousSibling) return itemsCopy;
+
+      const itemToIndent = {
+        ...copiedParentList[copiedItemIndex],
+        level: (previousSibling.level || 0) + 1,
+      };
+
+      copiedPreviousSibling.children = copiedPreviousSibling.children || [];
+      copiedPreviousSibling.children.push(itemToIndent);
+      copiedParentList.splice(copiedItemIndex, 1);
+
+      return itemsCopy;
+    });
+  };
+
+  const handleOutdentChecklistItem = (id: string) => {
+    setChecklistItems((prevItems) => {
+      const path = findItemPath(prevItems, id);
+      if (!path || path.length <= 2) return prevItems;
+
+      const itemsCopy = JSON.parse(JSON.stringify(prevItems));
+      const copiedPath = findItemPath(itemsCopy, id);
+      if (!copiedPath) return itemsCopy;
+
+      const itemIndex = copiedPath[copiedPath.length - 1] as number;
+      const parentItemPath = copiedPath.slice(0, -2);
+      const parentItem = parentItemPath[
+        parentItemPath.length - 2
+      ] as ChecklistItemData;
+      const parentIndex = parentItemPath[parentItemPath.length - 1] as number;
+
+      const grandParentListPath = parentItemPath.slice(0, -2);
+      let grandParentList = itemsCopy;
+      if (grandParentListPath.length > 0) {
+        const grandParentItem = grandParentListPath[
+          grandParentListPath.length - 2
+        ] as ChecklistItemData;
+        grandParentList = grandParentItem.children!;
+      }
+
+      const itemToOutdent = {
+        ...parentItem.children![itemIndex],
+        level: parentItem.level,
+      };
+
+      const siblingsToMove = parentItem.children!.splice(itemIndex + 1);
+      parentItem.children!.splice(itemIndex, 1);
+      grandParentList.splice(parentIndex + 1, 0, itemToOutdent);
+      itemToOutdent.children = [
+        ...(itemToOutdent.children || []),
+        ...siblingsToMove.map((sibling) => ({
+          ...sibling,
+          level: itemToOutdent.level + 1,
+        })),
+      ];
+
+      const updateLevels = (items: ChecklistItemData[], baseLevel: number) => {
+        items.forEach((item) => {
+          item.level = baseLevel + 1;
+          if (item.children && item.children.length > 0) {
+            updateLevels(item.children, item.level);
+          }
+        });
+      };
+      if (itemToOutdent.children) {
+        updateLevels(itemToOutdent.children, itemToOutdent.level);
+      }
+
+      return itemsCopy;
+    });
+  };
+
+  const handleEnterKeyPress = (currentItemId: string) => {
+    setChecklistItems((prevItems) => {
+      const path = findItemPath(prevItems, currentItemId);
+      if (!path) return prevItems;
+
+      const currentItemLevel = (path[path.length - 2] as ChecklistItemData)
+        .level;
+      const newItem: ChecklistItemData = {
+        id: uuidv4(),
+        text: "",
+        completed: false,
+        level: currentItemLevel,
+        children: [],
+      };
+
+      const itemsCopy = JSON.parse(JSON.stringify(prevItems));
+      const copiedPath = findItemPath(itemsCopy, currentItemId);
+      if (!copiedPath) return itemsCopy;
+
+      const itemIndex = copiedPath[copiedPath.length - 1] as number;
+      const parentListPath = copiedPath.slice(0, -2);
+      let parentList = itemsCopy;
+
+      if (parentListPath.length > 0) {
+        const parentItem = parentListPath[
+          parentListPath.length - 2
+        ] as ChecklistItemData;
+        parentList = parentItem.children!;
+      }
+
+      parentList.splice(itemIndex + 1, 0, newItem);
+
+      requestAnimationFrame(() => {
+        itemRefs.current[newItem.id]?.focusItem();
+      });
+
+      return itemsCopy;
+    });
+  };
+
+  const onSave = () => {
+    handleSaveRoutine(checklistItems);
+  };
+
+  const flatChecklistItems = React.useMemo(
+    () => flattenChecklist(checklistItems),
+    [checklistItems]
+  );
+
+  React.useEffect(() => {
+    const currentIds = new Set(flatChecklistItems.map((item) => item.id));
+    Object.keys(itemRefs.current).forEach((id) => {
+      if (!currentIds.has(id)) {
+        delete itemRefs.current[id];
+      }
+    });
+  }, [flatChecklistItems]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ type: "spring", stiffness: 300, damping: 25 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
-    >
-      <Card className="w-full max-w-2xl bg-[#0A1A2F]/95 border-[#4ADEF6]/20">
-        <CardContent className="p-6">
-          <h3 className="text-xl font-bold text-[#4ADEF6] mb-4">
-            {initialRoutine ? "Edit Routine" : "Add Routine"}
-          </h3>
-          <div className="space-y-4">
+    <Card className="w-full max-w-md bg-[#0A1A2F]/95 border-[#4ADEF6]/20">
+      <CardContent className="p-6">
+        <h3 className="text-xl font-bold text-[#4ADEF6] mb-4">
+          {editingRoutine ? "Edit Routine" : "Add Routine"}
+        </h3>
+
+        <div className="space-y-4">
+          {/* Name Input */}
+          <div className="flex flex-col gap-2">
+            <span className="text-[#4ADEF6]">Name:</span>
             <Input
-              placeholder="Routine name"
-              value={name}
+              value={routineText}
               onChange={(e) => {
-                setName(e.target.value);
-                onNameChange?.(e.target.value);
+                setError(null);
+                setRoutineText(e.target.value);
               }}
               className="bg-[#0A1A2F]/60 border-[#4ADEF6]/20 focus:border-[#4ADEF6]/50 placeholder:text-[#4ADEF6]/30"
             />
           </div>
 
-          <div className="space-y-6 mt-6">
-            <h3 className="text-lg font-semibold text-[#4ADEF6]">Frequency</h3>
-            <div className="flex items-center gap-6 flex-wrap">
-              <div className="flex items-center gap-4">
-                <NumberWheelPicker
-                  value={frequency.count}
-                  onChange={(count: number) =>
-                    setFrequency((prev: Frequency) => ({ ...prev, count }))
-                  }
-                  min={1}
-                  max={10}
-                  label="Count"
-                />
-                <span className="text-[#4ADEF6]">times per</span>
-                <NumberWheelPicker
-                  value={frequency.value}
-                  onChange={(value: number) =>
-                    setFrequency((prev: Frequency) => ({ ...prev, value }))
-                  }
-                  min={1}
-                  max={100}
-                  label="Value"
-                />
-                <PeriodWheelPicker
-                  value={frequency.period}
-                  onChange={(period: "days" | "weeks" | "months") =>
-                    setFrequency((prev: Frequency) => ({ ...prev, period }))
-                  }
-                />
-              </div>
-              <div className="flex items-center gap-4">
-                <span className="text-[#4ADEF6]">at</span>
-                <TimePicker
-                  value={frequency.time}
-                  onChange={(newTime: string) => {
-                    setFrequency((prev: Frequency) => ({
-                      ...prev,
-                      time: newTime,
-                    }));
-                  }}
-                />
-              </div>
+          {/* Repeat Every Section */}
+          <div className="flex flex-col gap-2">
+            <span className="text-[#4ADEF6]">Repeat Every:</span>
+            <div className="flex items-center gap-2 p-2 rounded border border-[#4ADEF6]/20 bg-[#0A1A2F]/60 justify-center">
+              <NumberWheelPicker
+                label="Value"
+                value={routineConfig.value}
+                onChange={(value) => handleConfigChange("value", value)}
+                min={1}
+                max={30}
+              />
+              <PeriodWheelPicker
+                value={routineConfig.period}
+                onChange={(value) => handleConfigChange("period", value)}
+              />
             </div>
           </div>
 
-          <div className="space-y-6 mt-6">
-            <h3 className="text-lg font-semibold text-[#4ADEF6]">Checklist</h3>
+          {/* Checklist Section */}
+          <div className="flex flex-col gap-2">
+            <span className="text-[#4ADEF6]">Checklist:</span>
+            {/* Input for adding new items */}
+            <div className="flex gap-2">
+              <Input
+                value={newItemText}
+                onChange={(e) => setNewItemText(e.target.value)}
+                placeholder="Add checklist item..."
+                className="flex-grow bg-[#0A1A2F]/60 border-[#4ADEF6]/20 focus:border-[#4ADEF6]/50 placeholder:text-[#4ADEF6]/30"
+                onKeyDown={(e) => {
+                  if (
+                    e.key === "Enter" &&
+                    !e.shiftKey &&
+                    !e.ctrlKey &&
+                    !e.metaKey
+                  ) {
+                    // Ensure only Enter adds item
+                    e.preventDefault(); // Prevent potential form submission or newline in input
+                    handleAddChecklistItem();
+                  }
+                }}
+              />
+              <Button
+                onClick={handleAddChecklistItem}
+                size="icon"
+                variant="ghost"
+                className="text-[#4ADEF6] hover:bg-[#4ADEF6]/20"
+              >
+                <Plus size={18} />
+              </Button>
+            </div>
 
             <Reorder.Group
               axis="y"
-              values={checklist}
-              onReorder={handleReorder}
-              className="space-y-1"
+              values={flatChecklistItems}
+              onReorder={handleReorderChecklist}
+              className="space-y-1 mt-2 max-h-60 overflow-y-auto pr-2"
             >
-              {checklist.map((item) => (
+              {flatChecklistItems.map((item) => (
                 <ChecklistItem
                   key={item.id}
+                  ref={(el) => {
+                    itemRefs.current[item.id] = el;
+                  }}
                   item={item}
-                  onUpdate={handleUpdate}
-                  onDelete={handleDelete}
-                  onIndent={handleIndent}
-                  onOutdent={handleOutdent}
-                  onEnter={handleEnter}
-                  onFocus={(id) => setActiveItemId(id)}
-                  isEditing={item.id === activeItemId}
+                  onUpdate={handleUpdateChecklistItem}
+                  onDelete={handleDeleteChecklistItem}
+                  onIndent={handleIndentChecklistItem}
+                  onOutdent={handleOutdentChecklistItem}
+                  onEnter={handleEnterKeyPress}
                   dragControls={dragControls}
                 />
               ))}
             </Reorder.Group>
           </div>
-
-          <div className="flex justify-end gap-2 mt-6">
-            <Button
-              onClick={onClose}
-              className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
-            >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleSave}
-              className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
-            >
-              {initialRoutine ? "Save Changes" : "Add Routine"}
-            </Button>
+          <div className="flex items-center gap-2 justify-center">
+            <Checkbox
+              id="good-routine-checkbox"
+              checked={routineConfig.isGoodRoutine}
+              onCheckedChange={(checked) =>
+                handleConfigChange("isGoodRoutine", checked as boolean)
+              }
+              className="border-[#4ADEF6]/50 data-[state=checked]:bg-[#4ADEF6] data-[state=checked]:border-[#4ADEF6]"
+            />
+            <label htmlFor="good-routine-checkbox" className="text-[#4ADEF6]">
+              Good routine
+            </label>
           </div>
-        </CardContent>
-      </Card>
-    </motion.div>
+        </div>
+
+        {error && (
+          <span className="text-red-500 text-sm mt-1 text-center block">
+            {error}
+          </span>
+        )}
+
+        <div className="flex justify-end gap-2 mt-6">
+          <Button
+            onClick={handleCancel}
+            className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={onSave}
+            className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
+          >
+            {editingRoutine ? "Save Changes" : "Add Routine"}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 

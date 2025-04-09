@@ -11,7 +11,6 @@ import {
   CardHeader,
   CardTitle,
   CardFooter,
-  CardDescription, // Import CardDescription
 } from "@/components/common/card";
 import {
   Tabs,
@@ -19,17 +18,15 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/common/tabs";
-// import { signIn } from "next-auth/react"; // Remove next-auth signIn
 
-// Combined Login/Signup Form Component
 const AuthForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState(""); // For signup
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(""); // For signup success message
+  const [success, setSuccess] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("login"); // Control active tab
+  const [activeTab, setActiveTab] = useState("login");
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -45,7 +42,6 @@ const AuthForm = () => {
     }
 
     try {
-      // Prepare form data for the backend
       const formData = new URLSearchParams();
       formData.append("username", username);
       formData.append("password", password);
@@ -60,7 +56,6 @@ const AuthForm = () => {
       });
 
       if (!response.ok) {
-        // Handle login failure (e.g., 401 Unauthorized)
         let errorMessage = "Login failed.";
         try {
           const errorData = await response.json();
@@ -71,21 +66,17 @@ const AuthForm = () => {
         }
         setError(errorMessage);
         setIsLoading(false);
-        return; // Stop execution on failure
+        return;
       }
 
-      // Handle login success
       const data = await response.json();
       const { access_token, token_type } = data;
 
       if (access_token && token_type === "bearer") {
-        // Store the token (e.g., in localStorage - consider security implications)
         localStorage.setItem("accessToken", access_token);
         localStorage.setItem("tokenType", token_type);
 
-        // Redirect to the main page or dashboard
         router.push("/");
-        // router.refresh(); // May not be needed if redirect handles state update
       } else {
         setError("Login successful, but token was not received correctly.");
         setIsLoading(false);
@@ -97,7 +88,7 @@ const AuthForm = () => {
           err.message || "Unknown error"
         }`
       );
-      setIsLoading(false); // Ensure loading state is reset on error
+      setIsLoading(false);
     }
   };
 
@@ -117,40 +108,33 @@ const AuthForm = () => {
       setIsLoading(false);
       return;
     }
-    // Add password strength validation if desired
 
     try {
-      // Call the FastAPI backend signup endpoint
       const response = await fetch("http://localhost:8000/players/signup", {
-        // TODO: Use env variable for base URL
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Include all required fields from the backend Player model
-        body: JSON.stringify({ username, password, description: "" }), // Added default description
+
+        body: JSON.stringify({ username, password, description: "" }),
       });
 
-      // Check if the request was successful (status code 2xx)
       if (!response.ok) {
-        // Try to parse error message from backend response
         let errorMessage = "Signup failed.";
         try {
           const errorData = await response.json();
-          errorMessage = errorData.detail || errorMessage; // FastAPI often uses 'detail' for errors
+          errorMessage = errorData.detail || errorMessage;
         } catch (parseError) {
-          // If parsing fails, use the status text
           errorMessage = `Signup failed: ${response.statusText} (Status: ${response.status})`;
         }
         setError(errorMessage);
       } else {
         setSuccess("Signup successful! Please log in.");
-        setActiveTab("login"); // Switch to login tab
-        // Clear only signup-related fields if needed, or all
+        setActiveTab("login");
+
         setUsername("");
         setPassword("");
         setConfirmPassword("");
       }
     } catch (err: any) {
-      // Catch specific error types if needed
       console.error("Signup Error:", err);
       setError(
         `An unexpected error occurred: ${err.message || "Unknown error"}`
@@ -277,4 +261,4 @@ const AuthForm = () => {
   );
 };
 
-export default AuthForm; // Rename export
+export default AuthForm;

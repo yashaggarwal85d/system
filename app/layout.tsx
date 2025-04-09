@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper"; // Import the wrapper
-import { ThemeProvider } from "@/components/providers/theme-provider"; // Import ThemeProvider
+import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 export const metadata: Metadata = {
   title: "Flickering Letters",
@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className="font-inter">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark" // Assuming dark is the default, adjust if needed
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
