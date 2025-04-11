@@ -1,6 +1,4 @@
-smoothness check
 Make theme dynamic and fetch from backend
-Make Login form better
 Make use of Mp4s
 Cleanup
 Test suite

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import SwirlBackground from "@/components/common/SwirlBackground";
 
 export const metadata: Metadata = {
   title: "Flickering Letters",
@@ -22,6 +23,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-inter">
+        <SwirlBackground />
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
