@@ -57,7 +57,9 @@ export default function Home() {
   if (storeError) {
     return (
       <main className="min-h-screen flex flex-col items-center justify-center">
-        <p className="text-red-500">Error loading player data: {storeError}</p>
+        <p className="text-destructive">
+          Error loading player data: {storeError}
+        </p>
         <Button
           onClick={() => {
             localStorage.removeItem("accessToken");

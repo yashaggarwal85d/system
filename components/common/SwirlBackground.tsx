@@ -3,6 +3,7 @@
 import Script from "next/script";
 import { useEffect } from "react";
 import { createNoise3D } from "simplex-noise"; // Import the noise function
+import { colors } from "@/lib/utils/colors"; // Import theme colors
 
 // Wrapper class to mimic the original script's expectation
 class SimplexNoiseWrapper {
@@ -32,6 +33,23 @@ export default function SwirlBackground() {
   }
 
   useEffect(() => {
+    // Set CSS custom properties on mount
+    if (typeof document !== "undefined") {
+      document.documentElement.style.setProperty(
+        "--swirl-background-color",
+        colors.swirlBackground
+      );
+      // Convert numbers to string for setProperty
+      document.documentElement.style.setProperty(
+        "--swirl-particle-base-hue",
+        String(colors.swirlParticleBaseHue)
+      );
+      document.documentElement.style.setProperty(
+        "--swirl-particle-hue-range",
+        String(colors.swirlParticleHueRange)
+      );
+    }
+
     // Cleanup function to remove event listeners added by the script
     return () => {
       if (typeof window !== "undefined") {

@@ -1,4 +1,4 @@
-import React from "react"; 
+import React from "react";
 import { Card, CardContent } from "@/components/common/card";
 import { Input } from "@/components/common/input";
 import { Button } from "@/components/common/button";
@@ -6,8 +6,7 @@ import { Checkbox } from "@/components/common/checkbox";
 
 import { NumberWheelPicker } from "@/components/common/number-wheel-picker";
 import { PeriodWheelPicker } from "@/components/common/period-wheel-picker";
-import { Habit } from "@/lib/utils/interfaces"; 
-
+import { Habit } from "@/lib/utils/interfaces";
 
 interface HabitFormProps {
   habitText: string;
@@ -59,28 +58,35 @@ const HabitForm: React.FC<HabitFormProps> = ({
   };
 
   return (
-    <Card className="w-full max-w-md bg-[#0A1A2F]/95 border-[#4ADEF6]/20">
+    <Card className="w-full max-w-md bg-secondary/95 border-primary/20">
+      {" "}
+      {/* Use theme colors */}
       <CardContent className="p-6">
-        <h3 className="text-xl font-bold text-[#4ADEF6] mb-4">
+        <h3 className="text-xl font-bold text-primary mb-4">
+          {" "}
+          {/* Use primary */}
           {editingHabit ? "Edit Habit" : "Add Habit"}
         </h3>
 
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
-            <span className="text-[#4ADEF6]">Name:</span>
+            <span className="text-primary">Name:</span> {/* Use primary */}
             <Input
               value={habitText}
               onChange={(e) => {
-                setError(null); 
+                setError(null);
                 setHabitText(e.target.value);
               }}
-              className="bg-[#0A1A2F]/60 border-[#4ADEF6]/20 focus:border-[#4ADEF6]/50 placeholder:text-[#4ADEF6]/30"
+              className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" // Use theme colors
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <span className="text-[#4ADEF6]">Repeat Every:</span>
-            <div className="flex items-center gap-2 p-2 rounded border border-[#4ADEF6]/20 bg-[#0A1A2F]/60 justify-center">
+            <span className="text-primary">Repeat Every:</span>{" "}
+            {/* Use primary */}
+            <div className="flex items-center gap-2 p-2 rounded border border-primary/20 bg-secondary/60 justify-center">
+              {" "}
+              {/* Use theme colors */}
               <NumberWheelPicker
                 label="Value"
                 value={habitConfig.value}
@@ -104,9 +110,11 @@ const HabitForm: React.FC<HabitFormProps> = ({
               onCheckedChange={(checked) =>
                 handleConfigChange("isGoodHabit", checked as boolean)
               }
-              className="border-[#4ADEF6]/50 data-[state=checked]:bg-[#4ADEF6] data-[state=checked]:border-[#4ADEF6]"
+              className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
             />
-            <label htmlFor="good-habit-checkbox" className="text-[#4ADEF6]">
+            <label htmlFor="good-habit-checkbox" className="text-primary">
+              {" "}
+              {/* Use primary */}
               Good habit
             </label>{" "}
             {/* Use label */}
@@ -114,7 +122,7 @@ const HabitForm: React.FC<HabitFormProps> = ({
         </div>
 
         {error && (
-          <span className="text-red-500 text-sm mt-1 text-center block">
+          <span className="text-destructive text-sm mt-1 text-center block">
             {error}
           </span>
         )}
@@ -122,13 +130,13 @@ const HabitForm: React.FC<HabitFormProps> = ({
         <div className="flex justify-end gap-2 mt-6">
           <Button
             onClick={handleCancel}
-            className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
           >
             Cancel
           </Button>
           <Button
             onClick={handleSaveHabit}
-            className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
           >
             {editingHabit ? "Save Changes" : "Add Habit"}
           </Button>

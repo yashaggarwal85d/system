@@ -15,18 +15,24 @@ const Header: React.FC = () => {
       <CardContent className="p-6">
         <div className="flex items-center gap-3">
           {/* Level Icon */}
-          <div className="w-6 h-6 rounded-full bg-cyan-600 border border-cyan-400/80 shadow-[0_0_4px_1px_rgba(74,222,246,0.5)] flex items-center justify-center flex-shrink-0">
-            <span className="text-sm font-bold text-white leading-none">
+          <div className="w-6 h-6 rounded-full bg-primary border border-primary/80 shadow-[0_0_4px_1px] shadow-primary/50 flex items-center justify-center flex-shrink-0">
+            {" "}
+            {/* Use theme colors */}
+            <span className="text-sm font-bold text-primary-foreground leading-none">
+              {" "}
+              {/* Use theme colors */}
               {playerLevel}
             </span>
           </div>
           {/* Progress Bar Container */}
-          <div className="relative w-full h-3 rounded-full bg-black/30 border border-cyan-400/50 shadow-[0_0_10px_2px_rgba(74,222,246,0.4)] overflow-hidden">
+          <div className="relative w-full h-3 rounded-full bg-background/30 border border-primary/50 shadow-[0_0_10px_2px] shadow-primary/40 overflow-hidden">
+            {" "}
+            {/* Use theme colors */}
             {/* Inner container to handle padding */}
             <div className="absolute inset-y-0 left-1 right-1">
               {/* Progress Bar Fill */}
               <div
-                className="absolute top-1/2 h-1 -translate-y-1/2 rounded-full bg-cyan-300 shadow-[0_0_6px_1px_rgba(110,231,255,0.9)] transition-all duration-500 ease-out"
+                className="absolute top-1/2 h-1 -translate-y-1/2 rounded-full bg-primary/70 shadow-[0_0_6px_1px] shadow-primary/90 transition-all duration-500 ease-out" // Use theme colors
                 style={{
                   width: `calc(${progressPercentage}% - 0.5rem)`,
                 }}

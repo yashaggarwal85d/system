@@ -1,11 +1,11 @@
 "use client";
 
 import { Card, CardContent } from "@/components/common/card";
-import { Checkbox } from "@/components/common/checkbox"; 
+import { Checkbox } from "@/components/common/checkbox";
 import { Badge } from "@/components/common/badge";
 import { Button } from "@/components/common/button";
 import { useState, useEffect } from "react";
-import { Sparkles, Trash2, Pencil } from "lucide-react"; 
+import { Sparkles, Trash2, Pencil } from "lucide-react";
 import { motion } from "framer-motion";
 import { Habit } from "@/lib/utils/interfaces";
 import {
@@ -71,7 +71,7 @@ export const HabitItem = ({
     }
   }, [isCompleted]);
 
-  const is_good = aura >= 0; 
+  const is_good = aura >= 0;
   const due_date = calculateNextDueDate(start_date, occurence, x_occurence);
   return (
     <motion.div
@@ -91,10 +91,11 @@ export const HabitItem = ({
       }}
     >
       <Card
-        className={`bg-[#0A1A2F]/60 border transition-colors group ${
+        className={`bg-secondary/60 border transition-colors group ${
+          // Use secondary
           !is_good
-            ? "border-red-500/20 hover:border-red-500/40"
-            : "border-[#4ADEF6]/20 hover:border-[#4ADEF6]/40"
+            ? "border-destructive/20 hover:border-destructive/40" // Use destructive
+            : "border-primary/20 hover:border-primary/40" // Use primary
         }`}
       >
         {/* Replicate TaskItem structure */}
@@ -104,26 +105,27 @@ export const HabitItem = ({
             <Checkbox
               checked={isCompleted}
               onCheckedChange={handleToggle}
-              
               className={`${
                 !is_good
-                  ? "border-red-500/50 data-[state=checked]:bg-red-500 data-[state=checked]:border-red-500"
-                  : "border-[#4ADEF6]/50 data-[state=checked]:bg-[#4ADEF6] data-[state=checked]:border-[#4ADEF6]"
+                  ? "border-destructive/50 data-[state=checked]:bg-destructive data-[state=checked]:border-destructive" // Use destructive
+                  : "border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
               }`}
             />
             {/* Text content */}
             <div className="flex flex-col flex-1 min-w-0">
               <span
                 className={`font-medium ${
-                  !is_good ? "text-red-400" : "text-[#4ADEF6]"
-                } ${isCompleted ? "line-through opacity-50" : ""}`} 
+                  !is_good ? "text-destructive" : "text-primary" // Use destructive/primary
+                } ${isCompleted ? "line-through opacity-50" : ""}`}
               >
                 {name}
               </span>
               {/* Show frequency and next due only if not completed */}
               {!isCompleted && (
                 <>
-                  <span className="text-xs text-orange-500">
+                  <span className="text-xs text-info">
+                    {" "}
+                    {/* Use info */}
                     Every {x_occurence} {occurence}
                   </span>
                   <span className={`text-xs ${getDeadlineColor(due_date)}`}>
@@ -157,14 +159,15 @@ export const HabitItem = ({
                   variant="outline"
                   className={`${
                     !is_good
-                      ? "bg-red-900/30 border-red-500/30 text-red-400"
-                      : "bg-[#4ADEF6]/10 border-[#4ADEF6]/30 text-[#4ADEF6]"
+                      ? "bg-destructive/10 border-destructive/30 text-destructive" // Use destructive
+                      : "bg-primary/10 border-primary/30 text-primary" // Use primary
                   }`}
                 >
                   {is_good ? "+" : "-"}
                   {Math.abs(aura)} Aura {/* Ensure aura is positive */}
                 </Badge>
-                {is_good && <Sparkles className="h-4 w-4 text-[#4ADEF6]/50" />}
+                {is_good && <Sparkles className="h-4 w-4 text-primary/50" />}{" "}
+                {/* Use primary */}
               </motion.div>
             )}
 
@@ -174,7 +177,7 @@ export const HabitItem = ({
                 onClick={onEdit}
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 p-0 text-muted-foreground hover:text-white opacity-0 group-hover:opacity-100 transition-opacity" 
+                className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity" // Use foreground
               >
                 <Pencil className="h-4 w-4" />
               </Button>
@@ -184,7 +187,7 @@ export const HabitItem = ({
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7 p-0 text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity" 
+              className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity" // Use destructive
               onClick={handleDelete}
             >
               <Trash2 className="h-4 w-4" />

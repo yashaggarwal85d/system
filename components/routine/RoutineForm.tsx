@@ -386,30 +386,37 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
   }, [flatChecklistItems]);
 
   return (
-    <Card className="w-full max-w-md bg-[#0A1A2F]/95 border-[#4ADEF6]/20">
+    <Card className="w-full max-w-md bg-secondary/95 border-primary/20">
+      {" "}
+      {/* Use theme colors */}
       <CardContent className="p-6">
-        <h3 className="text-xl font-bold text-[#4ADEF6] mb-4">
+        <h3 className="text-xl font-bold text-primary mb-4">
+          {" "}
+          {/* Use primary */}
           {editingRoutine ? "Edit Routine" : "Add Routine"}
         </h3>
 
         <div className="space-y-4">
           {/* Name Input */}
           <div className="flex flex-col gap-2">
-            <span className="text-[#4ADEF6]">Name:</span>
+            <span className="text-primary">Name:</span> {/* Use primary */}
             <Input
               value={routineText}
               onChange={(e) => {
                 setError(null);
                 setRoutineText(e.target.value);
               }}
-              className="bg-[#0A1A2F]/60 border-[#4ADEF6]/20 focus:border-[#4ADEF6]/50 placeholder:text-[#4ADEF6]/30"
+              className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" // Use theme colors
             />
           </div>
 
           {/* Repeat Every Section */}
           <div className="flex flex-col gap-2">
-            <span className="text-[#4ADEF6]">Repeat Every:</span>
-            <div className="flex items-center gap-2 p-2 rounded border border-[#4ADEF6]/20 bg-[#0A1A2F]/60 justify-center">
+            <span className="text-primary">Repeat Every:</span>{" "}
+            {/* Use primary */}
+            <div className="flex items-center gap-2 p-2 rounded border border-primary/20 bg-secondary/60 justify-center">
+              {" "}
+              {/* Use theme colors */}
               <NumberWheelPicker
                 label="Value"
                 value={routineConfig.value}
@@ -426,14 +433,14 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
 
           {/* Checklist Section */}
           <div className="flex flex-col gap-2">
-            <span className="text-[#4ADEF6]">Checklist:</span>
+            <span className="text-primary">Checklist:</span> {/* Use primary */}
             {/* Input for adding new items */}
             <div className="flex gap-2">
               <Input
                 value={newItemText}
                 onChange={(e) => setNewItemText(e.target.value)}
                 placeholder="Add checklist item..."
-                className="flex-grow bg-[#0A1A2F]/60 border-[#4ADEF6]/20 focus:border-[#4ADEF6]/50 placeholder:text-[#4ADEF6]/30"
+                className="flex-grow bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" // Use theme colors
                 onKeyDown={(e) => {
                   if (
                     e.key === "Enter" &&
@@ -451,12 +458,11 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
                 onClick={handleAddChecklistItem}
                 size="icon"
                 variant="ghost"
-                className="text-[#4ADEF6] hover:bg-[#4ADEF6]/20"
+                className="text-primary hover:bg-primary/20" // Use primary
               >
                 <Plus size={18} />
               </Button>
             </div>
-
             <Reorder.Group
               axis="y"
               values={flatChecklistItems}
@@ -487,16 +493,18 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
               onCheckedChange={(checked) =>
                 handleConfigChange("isGoodRoutine", checked as boolean)
               }
-              className="border-[#4ADEF6]/50 data-[state=checked]:bg-[#4ADEF6] data-[state=checked]:border-[#4ADEF6]"
+              className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
             />
-            <label htmlFor="good-routine-checkbox" className="text-[#4ADEF6]">
+            <label htmlFor="good-routine-checkbox" className="text-primary">
+              {" "}
+              {/* Use primary */}
               Good routine
             </label>
           </div>
         </div>
 
         {error && (
-          <span className="text-red-500 text-sm mt-1 text-center block">
+          <span className="text-destructive text-sm mt-1 text-center block">
             {error}
           </span>
         )}
@@ -504,13 +512,13 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
         <div className="flex justify-end gap-2 mt-6">
           <Button
             onClick={handleCancel}
-            className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
           >
             Cancel
           </Button>
           <Button
             onClick={onSave}
-            className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
           >
             {editingRoutine ? "Save Changes" : "Add Routine"}
           </Button>

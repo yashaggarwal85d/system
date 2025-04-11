@@ -27,7 +27,10 @@ const noiseSteps = 8;
 const xOff = 0.00125;
 const yOff = 0.00125;
 const zOff = 0.0005;
-const backgroundColor = "hsla(260,40%,5%,1)";
+// Removed hardcoded backgroundColor, baseHue, rangeHue
+// const backgroundColor = "hsla(260,40%,5%,1)";
+// const baseHue = 220;
+// const rangeHue = 100;
 
 let container;
 let canvas;
@@ -74,7 +77,18 @@ function initParticle(i) {
   ttl = baseTTL + rand(rangeTTL);
   speed = baseSpeed + rand(rangeSpeed);
   radius = baseRadius + rand(rangeRadius);
-  hue = baseHue + rand(rangeHue);
+  // Read hue values from CSS custom properties (fallback to original values if not set)
+  const cssBaseHue = parseFloat(
+    getComputedStyle(document.documentElement)
+      .getPropertyValue("--swirl-particle-base-hue")
+      .trim() || "220"
+  );
+  const cssRangeHue = parseFloat(
+    getComputedStyle(document.documentElement)
+      .getPropertyValue("--swirl-particle-hue-range")
+      .trim() || "100"
+  );
+  hue = cssBaseHue + rand(cssRangeHue);
 
   particleProps.set([x, y, vx, vy, life, ttl, speed, radius, hue], i);
 }
@@ -205,7 +219,12 @@ function draw() {
 
   ctx.a.clearRect(0, 0, canvas.a.width, canvas.a.height);
 
-  ctx.b.fillStyle = backgroundColor;
+  // Read background color from CSS custom property (fallback to original if not set)
+  const cssBackgroundColor =
+    getComputedStyle(document.documentElement)
+      .getPropertyValue("--swirl-background-color")
+      .trim() || "hsla(260,40%,5%,1)";
+  ctx.b.fillStyle = cssBackgroundColor;
   ctx.b.fillRect(0, 0, canvas.a.width, canvas.a.height);
 
   drawParticles();

@@ -110,12 +110,12 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[60vw] max-h-[80vh] flex flex-col bg-gradient-to-br from-gray-900 via-purple-950 to-gray-900 border-purple-700 text-gray-200">
+      <DialogContent className="sm:max-w-[60vw] max-h-[80vh] flex flex-col bg-gradient-to-br from-background via-primary/10 to-background border-primary/50 text-foreground">
         <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-purple-400">
+          <DialogTitle className="text-xl font-bold text-primary">
             Neural Vault Entry: {vaultData?.fileName || "Loading..."}
           </DialogTitle>
-          <DialogDescription className="text-gray-400">
+          <DialogDescription className="text-muted-foreground">
             A random insight from the knowledge vault.
           </DialogDescription>
         </DialogHeader>
@@ -124,11 +124,13 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
           {" "}
           {/* Added overflow-y-auto */}
           {isLoading && (
-            <p className="text-center text-purple-300">Loading content...</p>
+            <p className="text-center text-primary/80">Loading content...</p>
           )}
-          {error && <p className="text-center text-red-400">Error: {error}</p>}
+          {error && (
+            <p className="text-center text-destructive">Error: {error}</p>
+          )}
           {vaultData && !isLoading && !error && (
-            <div className="markdown-content text-gray-300">
+            <div className="markdown-content text-foreground/90">
               {" "}
               {/* Added markdown-content class */}
               <ReactMarkdown
@@ -142,7 +144,7 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
                           href={src}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="markdown-content-link text-purple-400 hover:underline"
+                          className="markdown-content-link text-primary hover:underline"
                           title={title}
                         >
                           Video Link 🎬 {/* Or simply use alt: {alt} */}

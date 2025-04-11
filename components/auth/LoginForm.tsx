@@ -162,10 +162,10 @@ const AuthForm = () => {
           <form onSubmit={handleLogin}>
             <CardContent className="space-y-4">
               {error && activeTab === "login" && (
-                <p className="text-sm text-red-500 text-center">{error}</p>
+                <p className="text-sm text-destructive text-center">{error}</p>
               )}
               {success && activeTab === "login" && (
-                <p className="text-sm text-green-500 text-center">{success}</p>
+                <p className="text-sm text-success text-center">{success}</p>
               )}
               <div className="space-y-2">
                 <Label htmlFor="login-username">Username</Label>
@@ -210,7 +210,7 @@ const AuthForm = () => {
           <form onSubmit={handleSignup}>
             <CardContent className="space-y-4">
               {error && activeTab === "signup" && (
-                <p className="text-sm text-red-500 text-center">{error}</p>
+                <p className="text-sm text-destructive text-center">{error}</p>
               )}
               <div className="space-y-2">
                 <Label htmlFor="signup-username">Username</Label>

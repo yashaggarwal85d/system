@@ -56,17 +56,20 @@ export const TaskItem = ({
         },
       }}
     >
-      <Card className="bg-[#0A1A2F]/60 border-[#4ADEF6]/20 hover:border-[#4ADEF6]/40 transition-colors group">
+      <Card className="bg-secondary/60 border-primary/20 hover:border-primary/40 transition-colors group">
+        {" "}
+        {/* Use theme colors */}
         <CardContent className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1 min-w-0">
             <Checkbox
               checked={completed}
               onCheckedChange={handleToggle}
-              className="border-[#4ADEF6]/50 data-[state=checked]:bg-[#4ADEF6] data-[state=checked]:border-[#4ADEF6]"
+              className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
             />
             <div className="flex flex-col flex-1 min-w-0">
               <span
-                className={`text-[#4ADEF6] ${
+                className={`text-primary ${
+                  // Use primary
                   completed ? "line-through opacity-50" : ""
                 }`}
               >
@@ -83,7 +86,7 @@ export const TaskItem = ({
             {onEdit && !completed && id && (
               <Button
                 onClick={() => onEdit()}
-                className="h-8 w-8 p-0 bg-[#4ADEF6]/20 hover:bg-[#4ADEF6]/30 border-[#4ADEF6]/50 text-[#4ADEF6]"
+                className="h-8 w-8 p-0 bg-primary/20 hover:bg-primary/30 border-primary/50 text-primary" // Use primary
               >
                 <Pencil className="h-4 w-4" />
               </Button>
@@ -96,11 +99,12 @@ export const TaskItem = ({
               >
                 <Badge
                   variant="outline"
-                  className="bg-[#4ADEF6]/10 border-[#4ADEF6]/30 text-[#4ADEF6]"
+                  className="bg-primary/10 border-primary/30 text-primary" // Use primary
                 >
                   +{aura} Aura
                 </Badge>
-                <Sparkles className="h-4 w-4 text-[#4ADEF6] animate-pulse" />
+                <Sparkles className="h-4 w-4 text-primary animate-pulse" />{" "}
+                {/* Use primary */}
               </motion.div>
             )}
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -110,7 +114,7 @@ export const TaskItem = ({
                 className="h-6 w-6 p-0"
                 onClick={handleDelete}
               >
-                <Trash2 className="h-4 w-4 text-red-500" />
+                <Trash2 className="h-4 w-4 text-destructive" />
               </Button>
             </div>
           </div>

@@ -13,7 +13,7 @@ const CharacterSpan: React.FC<SimplifiedCharacterSpanProps> = ({
   return (
     <span
       key={index}
-      className="absolute font-mono text-[#4ADEF6]/50"
+      className="absolute font-mono text-primary/50" // Use primary
       style={{
         left: `${character.x}%`,
         top: `${character.y}%`,

@@ -162,10 +162,11 @@ export const RoutineItem = ({
       }}
     >
       <Card
-        className={`bg-[#0A1A2F]/60 border transition-colors group ${
+        className={`bg-secondary/60 border transition-colors group ${
+          // Use secondary
           !is_good
-            ? "border-red-500/20 hover:border-red-500/40"
-            : "border-[#4ADEF6]/20 hover:border-[#4ADEF6]/40"
+            ? "border-destructive/20 hover:border-destructive/40" // Use destructive
+            : "border-primary/20 hover:border-primary/40" // Use primary
         }`}
       >
         {/* Replicate TaskItem structure */}
@@ -177,15 +178,15 @@ export const RoutineItem = ({
               onCheckedChange={handleToggle}
               className={`${
                 !is_good
-                  ? "border-red-500/50 data-[state=checked]:bg-red-500 data-[state=checked]:border-red-500"
-                  : "border-[#4ADEF6]/50 data-[state=checked]:bg-[#4ADEF6] data-[state=checked]:border-[#4ADEF6]"
+                  ? "border-destructive/50 data-[state=checked]:bg-destructive data-[state=checked]:border-destructive" // Use destructive
+                  : "border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
               }`}
             />
             {/* Text content */}
             <div className="flex flex-col flex-1 min-w-0">
               <span
                 className={`font-medium ${
-                  !is_good ? "text-red-400" : "text-[#4ADEF6]"
+                  !is_good ? "text-destructive" : "text-primary" // Use destructive/primary
                 } ${isCompleted ? "line-through opacity-50" : ""}`}
               >
                 {name}
@@ -193,7 +194,9 @@ export const RoutineItem = ({
               {/* Show frequency and next due only if not completed */}
               {!isCompleted && (
                 <>
-                  <span className="text-xs text-orange-500">
+                  <span className="text-xs text-info">
+                    {" "}
+                    {/* Use info */}
                     Every {x_occurence} {occurence}
                   </span>
                   <span className={`text-xs ${getDeadlineColor(due_date)}`}>
@@ -227,14 +230,15 @@ export const RoutineItem = ({
                   variant="outline"
                   className={`${
                     !is_good
-                      ? "bg-red-900/30 border-red-500/30 text-red-400"
-                      : "bg-[#4ADEF6]/10 border-[#4ADEF6]/30 text-[#4ADEF6]"
+                      ? "bg-destructive/10 border-destructive/30 text-destructive" // Use destructive
+                      : "bg-primary/10 border-primary/30 text-primary" // Use primary
                   }`}
                 >
                   {is_good ? "+" : "-"}
                   {Math.abs(aura)} Aura {/* Ensure aura is positive */}
                 </Badge>
-                {is_good && <Sparkles className="h-4 w-4 text-[#4ADEF6]/50" />}
+                {is_good && <Sparkles className="h-4 w-4 text-primary/50" />}{" "}
+                {/* Use primary */}
               </motion.div>
             )}
 
@@ -244,7 +248,7 @@ export const RoutineItem = ({
                 onClick={onEdit}
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 p-0 text-muted-foreground hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity" // Use foreground
               >
                 <Pencil className="h-4 w-4" />
               </Button>
@@ -254,7 +258,7 @@ export const RoutineItem = ({
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7 p-0 text-muted-foreground hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity" // Use destructive
               onClick={handleDelete}
             >
               <Trash2 className="h-4 w-4" />
@@ -266,7 +270,7 @@ export const RoutineItem = ({
                 onClick={() => setShowChecklist(!showChecklist)}
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 p-0 text-muted-foreground hover:text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity" // Use foreground
               >
                 <ListChecks className="h-4 w-4" />
               </Button>
@@ -285,8 +289,12 @@ export const RoutineItem = ({
               transition={{ duration: 0.2 }} // Simple transition
               className="px-4 pb-4 pt-0 overflow-hidden" // Removed layout={false}
             >
-              <div className="border-t border-[#4ADEF6]/20 pt-3 mt-2 space-y-2">
-                <h4 className="text-sm font-medium text-[#4ADEF6]/80 mb-2">
+              <div className="border-t border-primary/20 pt-3 mt-2 space-y-2">
+                {" "}
+                {/* Use primary */}
+                <h4 className="text-sm font-medium text-primary/80 mb-2">
+                  {" "}
+                  {/* Use primary */}
                   Checklist
                 </h4>
                 <div className="space-y-1">

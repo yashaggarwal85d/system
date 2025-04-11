@@ -47,25 +47,31 @@ const TodoForm: React.FC<TodoFormProps> = ({
     };
 
   return (
-    <Card className="w-full max-w-md bg-[#0A1A2F]/95 border-[#4ADEF6]/20">
+    <Card className="w-full max-w-md bg-secondary/95 border-primary/20">
+      {" "}
+      {/* Use theme colors */}
       <CardContent className="p-6">
-        <h3 className="text-xl font-bold text-[#4ADEF6] mb-4">
+        <h3 className="text-xl font-bold text-primary mb-4">
+          {" "}
+          {/* Use primary */}
           {editingTask ? "Edit Todo" : "Add Todo"} {/* Use editingTask */}
         </h3>
 
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
-            <span className="text-[#4ADEF6]">Name:</span>
+            <span className="text-primary">Name:</span> {/* Use primary */}
             <Input
               value={newTaskText}
               onChange={(e) => setNewTaskText(e.target.value)}
-              className="bg-[#0A1A2F]/60 border-[#4ADEF6]/20 focus:border-[#4ADEF6]/50 placeholder:text-[#4ADEF6]/30"
+              className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" // Use theme colors
             />
           </div>
           {/* Replace Input with NumberWheelPickers */}
           <div className="flex flex-col gap-2">
-            <span className="text-[#4ADEF6]">Deadline:</span>
-            <div className="flex justify-center items-end gap-4 p-2 rounded border border-[#4ADEF6]/20 bg-[#0A1A2F]/60">
+            <span className="text-primary">Deadline:</span> {/* Use primary */}
+            <div className="flex justify-center items-end gap-4 p-2 rounded border border-primary/20 bg-secondary/60">
+              {" "}
+              {/* Use theme colors */}
               <NumberWheelPicker
                 value={selectedDay}
                 onChange={handlePickerChange(setSelectedDay)}
@@ -89,7 +95,9 @@ const TodoForm: React.FC<TodoFormProps> = ({
               />
             </div>
             {deadlineError && (
-              <span className="text-red-500 text-sm mt-1">{deadlineError}</span>
+              <span className="text-destructive text-sm mt-1">
+                {deadlineError}
+              </span>
             )}
           </div>
         </div>
@@ -102,13 +110,13 @@ const TodoForm: React.FC<TodoFormProps> = ({
               setDeadlineError("");
               setEditingTask(null);
             }}
-            className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
           >
             Cancel
           </Button>
           <Button
             onClick={handleSaveTask}
-            className="bg-[#4ADEF6]/20 text-[#4ADEF6] hover:bg-[#4ADEF6]/30 border border-[#4ADEF6]/50"
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
           >
             {editingTask ? "Save Changes" : "Add Todo"} {/* Use editingTask */}
           </Button>

@@ -127,7 +127,7 @@ export const ChecklistItem = forwardRef<
               onCheckedChange={(checked) =>
                 onUpdate(item.id, { completed: !!checked })
               }
-              className="mt-1 border-[#4ADEF6]/50 data-[state=checked]:bg-[#4ADEF6] data-[state=checked]:border-[#4ADEF6]"
+              className="mt-1 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
             />
             {lastCompletedAura !== undefined && (
               <motion.span
@@ -135,7 +135,7 @@ export const ChecklistItem = forwardRef<
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 5 }}
                 className={`text-xs font-bold ml-1 ${
-                  lastCompletedAura >= 0 ? "text-green-500" : "text-red-500"
+                  lastCompletedAura >= 0 ? "text-success" : "text-destructive"
                 }`}
               >
                 {lastCompletedAura >= 0 ? "+" : ""}
@@ -166,9 +166,8 @@ export const ChecklistItem = forwardRef<
             }
             onKeyDown={handleKeyDown}
             className={cn(
-              "flex-1 outline-none break-words min-h-[1.5em] text-[#4ADEF6]",
-              !isReadOnly &&
-                "focus:ring-1 focus:ring-[#4ADEF6]/30 rounded px-1",
+              "flex-1 outline-none break-words min-h-[1.5em] text-primary", // Use primary
+              !isReadOnly && "focus:ring-1 focus:ring-primary/30 rounded px-1", // Use primary
               { "line-through opacity-50": item.completed },
               isReadOnly && "cursor-default"
             )}
@@ -208,7 +207,7 @@ export const ChecklistItem = forwardRef<
               onCheckedChange={(checked) =>
                 onUpdate(item.id, { completed: !!checked })
               }
-              className="mt-1 border-[#4ADEF6]/50 data-[state=checked]:bg-[#4ADEF6] data-[state=checked]:border-[#4ADEF6]"
+              className="mt-1 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
             />
             {lastCompletedAura !== undefined && (
               <motion.span
@@ -216,7 +215,7 @@ export const ChecklistItem = forwardRef<
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 5 }}
                 className={`text-xs font-bold ml-1 ${
-                  lastCompletedAura >= 0 ? "text-green-500" : "text-red-500"
+                  lastCompletedAura >= 0 ? "text-success" : "text-destructive"
                 }`}
               >
                 {lastCompletedAura >= 0 ? "+" : ""}
@@ -247,9 +246,8 @@ export const ChecklistItem = forwardRef<
             }
             onKeyDown={handleKeyDown}
             className={cn(
-              "flex-1 outline-none break-words min-h-[1.5em] text-[#4ADEF6]",
-              !isReadOnly &&
-                "focus:ring-1 focus:ring-[#4ADEF6]/30 rounded px-1",
+              "flex-1 outline-none break-words min-h-[1.5em] text-primary", // Use primary
+              !isReadOnly && "focus:ring-1 focus:ring-primary/30 rounded px-1", // Use primary
               { "line-through opacity-50": item.completed },
               isReadOnly && "cursor-default"
             )}
