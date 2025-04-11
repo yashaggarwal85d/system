@@ -1,6 +1,6 @@
 "use strict";
 
-// Helper functions missing from the original script
+
 const TAU = Math.PI * 2;
 const rand = (max) => Math.random() * max;
 const randRange = (max) => max - Math.random() * max * 2;
@@ -10,7 +10,7 @@ const fadeInOut = (t, m) => {
   return Math.abs(((t + hm) % m) - hm) / hm;
 };
 
-// Original script constants
+
 const particleCount = 700;
 const particlePropCount = 9;
 const particlePropsLength = particleCount * particlePropCount;
@@ -27,10 +27,10 @@ const noiseSteps = 8;
 const xOff = 0.00125;
 const yOff = 0.00125;
 const zOff = 0.0005;
-// Removed hardcoded backgroundColor, baseHue, rangeHue
-// const backgroundColor = "hsla(260,40%,5%,1)";
-// const baseHue = 220;
-// const rangeHue = 100;
+
+
+
+
 
 let container;
 let canvas;
@@ -70,14 +70,14 @@ function initParticle(i) {
   let x, y, vx, vy, life, ttl, speed, radius, hue;
 
   x = rand(canvas.a.width);
-  y = rand(canvas.a.height); // Changed to spawn across full height
+  y = rand(canvas.a.height); 
   vx = 0;
   vy = 0;
   life = 0;
   ttl = baseTTL + rand(rangeTTL);
   speed = baseSpeed + rand(rangeSpeed);
   radius = baseRadius + rand(rangeRadius);
-  // Read hue values from CSS custom properties (fallback to original values if not set)
+  
   const cssBaseHue = parseFloat(
     getComputedStyle(document.documentElement)
       .getPropertyValue("--swirl-particle-base-hue")
@@ -115,8 +115,8 @@ function updateParticle(i) {
   x = particleProps[i];
   y = particleProps[i2];
   n = simplex.noise3D(x * xOff, y * yOff, tick * zOff) * noiseSteps * TAU;
-  vx = lerp(particleProps[i3], Math.cos(n), 0.5); // Added Math.
-  vy = lerp(particleProps[i4], Math.sin(n), 0.5); // Added Math.
+  vx = lerp(particleProps[i3], Math.cos(n), 0.5); 
+  vy = lerp(particleProps[i4], Math.sin(n), 0.5); 
   life = particleProps[i5];
   ttl = particleProps[i6];
   speed = particleProps[i7];
@@ -219,7 +219,7 @@ function draw() {
 
   ctx.a.clearRect(0, 0, canvas.a.width, canvas.a.height);
 
-  // Read background color from CSS custom property (fallback to original if not set)
+  
   const cssBackgroundColor =
     getComputedStyle(document.documentElement)
       .getPropertyValue("--swirl-background-color")

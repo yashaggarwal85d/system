@@ -6,7 +6,6 @@ export const getAuthToken = (): string | null => {
   }
   return null;
 };
-
 export const fetchWithAuth = async (
   url: string,
   options: RequestInit = {}

@@ -22,7 +22,7 @@ export const NumberWheelPicker = ({
       <select
         value={value}
         onChange={(e) => onChange(parseInt(e.target.value))}
-        className="bg-transparent text-primary text-center appearance-none focus:outline-none" // Use primary
+        className="bg-transparent text-primary text-center appearance-none focus:outline-none"
       >
         {numbers.map((n) => (
           <option key={n} value={n}>
@@ -30,8 +30,7 @@ export const NumberWheelPicker = ({
           </option>
         ))}
       </select>
-      <span className="text-xs text-primary/50">{label}</span>{" "}
-      {/* Use primary */}
+      <span className="text-xs text-primary/50">{label}</span> {}
     </div>
   );
 };

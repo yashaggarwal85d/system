@@ -192,7 +192,7 @@ const HabitsContainer = () => {
               handleSaveHabit();
             }
           }}
-          className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" // Use theme colors
+          className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" 
         />
         <Button
           onClick={() => {
@@ -201,7 +201,7 @@ const HabitsContainer = () => {
             setFormError(null);
             setShowHabitForm(true);
           }}
-          className="gap-2 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50 whitespace-nowrap" // Use theme colors
+          className="gap-2 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50 whitespace-nowrap" 
         >
           <PlusCircle className="h-4 w-4" /> Add Habit
         </Button>

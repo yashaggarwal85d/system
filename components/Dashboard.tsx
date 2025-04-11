@@ -37,24 +37,23 @@ const Dashboard = () => {
         >
           <TabsList className="grid w-full grid-cols-3 bg-secondary/60 border border-primary/20">
             {" "}
-            {/* Use theme colors */}
             <TabsTrigger
               value="tasks"
-              className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary" // Use primary
+              className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary"
             >
               <ListTodo className="h-4 w-4 mr-2" />
               Tasks
             </TabsTrigger>
             <TabsTrigger
               value="habits"
-              className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary" // Use primary
+              className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary"
             >
               <Repeat className="h-4 w-4 mr-2" />
               Habits
             </TabsTrigger>
             <TabsTrigger
               value="routines"
-              className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary" // Use primary
+              className="data-[state=active]:bg-primary/20 data-[state=active]:text-primary data-[state=active]:border-b-2 data-[state=active]:border-primary"
             >
               <ListTodo className="h-4 w-4 mr-2" /> {}
               Routines

@@ -1,5 +1,5 @@
 import type { Config } from "tailwindcss";
-import { tailwindColors } from "./lib/utils/colors"; // Import the TAILWIND colors object
+import { tailwindColors } from "./lib/utils/colors";
 
 const config = {
   darkMode: ["class"],
@@ -29,7 +29,7 @@ const config = {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
       },
-      // Use the imported TAILWIND colors directly
+
       colors: tailwindColors,
       borderRadius: {
         lg: "var(--radius)",

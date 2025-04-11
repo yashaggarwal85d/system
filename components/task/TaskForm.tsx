@@ -49,29 +49,26 @@ const TodoForm: React.FC<TodoFormProps> = ({
   return (
     <Card className="w-full max-w-md bg-secondary/95 border-primary/20">
       {" "}
-      {/* Use theme colors */}
       <CardContent className="p-6">
         <h3 className="text-xl font-bold text-primary mb-4">
           {" "}
-          {/* Use primary */}
-          {editingTask ? "Edit Todo" : "Add Todo"} {/* Use editingTask */}
+          {editingTask ? "Edit Todo" : "Add Todo"} {}
         </h3>
 
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
-            <span className="text-primary">Name:</span> {/* Use primary */}
+            <span className="text-primary">Name:</span> {}
             <Input
               value={newTaskText}
               onChange={(e) => setNewTaskText(e.target.value)}
-              className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" // Use theme colors
+              className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30"
             />
           </div>
-          {/* Replace Input with NumberWheelPickers */}
+
           <div className="flex flex-col gap-2">
-            <span className="text-primary">Deadline:</span> {/* Use primary */}
+            <span className="text-primary">Deadline:</span> {}
             <div className="flex justify-center items-end gap-4 p-2 rounded border border-primary/20 bg-secondary/60">
               {" "}
-              {/* Use theme colors */}
               <NumberWheelPicker
                 value={selectedDay}
                 onChange={handlePickerChange(setSelectedDay)}
@@ -110,15 +107,15 @@ const TodoForm: React.FC<TodoFormProps> = ({
               setDeadlineError("");
               setEditingTask(null);
             }}
-            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSaveTask}
-            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50"
           >
-            {editingTask ? "Save Changes" : "Add Todo"} {/* Use editingTask */}
+            {editingTask ? "Save Changes" : "Add Todo"} {}
           </Button>
         </div>
       </CardContent>

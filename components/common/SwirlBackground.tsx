@@ -2,44 +2,39 @@
 
 import Script from "next/script";
 import { useEffect } from "react";
-import { createNoise3D } from "simplex-noise"; // Import the noise function
-import { colors } from "@/lib/utils/colors"; // Import theme colors
+import { createNoise3D } from "simplex-noise";
+import { colors } from "@/lib/utils/colors";
 
-// Wrapper class to mimic the original script's expectation
 class SimplexNoiseWrapper {
-  private _noise3D; // Renamed private property
+  private _noise3D;
   constructor() {
-    this._noise3D = createNoise3D(); // Use renamed property
+    this._noise3D = createNoise3D();
   }
   noise3D(x: number, y: number, z: number): number {
-    // Public method
-    return this._noise3D(x, y, z); // Use renamed property
+    return this._noise3D(x, y, z);
   }
 }
 
-// Extend the Window interface
 declare global {
   interface Window {
     setup?: () => void;
     resize?: () => void;
-    SimplexNoise?: typeof SimplexNoiseWrapper; // Add the wrapper class type
+    SimplexNoise?: typeof SimplexNoiseWrapper;
   }
 }
 
 export default function SwirlBackground() {
-  // Assign the wrapper to the window object on the client side
   if (typeof window !== "undefined") {
     window.SimplexNoise = SimplexNoiseWrapper;
   }
 
   useEffect(() => {
-    // Set CSS custom properties on mount
     if (typeof document !== "undefined") {
       document.documentElement.style.setProperty(
         "--swirl-background-color",
         colors.swirlBackground
       );
-      // Convert numbers to string for setProperty
+
       document.documentElement.style.setProperty(
         "--swirl-particle-base-hue",
         String(colors.swirlParticleBaseHue)
@@ -50,17 +45,15 @@ export default function SwirlBackground() {
       );
     }
 
-    // Cleanup function to remove event listeners added by the script
     return () => {
       if (typeof window !== "undefined") {
-        // Attempt to remove listeners if they exist
         if (window.setup) {
           window.removeEventListener("load", window.setup);
         }
         if (window.resize) {
           window.removeEventListener("resize", window.resize);
         }
-        // Also remove the canvas container if it exists to prevent duplicates on HMR
+
         const container = document.querySelector(".content--canvas canvas");
         container?.remove();
       }
@@ -80,11 +73,10 @@ export default function SwirlBackground() {
 
   return (
     <>
-      {/* This div is the target container for the script's canvas */}
       <div className="content--canvas fixed inset-0 -z-10"></div>
       <Script
         src="/swirl.js"
-        strategy="lazyOnload" // Load after page is interactive
+        strategy="lazyOnload"
         onLoad={handleScriptLoad}
         onError={(e) => {
           console.error("Error loading swirl.js script:", e);

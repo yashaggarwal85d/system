@@ -6,7 +6,7 @@ import { Checkbox } from "@/components/common/checkbox";
 import { Badge } from "@/components/common/badge";
 import { Button } from "@/components/common/button";
 import { Sparkles, Trash2, Pencil, ListChecks } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion"; // Import AnimatePresence
+import { motion, AnimatePresence } from "framer-motion";
 import { Routine, ChecklistItemData } from "@/lib/utils/interfaces";
 import { ChecklistItem } from "@/components/common/checklist-item";
 import useRoutineStore from "@/store/routineStore";
@@ -89,17 +89,17 @@ export const RoutineItem = ({
         console.error("renderChecklistItems received non-array:", items);
         return null;
       }
-      // Recursively render items and their children
+
       return items.map((item) => (
         <React.Fragment key={item.id}>
           <ChecklistItem
             item={item}
             onUpdate={handleUpdateChecklistItem}
-            onDelete={() => {}} // Placeholder - not needed in read-only view
-            onIndent={() => {}} // Placeholder - not needed in read-only view
-            onOutdent={() => {}} // Placeholder - not needed in read-only view
-            onEnter={() => {}} // Placeholder - not needed in read-only view
-            onFocus={() => {}} // Placeholder - not needed in read-only view
+            onDelete={() => {}}
+            onIndent={() => {}}
+            onOutdent={() => {}}
+            onEnter={() => {}}
+            onFocus={() => {}}
             isReadOnly={true}
           />
           {item.children &&
@@ -145,8 +145,8 @@ export const RoutineItem = ({
   const due_date = calculateNextDueDate(start_date, occurence, x_occurence);
   return (
     <motion.div
-      layout // Add layout prop for reordering animation
-      layoutId={id} // Add layoutId for tracking
+      layout
+      layoutId={id}
       variants={{
         hidden: { opacity: 0, y: 20 },
         visible: {
@@ -163,40 +163,36 @@ export const RoutineItem = ({
     >
       <Card
         className={`bg-secondary/60 border transition-colors group ${
-          // Use secondary
           !is_good
-            ? "border-destructive/20 hover:border-destructive/40" // Use destructive
-            : "border-primary/20 hover:border-primary/40" // Use primary
+            ? "border-destructive/20 hover:border-destructive/40"
+            : "border-primary/20 hover:border-primary/40"
         }`}
       >
-        {/* Replicate TaskItem structure */}
         <CardContent className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1 min-w-0">
-            {/* Checkbox for toggling */}
             <Checkbox
               checked={isCompleted}
               onCheckedChange={handleToggle}
               className={`${
                 !is_good
-                  ? "border-destructive/50 data-[state=checked]:bg-destructive data-[state=checked]:border-destructive" // Use destructive
-                  : "border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
+                  ? "border-destructive/50 data-[state=checked]:bg-destructive data-[state=checked]:border-destructive"
+                  : "border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
               }`}
             />
-            {/* Text content */}
+
             <div className="flex flex-col flex-1 min-w-0">
               <span
                 className={`font-medium ${
-                  !is_good ? "text-destructive" : "text-primary" // Use destructive/primary
+                  !is_good ? "text-destructive" : "text-primary"
                 } ${isCompleted ? "line-through opacity-50" : ""}`}
               >
                 {name}
               </span>
-              {/* Show frequency and next due only if not completed */}
+
               {!isCompleted && (
                 <>
                   <span className="text-xs text-info">
                     {" "}
-                    {/* Use info */}
                     Every {x_occurence} {occurence}
                   </span>
                   <span className={`text-xs ${getDeadlineColor(due_date)}`}>
@@ -217,9 +213,8 @@ export const RoutineItem = ({
               )}
             </div>
           </div>
-          {/* Right side actions */}
+
           <div className="flex items-center gap-2">
-            {/* Show Aura badge only when completed */}
             {isCompleted && (
               <motion.div
                 initial={{ scale: 0, opacity: 0 }}
@@ -230,47 +225,43 @@ export const RoutineItem = ({
                   variant="outline"
                   className={`${
                     !is_good
-                      ? "bg-destructive/10 border-destructive/30 text-destructive" // Use destructive
-                      : "bg-primary/10 border-primary/30 text-primary" // Use primary
+                      ? "bg-destructive/10 border-destructive/30 text-destructive"
+                      : "bg-primary/10 border-primary/30 text-primary"
                   }`}
                 >
                   {is_good ? "+" : "-"}
-                  {Math.abs(aura)} Aura {/* Ensure aura is positive */}
+                  {Math.abs(aura)} Aura {}
                 </Badge>
-                {is_good && <Sparkles className="h-4 w-4 text-primary/50" />}{" "}
-                {/* Use primary */}
+                {is_good && <Sparkles className="h-4 w-4 text-primary/50" />} {}
               </motion.div>
             )}
 
-            {/* Edit Button */}
             {onEdit && !isCompleted && (
               <Button
                 onClick={onEdit}
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity" // Use foreground
+                className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <Pencil className="h-4 w-4" />
               </Button>
             )}
 
-            {/* Delete Button */}
             <Button
               variant="ghost"
               size="icon"
-              className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity" // Use destructive
+              className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive opacity-0 group-hover:opacity-100 transition-opacity"
               onClick={handleDelete}
             >
               <Trash2 className="h-4 w-4" />
             </Button>
 
-            {/* Checklist Toggle Button */}
             {checklistState && checklistState.length > 0 && (
               <Button
                 onClick={() => setShowChecklist(!showChecklist)}
                 variant="ghost"
                 size="icon"
-                className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity" // Use foreground
+                className="h-7 w-7 p-0 text-muted-foreground hover:text-foreground opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <ListChecks className="h-4 w-4" />
               </Button>
@@ -278,23 +269,20 @@ export const RoutineItem = ({
           </div>
         </CardContent>
 
-        {/* Checklist Section */}
         <AnimatePresence>
           {showChecklist && checklistState && checklistState.length > 0 && (
             <motion.div
-              key="checklist" // Add key for AnimatePresence
+              key="checklist"
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.2 }} // Simple transition
-              className="px-4 pb-4 pt-0 overflow-hidden" // Removed layout={false}
+              transition={{ duration: 0.2 }}
+              className="px-4 pb-4 pt-0 overflow-hidden"
             >
               <div className="border-t border-primary/20 pt-3 mt-2 space-y-2">
                 {" "}
-                {/* Use primary */}
                 <h4 className="text-sm font-medium text-primary/80 mb-2">
                   {" "}
-                  {/* Use primary */}
                   Checklist
                 </h4>
                 <div className="space-y-1">

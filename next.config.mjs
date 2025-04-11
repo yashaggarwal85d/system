@@ -1,9 +1,7 @@
 let userConfig = undefined;
 try {
-  userConfig = await import('./v0-user-next.config');
-} catch (e) {
-  // ignore error
-}
+  userConfig = await import("./v0-user-next.config");
+} catch (e) {}
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -22,7 +20,7 @@ const nextConfig = {
     parallelServerCompiles: true,
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
+    removeConsole: process.env.NODE_ENV === "production",
   },
 };
 
@@ -35,7 +33,7 @@ function mergeConfig(nextConfig, userConfig) {
 
   for (const key in userConfig) {
     if (
-      typeof nextConfig[key] === 'object' &&
+      typeof nextConfig[key] === "object" &&
       !Array.isArray(nextConfig[key])
     ) {
       nextConfig[key] = {

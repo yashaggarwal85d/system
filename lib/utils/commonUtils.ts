@@ -83,10 +83,10 @@ export const getDaysRemaining = (date: string): number => {
 
 export const getDeadlineColor = (date: string): string => {
   const daysRemaining = getDaysRemaining(date);
-  if (daysRemaining === null) return "text-primary/70"; // Use primary with opacity
-  if (daysRemaining < 0) return "text-destructive"; // Use destructive
-  if (daysRemaining <= 3) return "text-warning"; // Use warning
-  return "text-success"; // Use success
+  if (daysRemaining === null) return "text-primary/70"; 
+  if (daysRemaining < 0) return "text-destructive"; 
+  if (daysRemaining <= 3) return "text-warning"; 
+  return "text-success"; 
 };
 
 export const getDeadlineText = (deadline: string): string => {
@@ -105,10 +105,10 @@ export const getRefreshColor = (
   const daysRemaining = getDaysRemaining(
     calculateNextDueDate(start_date, occurence, x_occurence)
   );
-  if (daysRemaining === null) return "text-primary/70"; // Use primary with opacity
-  if (daysRemaining < 0) return "text-destructive"; // Use destructive
-  if (daysRemaining <= 3) return "text-warning"; // Use warning
-  return "text-success"; // Use success
+  if (daysRemaining === null) return "text-primary/70"; 
+  if (daysRemaining < 0) return "text-destructive"; 
+  if (daysRemaining <= 3) return "text-warning"; 
+  return "text-success"; 
 };
 
 export const getRefreshText = (

@@ -60,33 +60,29 @@ const HabitForm: React.FC<HabitFormProps> = ({
   return (
     <Card className="w-full max-w-md bg-secondary/95 border-primary/20">
       {" "}
-      {/* Use theme colors */}
       <CardContent className="p-6">
         <h3 className="text-xl font-bold text-primary mb-4">
           {" "}
-          {/* Use primary */}
           {editingHabit ? "Edit Habit" : "Add Habit"}
         </h3>
 
         <div className="space-y-4">
           <div className="flex flex-col gap-2">
-            <span className="text-primary">Name:</span> {/* Use primary */}
+            <span className="text-primary">Name:</span> {}
             <Input
               value={habitText}
               onChange={(e) => {
                 setError(null);
                 setHabitText(e.target.value);
               }}
-              className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" // Use theme colors
+              className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30"
             />
           </div>
 
           <div className="flex flex-col gap-2">
-            <span className="text-primary">Repeat Every:</span>{" "}
-            {/* Use primary */}
+            <span className="text-primary">Repeat Every:</span> {}
             <div className="flex items-center gap-2 p-2 rounded border border-primary/20 bg-secondary/60 justify-center">
               {" "}
-              {/* Use theme colors */}
               <NumberWheelPicker
                 label="Value"
                 value={habitConfig.value}
@@ -101,8 +97,6 @@ const HabitForm: React.FC<HabitFormProps> = ({
             </div>
           </div>
 
-          {/* Removed TimePicker section */}
-
           <div className="flex items-center gap-2 justify-center">
             <Checkbox
               id="good-habit-checkbox"
@@ -110,14 +104,12 @@ const HabitForm: React.FC<HabitFormProps> = ({
               onCheckedChange={(checked) =>
                 handleConfigChange("isGoodHabit", checked as boolean)
               }
-              className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
+              className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
             />
             <label htmlFor="good-habit-checkbox" className="text-primary">
               {" "}
-              {/* Use primary */}
               Good habit
             </label>{" "}
-            {/* Use label */}
           </div>
         </div>
 
@@ -130,13 +122,13 @@ const HabitForm: React.FC<HabitFormProps> = ({
         <div className="flex justify-end gap-2 mt-6">
           <Button
             onClick={handleCancel}
-            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50"
           >
             Cancel
           </Button>
           <Button
             onClick={handleSaveHabit}
-            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50"
           >
             {editingHabit ? "Save Changes" : "Add Habit"}
           </Button>

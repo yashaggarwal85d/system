@@ -1,71 +1,57 @@
-// lib/utils/colors.ts
-
-// Object containing all theme values, including non-color config
 export const colors = {
-  // Core palette based on globals.css HSL values
-  background: "#1a1a1a", // ~ hsl(220 25% 4%)
-  foreground: "#f5f5f5", // ~ hsl(198 95% 95%)
+  background: "#0d0d0d",
+  foreground: "#f0f0f0",
 
   primary: {
-    // Corresponds to original --primary, --accent, --ring
-    DEFAULT: "#4adef6", // ~ hsl(198 95% 65%) - Using a hex closer to the HSL
-    foreground: "#1a1a1a", // ~ hsl(220 25% 4%) - Matches original --primary-foreground
+    DEFAULT: "#3abff8",
+    foreground: "#0d0d0d",
   },
   secondary: {
-    // Corresponds to original --secondary, --muted, --border, --input
-    DEFAULT: "#21262d", // ~ hsl(220 25% 8%) - Using a hex closer to the HSL
-    foreground: "#f5f5f5", // ~ hsl(198 95% 95%) - Matches original --secondary-foreground
+    DEFAULT: "#1e293b",
+    foreground: "#f0f0f0",
   },
   muted: {
-    // Explicitly defined based on original --muted
-    DEFAULT: "#21262d", // ~ hsl(220 25% 8%)
-    foreground: "#4adef6", // ~ hsl(198 95% 65%) - Matches original --muted-foreground
+    DEFAULT: "#334155",
+    foreground: "#94a3b8",
   },
   accent: {
-    // Explicitly defined based on original --accent
-    DEFAULT: "#4adef6", // ~ hsl(198 95% 65%)
-    foreground: "#1a1a1a", // ~ hsl(220 25% 4%)
+    DEFAULT: "#7dd3fc",
+    foreground: "#0d0d0d",
   },
   destructive: {
-    DEFAULT: "#f87171", // ~ hsl(0 84.2% 60.2%) - Using a hex closer to the HSL
-    foreground: "#f8fafc", // ~ hsl(210 40% 98%) - Using a hex closer to the HSL
+    DEFAULT: "#ef4444",
+    foreground: "#fef2f2",
   },
   success: {
-    // Added for success messages (e.g., green-500)
     DEFAULT: "#22c55e",
-    foreground: "#f5f5f5",
+    foreground: "#f0fdf4",
   },
   warning: {
-    // Added for warning messages (e.g., yellow-500)
     DEFAULT: "#eab308",
-    foreground: "#1a1a1a",
+    foreground: "#fefce8",
   },
   info: {
-    // Added for informational messages (e.g., orange-500)
-    DEFAULT: "#f97316",
-    foreground: "#f5f5f5",
+    DEFAULT: "#38bdf8",
+    foreground: "#f0f9ff",
   },
-  border: "#21262d", // ~ hsl(220 25% 8%)
-  input: "#21262d", // ~ hsl(220 25% 8%)
-  ring: "#4adef6", // ~ hsl(198 95% 65%)
+  border: "#1f2937",
+  input: "#1e293b",
+  ring: "#38bdf8",
 
-  // Shadcn UI specific names - mapping to the core palette
   card: {
-    DEFAULT: "#1a1a1a", // Uses background
-    foreground: "#f5f5f5", // Uses foreground
+    DEFAULT: "#111827",
+    foreground: "#f0f0f0",
   },
   popover: {
-    DEFAULT: "#1a1a1a", // Uses background
-    foreground: "#f5f5f5", // Uses foreground
+    DEFAULT: "#1f2937",
+    foreground: "#f0f0f0",
   },
 
-  // Swirl effect specific colors/values
-  swirlBackground: "#100d1a", // ~ hsla(260, 40%, 5%, 1)
-  swirlParticleBaseHue: 120,
-  swirlParticleHueRange: 50,
+  swirlBackground: "#0b0a13",
+  swirlParticleBaseHue: 200,
+  swirlParticleHueRange: 40,
 };
 
-// Separate object specifically for Tailwind config, containing only color strings
 export const tailwindColors = {
   background: colors.background,
   foreground: colors.foreground,
@@ -82,8 +68,7 @@ export const tailwindColors = {
   ring: colors.ring,
   card: colors.card,
   popover: colors.popover,
-  swirlBackground: colors.swirlBackground, // Include swirl background color
-  // Exclude swirlParticleBaseHue and swirlParticleHueRange as they are numbers
+  swirlBackground: colors.swirlBackground,
 };
 
 export type ColorTheme = typeof colors;

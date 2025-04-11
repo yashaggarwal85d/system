@@ -9,7 +9,7 @@ import { PeriodWheelPicker } from "@/components/common/period-wheel-picker";
 import { Routine, ChecklistItemData } from "@/lib/utils/interfaces";
 import { Trash2, Plus } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
-import { ChecklistItem, ChecklistItemHandle } from "../common/checklist-item"; // Import handle type
+import { ChecklistItem, ChecklistItemHandle } from "../common/checklist-item";
 import { Reorder, useDragControls } from "framer-motion";
 
 interface RoutineFormProps {
@@ -388,35 +388,29 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
   return (
     <Card className="w-full max-w-md bg-secondary/95 border-primary/20">
       {" "}
-      {/* Use theme colors */}
       <CardContent className="p-6">
         <h3 className="text-xl font-bold text-primary mb-4">
           {" "}
-          {/* Use primary */}
           {editingRoutine ? "Edit Routine" : "Add Routine"}
         </h3>
 
         <div className="space-y-4">
-          {/* Name Input */}
           <div className="flex flex-col gap-2">
-            <span className="text-primary">Name:</span> {/* Use primary */}
+            <span className="text-primary">Name:</span> {}
             <Input
               value={routineText}
               onChange={(e) => {
                 setError(null);
                 setRoutineText(e.target.value);
               }}
-              className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" // Use theme colors
+              className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30"
             />
           </div>
 
-          {/* Repeat Every Section */}
           <div className="flex flex-col gap-2">
-            <span className="text-primary">Repeat Every:</span>{" "}
-            {/* Use primary */}
+            <span className="text-primary">Repeat Every:</span> {}
             <div className="flex items-center gap-2 p-2 rounded border border-primary/20 bg-secondary/60 justify-center">
               {" "}
-              {/* Use theme colors */}
               <NumberWheelPicker
                 label="Value"
                 value={routineConfig.value}
@@ -431,16 +425,14 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
             </div>
           </div>
 
-          {/* Checklist Section */}
           <div className="flex flex-col gap-2">
-            <span className="text-primary">Checklist:</span> {/* Use primary */}
-            {/* Input for adding new items */}
+            <span className="text-primary">Checklist:</span>
             <div className="flex gap-2">
               <Input
                 value={newItemText}
                 onChange={(e) => setNewItemText(e.target.value)}
                 placeholder="Add checklist item..."
-                className="flex-grow bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" // Use theme colors
+                className="flex-grow bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30"
                 onKeyDown={(e) => {
                   if (
                     e.key === "Enter" &&
@@ -448,8 +440,7 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
                     !e.ctrlKey &&
                     !e.metaKey
                   ) {
-                    // Ensure only Enter adds item
-                    e.preventDefault(); // Prevent potential form submission or newline in input
+                    e.preventDefault();
                     handleAddChecklistItem();
                   }
                 }}
@@ -458,7 +449,7 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
                 onClick={handleAddChecklistItem}
                 size="icon"
                 variant="ghost"
-                className="text-primary hover:bg-primary/20" // Use primary
+                className="text-primary hover:bg-primary/20"
               >
                 <Plus size={18} />
               </Button>
@@ -493,11 +484,10 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
               onCheckedChange={(checked) =>
                 handleConfigChange("isGoodRoutine", checked as boolean)
               }
-              className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
+              className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
             />
             <label htmlFor="good-routine-checkbox" className="text-primary">
               {" "}
-              {/* Use primary */}
               Good routine
             </label>
           </div>
@@ -512,13 +502,13 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
         <div className="flex justify-end gap-2 mt-6">
           <Button
             onClick={handleCancel}
-            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50"
           >
             Cancel
           </Button>
           <Button
             onClick={onSave}
-            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50" // Use theme colors
+            className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50"
           >
             {editingRoutine ? "Save Changes" : "Add Routine"}
           </Button>

@@ -7,7 +7,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
 } from "react";
-import { motion, Reorder } from "framer-motion"; // Added Reorder back
+import { motion, Reorder } from "framer-motion";
 import { Checkbox } from "@/components/common/checkbox";
 import { cn } from "@/lib/utils/commonUtils";
 
@@ -113,21 +113,19 @@ export const ChecklistItem = forwardRef<
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
       >
-        {/* Inner content remains the same */}
         <motion.div
           className={cn("group flex items-start gap-2 py-1", {
             "ml-6": item.level > 0,
           })}
           style={{ marginLeft: `${(item.level || 0) * 1.5}rem` }}
         >
-          {/* Checkbox and Aura */}
           <div className="flex items-center gap-2">
             <Checkbox
               checked={item.completed}
               onCheckedChange={(checked) =>
                 onUpdate(item.id, { completed: !!checked })
               }
-              className="mt-1 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
+              className="mt-1 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
             />
             {lastCompletedAura !== undefined && (
               <motion.span
@@ -166,14 +164,14 @@ export const ChecklistItem = forwardRef<
             }
             onKeyDown={handleKeyDown}
             className={cn(
-              "flex-1 outline-none break-words min-h-[1.5em] text-primary", // Use primary
-              !isReadOnly && "focus:ring-1 focus:ring-primary/30 rounded px-1", // Use primary
+              "flex-1 outline-none break-words min-h-[1.5em] text-primary",
+              !isReadOnly && "focus:ring-1 focus:ring-primary/30 rounded px-1",
               { "line-through opacity-50": item.completed },
               isReadOnly && "cursor-default"
             )}
             style={isReadOnly ? { userSelect: "none" } : {}}
           ></div>
-          {/* Drag Handle (Hidden in read-only) */}
+
           {!isReadOnly && (
             <div
               className="opacity-0 group-hover:opacity-100 transition-opacity cursor-move"
@@ -193,21 +191,19 @@ export const ChecklistItem = forwardRef<
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
       >
-        {/* Inner content remains the same */}
         <motion.div
           className={cn("group flex items-start gap-2 py-1", {
             "ml-6": item.level > 0,
           })}
           style={{ marginLeft: `${(item.level || 0) * 1.5}rem` }}
         >
-          {/* Checkbox and Aura */}
           <div className="flex items-center gap-2">
             <Checkbox
               checked={item.completed}
               onCheckedChange={(checked) =>
                 onUpdate(item.id, { completed: !!checked })
               }
-              className="mt-1 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
+              className="mt-1 border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
             />
             {lastCompletedAura !== undefined && (
               <motion.span
@@ -246,15 +242,15 @@ export const ChecklistItem = forwardRef<
             }
             onKeyDown={handleKeyDown}
             className={cn(
-              "flex-1 outline-none break-words min-h-[1.5em] text-primary", // Use primary
-              !isReadOnly && "focus:ring-1 focus:ring-primary/30 rounded px-1", // Use primary
+              "flex-1 outline-none break-words min-h-[1.5em] text-primary",
+              !isReadOnly && "focus:ring-1 focus:ring-primary/30 rounded px-1",
               { "line-through opacity-50": item.completed },
               isReadOnly && "cursor-default"
             )}
             style={isReadOnly ? { userSelect: "none" } : {}}
           ></div>
           <div
-            className="opacity-0 group-hover:opacity-100 transition-opacity cursor-move touch-none" // Added touch-none
+            className="opacity-0 group-hover:opacity-100 transition-opacity cursor-move touch-none"
             onPointerDown={(e) => dragControls?.start(e)}
             style={{ touchAction: "none" }}
           >

@@ -18,7 +18,7 @@ export const PeriodWheelPicker = ({
         onChange={(e) =>
           onChange(e.target.value as "days" | "weeks" | "months")
         }
-        className="bg-transparent text-primary text-center appearance-none focus:outline-none" // Use primary
+        className="bg-transparent text-primary text-center appearance-none focus:outline-none"
       >
         {periods.map((p) => (
           <option key={p} value={p}>
@@ -26,8 +26,7 @@ export const PeriodWheelPicker = ({
           </option>
         ))}
       </select>
-      <span className="text-xs text-primary/50">Period</span>{" "}
-      {/* Use primary */}
+      <span className="text-xs text-primary/50">Period</span> {}
     </div>
   );
 };

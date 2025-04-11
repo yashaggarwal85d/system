@@ -119,10 +119,9 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
             A random insight from the knowledge vault.
           </DialogDescription>
         </DialogHeader>
-        {/* Apply explicit calculated height and force overflow */}
+
         <ScrollArea className="my-4 pr-4 h-[calc(80vh-8rem)] overflow-y-auto">
           {" "}
-          {/* Added overflow-y-auto */}
           {isLoading && (
             <p className="text-center text-primary/80">Loading content...</p>
           )}
@@ -132,7 +131,6 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
           {vaultData && !isLoading && !error && (
             <div className="markdown-content text-foreground/90">
               {" "}
-              {/* Added markdown-content class */}
               <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw]}
@@ -147,7 +145,7 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
                           className="markdown-content-link text-primary hover:underline"
                           title={title}
                         >
-                          Video Link 🎬 {/* Or simply use alt: {alt} */}
+                          Video Link 🎬 {}
                         </a>
                       );
                     }
@@ -179,7 +177,6 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
             </div>
           )}
         </ScrollArea>
-        {/* DialogFooter removed */}
       </DialogContent>
     </Dialog>
   );

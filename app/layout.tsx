@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "../styles/globals.css"; // Updated import path
+import "../styles/globals.css"; 
 import SessionProviderWrapper from "@/components/providers/SessionProviderWrapper";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import SwirlBackground from "@/components/common/SwirlBackground";

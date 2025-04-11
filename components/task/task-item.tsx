@@ -58,18 +58,16 @@ export const TaskItem = ({
     >
       <Card className="bg-secondary/60 border-primary/20 hover:border-primary/40 transition-colors group">
         {" "}
-        {/* Use theme colors */}
         <CardContent className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1 min-w-0">
             <Checkbox
               checked={completed}
               onCheckedChange={handleToggle}
-              className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary" // Use primary
+              className="border-primary/50 data-[state=checked]:bg-primary data-[state=checked]:border-primary"
             />
             <div className="flex flex-col flex-1 min-w-0">
               <span
                 className={`text-primary ${
-                  // Use primary
                   completed ? "line-through opacity-50" : ""
                 }`}
               >
@@ -77,7 +75,7 @@ export const TaskItem = ({
               </span>
               {!completed && due_date && (
                 <span className={`text-xs ${getDeadlineColor()}`}>
-                  {getDeadlineText()} {/* Use due_date */}
+                  {getDeadlineText()} {}
                 </span>
               )}
             </div>
@@ -86,7 +84,7 @@ export const TaskItem = ({
             {onEdit && !completed && id && (
               <Button
                 onClick={() => onEdit()}
-                className="h-8 w-8 p-0 bg-primary/20 hover:bg-primary/30 border-primary/50 text-primary" // Use primary
+                className="h-8 w-8 p-0 bg-primary/20 hover:bg-primary/30 border-primary/50 text-primary"
               >
                 <Pencil className="h-4 w-4" />
               </Button>
@@ -99,12 +97,11 @@ export const TaskItem = ({
               >
                 <Badge
                   variant="outline"
-                  className="bg-primary/10 border-primary/30 text-primary" // Use primary
+                  className="bg-primary/10 border-primary/30 text-primary"
                 >
                   +{aura} Aura
                 </Badge>
-                <Sparkles className="h-4 w-4 text-primary animate-pulse" />{" "}
-                {/* Use primary */}
+                <Sparkles className="h-4 w-4 text-primary animate-pulse" /> {}
               </motion.div>
             )}
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

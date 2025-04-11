@@ -23,7 +23,6 @@ export const TimePicker: React.FC<TimePickerProps> = ({ value, onChange }) => {
   return (
     <div className="flex items-center gap-2 bg-secondary/60 border border-primary/20 rounded-lg p-2">
       {" "}
-      {/* Use theme colors */}
       <div className="flex flex-col items-center">
         <select
           value={hoursStr}
@@ -33,7 +32,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({ value, onChange }) => {
             const currentMinutesStr = minutes.toString().padStart(2, "0");
             onChange(`${newHours}:${currentMinutesStr}`);
           }}
-          className="bg-transparent text-primary text-center appearance-none focus:outline-none cursor-pointer" // Use primary
+          className="bg-transparent text-primary text-center appearance-none focus:outline-none cursor-pointer"
         >
           {hoursList.map((h) => (
             <option key={h} value={h}>
@@ -41,10 +40,9 @@ export const TimePicker: React.FC<TimePickerProps> = ({ value, onChange }) => {
             </option>
           ))}
         </select>
-        <span className="text-xs text-primary/50">Hours</span>{" "}
-        {/* Use primary */}
+        <span className="text-xs text-primary/50">Hours</span> {}
       </div>
-      <span className="text-primary text-xl">:</span> {/* Use primary */}
+      <span className="text-primary text-xl">:</span> {}
       <div className="flex flex-col items-center">
         <select
           value={minutesStr}
@@ -54,7 +52,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({ value, onChange }) => {
             const currentHoursStr = hours.toString().padStart(2, "0");
             onChange(`${currentHoursStr}:${newMinutes}`);
           }}
-          className="bg-transparent text-primary text-center appearance-none focus:outline-none cursor-pointer" // Use primary
+          className="bg-transparent text-primary text-center appearance-none focus:outline-none cursor-pointer"
         >
           {minutesList.map((m) => (
             <option key={m} value={m}>
@@ -62,8 +60,7 @@ export const TimePicker: React.FC<TimePickerProps> = ({ value, onChange }) => {
             </option>
           ))}
         </select>
-        <span className="text-xs text-primary/50">Minutes</span>{" "}
-        {/* Use primary */}
+        <span className="text-xs text-primary/50">Minutes</span> {}
       </div>
     </div>
   );

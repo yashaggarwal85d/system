@@ -47,7 +47,6 @@ const AuthForm = () => {
       formData.append("password", password);
 
       const response = await fetch("http://localhost:8000/players/login", {
-        // TODO: Use env variable
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -152,7 +151,6 @@ const AuthForm = () => {
           <TabsTrigger value="signup">Sign Up</TabsTrigger>
         </TabsList>
 
-        {/* Login Tab */}
         <TabsContent value="login">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
@@ -200,7 +198,6 @@ const AuthForm = () => {
           </form>
         </TabsContent>
 
-        {/* Signup Tab */}
         <TabsContent value="signup">
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
