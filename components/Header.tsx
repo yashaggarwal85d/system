@@ -8,7 +8,7 @@ const Header: React.FC = () => {
     return null;
   }
 
-  const progressPercentage = playerAura / (playerLevel + 1);
+  const progressPercentage = playerAura / playerLevel;
 
   return (
     <Card className="mb-8 border-none bg-transparent shadow-none">

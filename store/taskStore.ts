@@ -64,7 +64,6 @@ const taskStoreCreator: StateCreator<TaskState> = (set, get) => ({
   updateTask: async (id, task) => {
     try {
       const updatedTask = await updateEntityAPI<Task>("tasks", id, task);
-      console.log(updatedTask);
       set((state) => ({
         tasks: state.tasks.map((t) =>
           t.id === id

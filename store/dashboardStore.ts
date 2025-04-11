@@ -1,6 +1,10 @@
 import { create, StateCreator } from "zustand";
 import { Player, PlayerFullInfo } from "@/lib/utils/interfaces";
-import { fetchPlayerFullInfoAPI } from "@/lib/utils/apiUtils";
+import {
+  fetchPlayerFullInfoAPI,
+  updateEntityAPI,
+  updatePlayer,
+} from "@/lib/utils/apiUtils";
 import useTaskStore from "./taskStore";
 import useHabitStore from "./habitStore";
 import useRoutineStore from "./routineStore";
@@ -48,17 +52,22 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
 
   modifyAura: async (amount) => {
     const currentPlayer = get().player;
-    if (!currentPlayer) return;
+    if (!currentPlayer || !currentPlayer.username) return;
 
-    let optimisticPlayer = { ...currentPlayer };
-    const newAura = optimisticPlayer.aura + amount;
-    if (newAura >= optimisticPlayer.level * 100) {
-      optimisticPlayer.level += 1;
-      optimisticPlayer.description =
-        optimisticPlayer.description + "," + "You have levelled up!";
+    const newAura = currentPlayer.aura + amount;
+    let newPlayer: Partial<Player> = {
+      aura: newAura,
+    };
+    if (newAura >= currentPlayer.level * 100) {
+      newPlayer = {
+        ...newPlayer,
+        level: currentPlayer.level + 1,
+        description: " You are now level " + (currentPlayer.level + 1),
+      };
     }
-    optimisticPlayer.aura = newAura;
-    set({ player: optimisticPlayer });
+    set({ player: { ...currentPlayer, ...newPlayer } });
+    console.log(newAura, get().player);
+    await updatePlayer({ ...newPlayer });
   },
 });
 

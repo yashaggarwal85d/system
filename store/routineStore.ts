@@ -47,7 +47,6 @@ const RoutineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
       ...routine,
       checklist: stringToChecklist(routine.checklist.toString()),
     }));
-    console.log(routines);
     set({ Routines: routines, isLoading: false });
   },
   addRoutine: async (

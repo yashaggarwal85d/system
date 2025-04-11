@@ -1,6 +1,3 @@
-Fix refresh
-Aura calculation
-    Aura will keep on dicreasing until an overdue item is marked completed (backend)
 smoothness check
 Make theme dynamic and fetch from backend
 Make Login form better
