@@ -1,0 +1,6502 @@
+{
+  "1": {
+    "primary": {
+      "DEFAULT": "#4158d6",
+      "foreground": "#edeef7"
+    },
+    "accent": {
+      "DEFAULT": "#6b51e0",
+      "foreground": "#22194c"
+    },
+    "ring": "#4158d6",
+    "swirlParticleBaseHue": 231,
+    "swirlParticleHueRange": 21
+  },
+  "2": {
+    "primary": {
+      "DEFAULT": "#4641d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8551e0",
+      "foreground": "#2c194c"
+    },
+    "ring": "#4641d6",
+    "swirlParticleBaseHue": 242,
+    "swirlParticleHueRange": 22
+  },
+  "3": {
+    "primary": {
+      "DEFAULT": "#6141d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#a051e0",
+      "foreground": "#35194c"
+    },
+    "ring": "#6141d6",
+    "swirlParticleBaseHue": 253,
+    "swirlParticleHueRange": 23
+  },
+  "4": {
+    "primary": {
+      "DEFAULT": "#7d41d6",
+      "foreground": "#f1edf7"
+    },
+    "accent": {
+      "DEFAULT": "#ba51e0",
+      "foreground": "#3e194c"
+    },
+    "ring": "#7d41d6",
+    "swirlParticleBaseHue": 264,
+    "swirlParticleHueRange": 24
+  },
+  "5": {
+    "primary": {
+      "DEFAULT": "#9841d6",
+      "foreground": "#f3edf7"
+    },
+    "accent": {
+      "DEFAULT": "#d451e0",
+      "foreground": "#48194c"
+    },
+    "ring": "#9841d6",
+    "swirlParticleBaseHue": 275,
+    "swirlParticleHueRange": 25
+  },
+  "6": {
+    "primary": {
+      "DEFAULT": "#b441d6",
+      "foreground": "#f4edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051d2",
+      "foreground": "#4c1947"
+    },
+    "ring": "#b441d6",
+    "swirlParticleBaseHue": 286,
+    "swirlParticleHueRange": 26
+  },
+  "7": {
+    "primary": {
+      "DEFAULT": "#cf41d6",
+      "foreground": "#f6edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051b7",
+      "foreground": "#4c193e"
+    },
+    "ring": "#cf41d6",
+    "swirlParticleBaseHue": 297,
+    "swirlParticleHueRange": 27
+  },
+  "8": {
+    "primary": {
+      "DEFAULT": "#d641c2",
+      "foreground": "#f7edf5"
+    },
+    "accent": {
+      "DEFAULT": "#e0519d",
+      "foreground": "#4c1934"
+    },
+    "ring": "#d641c2",
+    "swirlParticleBaseHue": 308,
+    "swirlParticleHueRange": 28
+  },
+  "9": {
+    "primary": {
+      "DEFAULT": "#d641a7",
+      "foreground": "#f7edf4"
+    },
+    "accent": {
+      "DEFAULT": "#e05183",
+      "foreground": "#4c192b"
+    },
+    "ring": "#d641a7",
+    "swirlParticleBaseHue": 319,
+    "swirlParticleHueRange": 29
+  },
+  "10": {
+    "primary": {
+      "DEFAULT": "#d6418c",
+      "foreground": "#f7edf2"
+    },
+    "accent": {
+      "DEFAULT": "#e05169",
+      "foreground": "#4c1922"
+    },
+    "ring": "#d6418c",
+    "swirlParticleBaseHue": 330,
+    "swirlParticleHueRange": 20
+  },
+  "11": {
+    "primary": {
+      "DEFAULT": "#d64170",
+      "foreground": "#f7edf0"
+    },
+    "accent": {
+      "DEFAULT": "#e05351",
+      "foreground": "#4c1a19"
+    },
+    "ring": "#d64170",
+    "swirlParticleBaseHue": 341,
+    "swirlParticleHueRange": 21
+  },
+  "12": {
+    "primary": {
+      "DEFAULT": "#d64155",
+      "foreground": "#f7edee"
+    },
+    "accent": {
+      "DEFAULT": "#e06e51",
+      "foreground": "#4c2319"
+    },
+    "ring": "#d64155",
+    "swirlParticleBaseHue": 352,
+    "swirlParticleHueRange": 22
+  },
+  "13": {
+    "primary": {
+      "DEFAULT": "#d64941",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e08851",
+      "foreground": "#4c2d19"
+    },
+    "ring": "#d64941",
+    "swirlParticleBaseHue": 3,
+    "swirlParticleHueRange": 23
+  },
+  "14": {
+    "primary": {
+      "DEFAULT": "#d66441",
+      "foreground": "#f7efed"
+    },
+    "accent": {
+      "DEFAULT": "#e0a251",
+      "foreground": "#4c3619"
+    },
+    "ring": "#d66441",
+    "swirlParticleBaseHue": 14,
+    "swirlParticleHueRange": 24
+  },
+  "15": {
+    "primary": {
+      "DEFAULT": "#d67f41",
+      "foreground": "#f7f1ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0bc51",
+      "foreground": "#4c3f19"
+    },
+    "ring": "#d67f41",
+    "swirlParticleBaseHue": 25,
+    "swirlParticleHueRange": 25
+  },
+  "16": {
+    "primary": {
+      "DEFAULT": "#d69b41",
+      "foreground": "#f7f3ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0d651",
+      "foreground": "#4c4919"
+    },
+    "ring": "#d69b41",
+    "swirlParticleBaseHue": 36,
+    "swirlParticleHueRange": 26
+  },
+  "17": {
+    "primary": {
+      "DEFAULT": "#d6b641",
+      "foreground": "#f7f5ed"
+    },
+    "accent": {
+      "DEFAULT": "#cfe051",
+      "foreground": "#464c19"
+    },
+    "ring": "#d6b641",
+    "swirlParticleBaseHue": 47,
+    "swirlParticleHueRange": 27
+  },
+  "18": {
+    "primary": {
+      "DEFAULT": "#d6d141",
+      "foreground": "#f7f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#b5e051",
+      "foreground": "#3d4c19"
+    },
+    "ring": "#d6d141",
+    "swirlParticleBaseHue": 58,
+    "swirlParticleHueRange": 28
+  },
+  "19": {
+    "primary": {
+      "DEFAULT": "#c0d641",
+      "foreground": "#f5f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#9be051",
+      "foreground": "#334c19"
+    },
+    "ring": "#c0d641",
+    "swirlParticleBaseHue": 69,
+    "swirlParticleHueRange": 29
+  },
+  "20": {
+    "primary": {
+      "DEFAULT": "#a5d641",
+      "foreground": "#f3f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#81e051",
+      "foreground": "#2a4c19"
+    },
+    "ring": "#a5d641",
+    "swirlParticleBaseHue": 80,
+    "swirlParticleHueRange": 20
+  },
+  "21": {
+    "primary": {
+      "DEFAULT": "#89d641",
+      "foreground": "#f2f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#67e051",
+      "foreground": "#214c19"
+    },
+    "ring": "#89d641",
+    "swirlParticleBaseHue": 91,
+    "swirlParticleHueRange": 21
+  },
+  "22": {
+    "primary": {
+      "DEFAULT": "#6ed641",
+      "foreground": "#f0f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e056",
+      "foreground": "#194c1b"
+    },
+    "ring": "#6ed641",
+    "swirlParticleBaseHue": 102,
+    "swirlParticleHueRange": 22
+  },
+  "23": {
+    "primary": {
+      "DEFAULT": "#53d641",
+      "foreground": "#eef7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e070",
+      "foreground": "#194c24"
+    },
+    "ring": "#53d641",
+    "swirlParticleBaseHue": 113,
+    "swirlParticleHueRange": 23
+  },
+  "24": {
+    "primary": {
+      "DEFAULT": "#41d64b",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e08a",
+      "foreground": "#194c2d"
+    },
+    "ring": "#41d64b",
+    "swirlParticleBaseHue": 124,
+    "swirlParticleHueRange": 24
+  },
+  "25": {
+    "primary": {
+      "DEFAULT": "#41d666",
+      "foreground": "#edf7ef"
+    },
+    "accent": {
+      "DEFAULT": "#51e0a4",
+      "foreground": "#194c37"
+    },
+    "ring": "#41d666",
+    "swirlParticleBaseHue": 135,
+    "swirlParticleHueRange": 25
+  },
+  "26": {
+    "primary": {
+      "DEFAULT": "#41d682",
+      "foreground": "#edf7f1"
+    },
+    "accent": {
+      "DEFAULT": "#51e0bf",
+      "foreground": "#194c40"
+    },
+    "ring": "#41d682",
+    "swirlParticleBaseHue": 146,
+    "swirlParticleHueRange": 26
+  },
+  "27": {
+    "primary": {
+      "DEFAULT": "#41d69d",
+      "foreground": "#edf7f3"
+    },
+    "accent": {
+      "DEFAULT": "#51e0d9",
+      "foreground": "#194c49"
+    },
+    "ring": "#41d69d",
+    "swirlParticleBaseHue": 157,
+    "swirlParticleHueRange": 27
+  },
+  "28": {
+    "primary": {
+      "DEFAULT": "#41d6b9",
+      "foreground": "#edf7f5"
+    },
+    "accent": {
+      "DEFAULT": "#51cde0",
+      "foreground": "#19454c"
+    },
+    "ring": "#41d6b9",
+    "swirlParticleBaseHue": 168,
+    "swirlParticleHueRange": 28
+  },
+  "29": {
+    "primary": {
+      "DEFAULT": "#41d6d4",
+      "foreground": "#edf7f7"
+    },
+    "accent": {
+      "DEFAULT": "#51b3e0",
+      "foreground": "#193c4c"
+    },
+    "ring": "#41d6d4",
+    "swirlParticleBaseHue": 179,
+    "swirlParticleHueRange": 29
+  },
+  "30": {
+    "primary": {
+      "DEFAULT": "#41bdd6",
+      "foreground": "#edf5f7"
+    },
+    "accent": {
+      "DEFAULT": "#5198e0",
+      "foreground": "#19324c"
+    },
+    "ring": "#41bdd6",
+    "swirlParticleBaseHue": 190,
+    "swirlParticleHueRange": 20
+  },
+  "31": {
+    "primary": {
+      "DEFAULT": "#41a2d6",
+      "foreground": "#edf3f7"
+    },
+    "accent": {
+      "DEFAULT": "#517ee0",
+      "foreground": "#19294c"
+    },
+    "ring": "#41a2d6",
+    "swirlParticleBaseHue": 201,
+    "swirlParticleHueRange": 21
+  },
+  "32": {
+    "primary": {
+      "DEFAULT": "#4187d6",
+      "foreground": "#edf1f7"
+    },
+    "accent": {
+      "DEFAULT": "#5164e0",
+      "foreground": "#19204c"
+    },
+    "ring": "#4187d6",
+    "swirlParticleBaseHue": 212,
+    "swirlParticleHueRange": 22
+  },
+  "33": {
+    "primary": {
+      "DEFAULT": "#416bd6",
+      "foreground": "#edf0f7"
+    },
+    "accent": {
+      "DEFAULT": "#5851e0",
+      "foreground": "#1c194c"
+    },
+    "ring": "#416bd6",
+    "swirlParticleBaseHue": 223,
+    "swirlParticleHueRange": 23
+  },
+  "34": {
+    "primary": {
+      "DEFAULT": "#4150d6",
+      "foreground": "#edeef7"
+    },
+    "accent": {
+      "DEFAULT": "#7251e0",
+      "foreground": "#25194c"
+    },
+    "ring": "#4150d6",
+    "swirlParticleBaseHue": 234,
+    "swirlParticleHueRange": 24
+  },
+  "35": {
+    "primary": {
+      "DEFAULT": "#4e41d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8d51e0",
+      "foreground": "#2e194c"
+    },
+    "ring": "#4e41d6",
+    "swirlParticleBaseHue": 245,
+    "swirlParticleHueRange": 25
+  },
+  "36": {
+    "primary": {
+      "DEFAULT": "#6941d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#a751e0",
+      "foreground": "#38194c"
+    },
+    "ring": "#6941d6",
+    "swirlParticleBaseHue": 256,
+    "swirlParticleHueRange": 26
+  },
+  "37": {
+    "primary": {
+      "DEFAULT": "#8441d6",
+      "foreground": "#f1edf7"
+    },
+    "accent": {
+      "DEFAULT": "#c151e0",
+      "foreground": "#41194c"
+    },
+    "ring": "#8441d6",
+    "swirlParticleBaseHue": 267,
+    "swirlParticleHueRange": 27
+  },
+  "38": {
+    "primary": {
+      "DEFAULT": "#a041d6",
+      "foreground": "#f3edf7"
+    },
+    "accent": {
+      "DEFAULT": "#db51e0",
+      "foreground": "#4a194c"
+    },
+    "ring": "#a041d6",
+    "swirlParticleBaseHue": 278,
+    "swirlParticleHueRange": 28
+  },
+  "39": {
+    "primary": {
+      "DEFAULT": "#bb41d6",
+      "foreground": "#f5edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051ca",
+      "foreground": "#4c1944"
+    },
+    "ring": "#bb41d6",
+    "swirlParticleBaseHue": 289,
+    "swirlParticleHueRange": 29
+  },
+  "40": {
+    "primary": {
+      "DEFAULT": "#d641d6",
+      "foreground": "#f7edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051b0",
+      "foreground": "#4c193b"
+    },
+    "ring": "#d641d6",
+    "swirlParticleBaseHue": 300,
+    "swirlParticleHueRange": 20
+  },
+  "41": {
+    "primary": {
+      "DEFAULT": "#d641bb",
+      "foreground": "#f7edf5"
+    },
+    "accent": {
+      "DEFAULT": "#e05196",
+      "foreground": "#4c1932"
+    },
+    "ring": "#d641bb",
+    "swirlParticleBaseHue": 311,
+    "swirlParticleHueRange": 21
+  },
+  "42": {
+    "primary": {
+      "DEFAULT": "#d641a0",
+      "foreground": "#f7edf3"
+    },
+    "accent": {
+      "DEFAULT": "#e0517c",
+      "foreground": "#4c1928"
+    },
+    "ring": "#d641a0",
+    "swirlParticleBaseHue": 322,
+    "swirlParticleHueRange": 22
+  },
+  "43": {
+    "primary": {
+      "DEFAULT": "#d64184",
+      "foreground": "#f7edf1"
+    },
+    "accent": {
+      "DEFAULT": "#e05162",
+      "foreground": "#4c191f"
+    },
+    "ring": "#d64184",
+    "swirlParticleBaseHue": 333,
+    "swirlParticleHueRange": 23
+  },
+  "44": {
+    "primary": {
+      "DEFAULT": "#d64169",
+      "foreground": "#f7edef"
+    },
+    "accent": {
+      "DEFAULT": "#e05b51",
+      "foreground": "#4c1c19"
+    },
+    "ring": "#d64169",
+    "swirlParticleBaseHue": 344,
+    "swirlParticleHueRange": 24
+  },
+  "45": {
+    "primary": {
+      "DEFAULT": "#d6414e",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e07551",
+      "foreground": "#4c2619"
+    },
+    "ring": "#d6414e",
+    "swirlParticleBaseHue": 355,
+    "swirlParticleHueRange": 25
+  },
+  "46": {
+    "primary": {
+      "DEFAULT": "#d65041",
+      "foreground": "#f7eeed"
+    },
+    "accent": {
+      "DEFAULT": "#e08f51",
+      "foreground": "#4c2f19"
+    },
+    "ring": "#d65041",
+    "swirlParticleBaseHue": 6,
+    "swirlParticleHueRange": 26
+  },
+  "47": {
+    "primary": {
+      "DEFAULT": "#d66b41",
+      "foreground": "#f7f0ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0a951",
+      "foreground": "#4c3819"
+    },
+    "ring": "#d66b41",
+    "swirlParticleBaseHue": 17,
+    "swirlParticleHueRange": 27
+  },
+  "48": {
+    "primary": {
+      "DEFAULT": "#d68741",
+      "foreground": "#f7f1ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0c351",
+      "foreground": "#4c4219"
+    },
+    "ring": "#d68741",
+    "swirlParticleBaseHue": 28,
+    "swirlParticleHueRange": 28
+  },
+  "49": {
+    "primary": {
+      "DEFAULT": "#d6a241",
+      "foreground": "#f7f3ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0de51",
+      "foreground": "#4c4b19"
+    },
+    "ring": "#d6a241",
+    "swirlParticleBaseHue": 39,
+    "swirlParticleHueRange": 29
+  },
+  "50": {
+    "primary": {
+      "DEFAULT": "#d6bd41",
+      "foreground": "#f7f5ed"
+    },
+    "accent": {
+      "DEFAULT": "#c8e051",
+      "foreground": "#434c19"
+    },
+    "ring": "#d6bd41",
+    "swirlParticleBaseHue": 50,
+    "swirlParticleHueRange": 20
+  },
+  "51": {
+    "primary": {
+      "DEFAULT": "#d4d641",
+      "foreground": "#f7f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#aee051",
+      "foreground": "#3a4c19"
+    },
+    "ring": "#d4d641",
+    "swirlParticleBaseHue": 61,
+    "swirlParticleHueRange": 21
+  },
+  "52": {
+    "primary": {
+      "DEFAULT": "#b9d641",
+      "foreground": "#f5f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#94e051",
+      "foreground": "#314c19"
+    },
+    "ring": "#b9d641",
+    "swirlParticleBaseHue": 72,
+    "swirlParticleHueRange": 22
+  },
+  "53": {
+    "primary": {
+      "DEFAULT": "#9dd641",
+      "foreground": "#f3f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#7ae051",
+      "foreground": "#274c19"
+    },
+    "ring": "#9dd641",
+    "swirlParticleBaseHue": 83,
+    "swirlParticleHueRange": 23
+  },
+  "54": {
+    "primary": {
+      "DEFAULT": "#82d641",
+      "foreground": "#f1f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#5fe051",
+      "foreground": "#1e4c19"
+    },
+    "ring": "#82d641",
+    "swirlParticleBaseHue": 94,
+    "swirlParticleHueRange": 24
+  },
+  "55": {
+    "primary": {
+      "DEFAULT": "#66d641",
+      "foreground": "#eff7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e05d",
+      "foreground": "#194c1d"
+    },
+    "ring": "#66d641",
+    "swirlParticleBaseHue": 105,
+    "swirlParticleHueRange": 25
+  },
+  "56": {
+    "primary": {
+      "DEFAULT": "#4bd641",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e077",
+      "foreground": "#194c27"
+    },
+    "ring": "#4bd641",
+    "swirlParticleBaseHue": 116,
+    "swirlParticleHueRange": 26
+  },
+  "57": {
+    "primary": {
+      "DEFAULT": "#41d653",
+      "foreground": "#edf7ee"
+    },
+    "accent": {
+      "DEFAULT": "#51e091",
+      "foreground": "#194c30"
+    },
+    "ring": "#41d653",
+    "swirlParticleBaseHue": 127,
+    "swirlParticleHueRange": 27
+  },
+  "58": {
+    "primary": {
+      "DEFAULT": "#41d66e",
+      "foreground": "#edf7f0"
+    },
+    "accent": {
+      "DEFAULT": "#51e0ac",
+      "foreground": "#194c39"
+    },
+    "ring": "#41d66e",
+    "swirlParticleBaseHue": 138,
+    "swirlParticleHueRange": 28
+  },
+  "59": {
+    "primary": {
+      "DEFAULT": "#41d689",
+      "foreground": "#edf7f2"
+    },
+    "accent": {
+      "DEFAULT": "#51e0c6",
+      "foreground": "#194c43"
+    },
+    "ring": "#41d689",
+    "swirlParticleBaseHue": 149,
+    "swirlParticleHueRange": 29
+  },
+  "60": {
+    "primary": {
+      "DEFAULT": "#41d6a5",
+      "foreground": "#edf7f3"
+    },
+    "accent": {
+      "DEFAULT": "#51e0e0",
+      "foreground": "#194c4c"
+    },
+    "ring": "#41d6a5",
+    "swirlParticleBaseHue": 160,
+    "swirlParticleHueRange": 20
+  },
+  "61": {
+    "primary": {
+      "DEFAULT": "#41d6c0",
+      "foreground": "#edf7f5"
+    },
+    "accent": {
+      "DEFAULT": "#51c6e0",
+      "foreground": "#19434c"
+    },
+    "ring": "#41d6c0",
+    "swirlParticleBaseHue": 171,
+    "swirlParticleHueRange": 21
+  },
+  "62": {
+    "primary": {
+      "DEFAULT": "#41d1d6",
+      "foreground": "#edf7f7"
+    },
+    "accent": {
+      "DEFAULT": "#51ace0",
+      "foreground": "#19394c"
+    },
+    "ring": "#41d1d6",
+    "swirlParticleBaseHue": 182,
+    "swirlParticleHueRange": 22
+  },
+  "63": {
+    "primary": {
+      "DEFAULT": "#41b6d6",
+      "foreground": "#edf5f7"
+    },
+    "accent": {
+      "DEFAULT": "#5191e0",
+      "foreground": "#19304c"
+    },
+    "ring": "#41b6d6",
+    "swirlParticleBaseHue": 193,
+    "swirlParticleHueRange": 23
+  },
+  "64": {
+    "primary": {
+      "DEFAULT": "#419bd6",
+      "foreground": "#edf3f7"
+    },
+    "accent": {
+      "DEFAULT": "#5177e0",
+      "foreground": "#19274c"
+    },
+    "ring": "#419bd6",
+    "swirlParticleBaseHue": 204,
+    "swirlParticleHueRange": 24
+  },
+  "65": {
+    "primary": {
+      "DEFAULT": "#417fd6",
+      "foreground": "#edf1f7"
+    },
+    "accent": {
+      "DEFAULT": "#515de0",
+      "foreground": "#191d4c"
+    },
+    "ring": "#417fd6",
+    "swirlParticleBaseHue": 215,
+    "swirlParticleHueRange": 25
+  },
+  "66": {
+    "primary": {
+      "DEFAULT": "#4164d6",
+      "foreground": "#edeff7"
+    },
+    "accent": {
+      "DEFAULT": "#5f51e0",
+      "foreground": "#1e194c"
+    },
+    "ring": "#4164d6",
+    "swirlParticleBaseHue": 226,
+    "swirlParticleHueRange": 26
+  },
+  "67": {
+    "primary": {
+      "DEFAULT": "#4149d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#7a51e0",
+      "foreground": "#27194c"
+    },
+    "ring": "#4149d6",
+    "swirlParticleBaseHue": 237,
+    "swirlParticleHueRange": 27
+  },
+  "68": {
+    "primary": {
+      "DEFAULT": "#5541d6",
+      "foreground": "#eeedf7"
+    },
+    "accent": {
+      "DEFAULT": "#9451e0",
+      "foreground": "#31194c"
+    },
+    "ring": "#5541d6",
+    "swirlParticleBaseHue": 248,
+    "swirlParticleHueRange": 28
+  },
+  "69": {
+    "primary": {
+      "DEFAULT": "#7041d6",
+      "foreground": "#f0edf7"
+    },
+    "accent": {
+      "DEFAULT": "#ae51e0",
+      "foreground": "#3a194c"
+    },
+    "ring": "#7041d6",
+    "swirlParticleBaseHue": 259,
+    "swirlParticleHueRange": 29
+  },
+  "70": {
+    "primary": {
+      "DEFAULT": "#8c41d6",
+      "foreground": "#f2edf7"
+    },
+    "accent": {
+      "DEFAULT": "#c851e0",
+      "foreground": "#43194c"
+    },
+    "ring": "#8c41d6",
+    "swirlParticleBaseHue": 270,
+    "swirlParticleHueRange": 20
+  },
+  "71": {
+    "primary": {
+      "DEFAULT": "#a741d6",
+      "foreground": "#f4edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051de",
+      "foreground": "#4c194b"
+    },
+    "ring": "#a741d6",
+    "swirlParticleBaseHue": 281,
+    "swirlParticleHueRange": 21
+  },
+  "72": {
+    "primary": {
+      "DEFAULT": "#c241d6",
+      "foreground": "#f5edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051c3",
+      "foreground": "#4c1942"
+    },
+    "ring": "#c241d6",
+    "swirlParticleBaseHue": 292,
+    "swirlParticleHueRange": 22
+  },
+  "73": {
+    "primary": {
+      "DEFAULT": "#d641cf",
+      "foreground": "#f7edf6"
+    },
+    "accent": {
+      "DEFAULT": "#e051a9",
+      "foreground": "#4c1938"
+    },
+    "ring": "#d641cf",
+    "swirlParticleBaseHue": 303,
+    "swirlParticleHueRange": 23
+  },
+  "74": {
+    "primary": {
+      "DEFAULT": "#d641b4",
+      "foreground": "#f7edf4"
+    },
+    "accent": {
+      "DEFAULT": "#e0518f",
+      "foreground": "#4c192f"
+    },
+    "ring": "#d641b4",
+    "swirlParticleBaseHue": 314,
+    "swirlParticleHueRange": 24
+  },
+  "75": {
+    "primary": {
+      "DEFAULT": "#d64198",
+      "foreground": "#f7edf3"
+    },
+    "accent": {
+      "DEFAULT": "#e05175",
+      "foreground": "#4c1926"
+    },
+    "ring": "#d64198",
+    "swirlParticleBaseHue": 325,
+    "swirlParticleHueRange": 25
+  },
+  "76": {
+    "primary": {
+      "DEFAULT": "#d6417d",
+      "foreground": "#f7edf1"
+    },
+    "accent": {
+      "DEFAULT": "#e0515b",
+      "foreground": "#4c191c"
+    },
+    "ring": "#d6417d",
+    "swirlParticleBaseHue": 336,
+    "swirlParticleHueRange": 26
+  },
+  "77": {
+    "primary": {
+      "DEFAULT": "#d64161",
+      "foreground": "#f7edef"
+    },
+    "accent": {
+      "DEFAULT": "#e06251",
+      "foreground": "#4c1f19"
+    },
+    "ring": "#d64161",
+    "swirlParticleBaseHue": 347,
+    "swirlParticleHueRange": 27
+  },
+  "78": {
+    "primary": {
+      "DEFAULT": "#d64146",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e07c51",
+      "foreground": "#4c2819"
+    },
+    "ring": "#d64146",
+    "swirlParticleBaseHue": 358,
+    "swirlParticleHueRange": 28
+  },
+  "79": {
+    "primary": {
+      "DEFAULT": "#d65841",
+      "foreground": "#f7eeed"
+    },
+    "accent": {
+      "DEFAULT": "#e09651",
+      "foreground": "#4c3219"
+    },
+    "ring": "#d65841",
+    "swirlParticleBaseHue": 9,
+    "swirlParticleHueRange": 29
+  },
+  "80": {
+    "primary": {
+      "DEFAULT": "#d67341",
+      "foreground": "#f7f0ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0b051",
+      "foreground": "#4c3b19"
+    },
+    "ring": "#d67341",
+    "swirlParticleBaseHue": 20,
+    "swirlParticleHueRange": 20
+  },
+  "81": {
+    "primary": {
+      "DEFAULT": "#d68e41",
+      "foreground": "#f7f2ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0ca51",
+      "foreground": "#4c4419"
+    },
+    "ring": "#d68e41",
+    "swirlParticleBaseHue": 31,
+    "swirlParticleHueRange": 21
+  },
+  "82": {
+    "primary": {
+      "DEFAULT": "#d6aa41",
+      "foreground": "#f7f4ed"
+    },
+    "accent": {
+      "DEFAULT": "#dbe051",
+      "foreground": "#4a4c19"
+    },
+    "ring": "#d6aa41",
+    "swirlParticleBaseHue": 42,
+    "swirlParticleHueRange": 22
+  },
+  "83": {
+    "primary": {
+      "DEFAULT": "#d6c541",
+      "foreground": "#f7f6ed"
+    },
+    "accent": {
+      "DEFAULT": "#c1e051",
+      "foreground": "#414c19"
+    },
+    "ring": "#d6c541",
+    "swirlParticleBaseHue": 53,
+    "swirlParticleHueRange": 23
+  },
+  "84": {
+    "primary": {
+      "DEFAULT": "#ccd641",
+      "foreground": "#f6f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#a7e051",
+      "foreground": "#384c19"
+    },
+    "ring": "#ccd641",
+    "swirlParticleBaseHue": 64,
+    "swirlParticleHueRange": 24
+  },
+  "85": {
+    "primary": {
+      "DEFAULT": "#b1d641",
+      "foreground": "#f4f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#8de051",
+      "foreground": "#2e4c19"
+    },
+    "ring": "#b1d641",
+    "swirlParticleBaseHue": 75,
+    "swirlParticleHueRange": 25
+  },
+  "86": {
+    "primary": {
+      "DEFAULT": "#96d641",
+      "foreground": "#f2f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#72e051",
+      "foreground": "#254c19"
+    },
+    "ring": "#96d641",
+    "swirlParticleBaseHue": 86,
+    "swirlParticleHueRange": 26
+  },
+  "87": {
+    "primary": {
+      "DEFAULT": "#7ad641",
+      "foreground": "#f1f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#58e051",
+      "foreground": "#1c4c19"
+    },
+    "ring": "#7ad641",
+    "swirlParticleBaseHue": 97,
+    "swirlParticleHueRange": 27
+  },
+  "88": {
+    "primary": {
+      "DEFAULT": "#5fd641",
+      "foreground": "#eff7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e064",
+      "foreground": "#194c20"
+    },
+    "ring": "#5fd641",
+    "swirlParticleBaseHue": 108,
+    "swirlParticleHueRange": 28
+  },
+  "89": {
+    "primary": {
+      "DEFAULT": "#44d641",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e07e",
+      "foreground": "#194c29"
+    },
+    "ring": "#44d641",
+    "swirlParticleBaseHue": 119,
+    "swirlParticleHueRange": 29
+  },
+  "90": {
+    "primary": {
+      "DEFAULT": "#41d65a",
+      "foreground": "#edf7ee"
+    },
+    "accent": {
+      "DEFAULT": "#51e099",
+      "foreground": "#194c33"
+    },
+    "ring": "#41d65a",
+    "swirlParticleBaseHue": 130,
+    "swirlParticleHueRange": 20
+  },
+  "91": {
+    "primary": {
+      "DEFAULT": "#41d675",
+      "foreground": "#edf7f0"
+    },
+    "accent": {
+      "DEFAULT": "#51e0b3",
+      "foreground": "#194c3c"
+    },
+    "ring": "#41d675",
+    "swirlParticleBaseHue": 141,
+    "swirlParticleHueRange": 21
+  },
+  "92": {
+    "primary": {
+      "DEFAULT": "#41d691",
+      "foreground": "#edf7f2"
+    },
+    "accent": {
+      "DEFAULT": "#51e0cd",
+      "foreground": "#194c45"
+    },
+    "ring": "#41d691",
+    "swirlParticleBaseHue": 152,
+    "swirlParticleHueRange": 22
+  },
+  "93": {
+    "primary": {
+      "DEFAULT": "#41d6ac",
+      "foreground": "#edf7f4"
+    },
+    "accent": {
+      "DEFAULT": "#51d9e0",
+      "foreground": "#19494c"
+    },
+    "ring": "#41d6ac",
+    "swirlParticleBaseHue": 163,
+    "swirlParticleHueRange": 23
+  },
+  "94": {
+    "primary": {
+      "DEFAULT": "#41d6c7",
+      "foreground": "#edf7f6"
+    },
+    "accent": {
+      "DEFAULT": "#51bfe0",
+      "foreground": "#19404c"
+    },
+    "ring": "#41d6c7",
+    "swirlParticleBaseHue": 174,
+    "swirlParticleHueRange": 24
+  },
+  "95": {
+    "primary": {
+      "DEFAULT": "#41cad6",
+      "foreground": "#edf6f7"
+    },
+    "accent": {
+      "DEFAULT": "#51a4e0",
+      "foreground": "#19374c"
+    },
+    "ring": "#41cad6",
+    "swirlParticleBaseHue": 185,
+    "swirlParticleHueRange": 25
+  },
+  "96": {
+    "primary": {
+      "DEFAULT": "#41afd6",
+      "foreground": "#edf4f7"
+    },
+    "accent": {
+      "DEFAULT": "#518ae0",
+      "foreground": "#192d4c"
+    },
+    "ring": "#41afd6",
+    "swirlParticleBaseHue": 196,
+    "swirlParticleHueRange": 26
+  },
+  "97": {
+    "primary": {
+      "DEFAULT": "#4193d6",
+      "foreground": "#edf2f7"
+    },
+    "accent": {
+      "DEFAULT": "#5170e0",
+      "foreground": "#19244c"
+    },
+    "ring": "#4193d6",
+    "swirlParticleBaseHue": 207,
+    "swirlParticleHueRange": 27
+  },
+  "98": {
+    "primary": {
+      "DEFAULT": "#4178d6",
+      "foreground": "#edf0f7"
+    },
+    "accent": {
+      "DEFAULT": "#5156e0",
+      "foreground": "#191b4c"
+    },
+    "ring": "#4178d6",
+    "swirlParticleBaseHue": 218,
+    "swirlParticleHueRange": 28
+  },
+  "99": {
+    "primary": {
+      "DEFAULT": "#415dd6",
+      "foreground": "#edeff7"
+    },
+    "accent": {
+      "DEFAULT": "#6751e0",
+      "foreground": "#21194c"
+    },
+    "ring": "#415dd6",
+    "swirlParticleBaseHue": 229,
+    "swirlParticleHueRange": 29
+  },
+  "100": {
+    "primary": {
+      "DEFAULT": "#4141d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8151e0",
+      "foreground": "#2a194c"
+    },
+    "ring": "#4141d6",
+    "swirlParticleBaseHue": 240,
+    "swirlParticleHueRange": 20
+  },
+  "101": {
+    "primary": {
+      "DEFAULT": "#5d41d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#9b51e0",
+      "foreground": "#33194c"
+    },
+    "ring": "#5d41d6",
+    "swirlParticleBaseHue": 251,
+    "swirlParticleHueRange": 21
+  },
+  "102": {
+    "primary": {
+      "DEFAULT": "#7841d6",
+      "foreground": "#f0edf7"
+    },
+    "accent": {
+      "DEFAULT": "#b551e0",
+      "foreground": "#3d194c"
+    },
+    "ring": "#7841d6",
+    "swirlParticleBaseHue": 262,
+    "swirlParticleHueRange": 22
+  },
+  "103": {
+    "primary": {
+      "DEFAULT": "#9341d6",
+      "foreground": "#f2edf7"
+    },
+    "accent": {
+      "DEFAULT": "#cf51e0",
+      "foreground": "#46194c"
+    },
+    "ring": "#9341d6",
+    "swirlParticleBaseHue": 273,
+    "swirlParticleHueRange": 23
+  },
+  "104": {
+    "primary": {
+      "DEFAULT": "#af41d6",
+      "foreground": "#f4edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051d6",
+      "foreground": "#4c1949"
+    },
+    "ring": "#af41d6",
+    "swirlParticleBaseHue": 284,
+    "swirlParticleHueRange": 24
+  },
+  "105": {
+    "primary": {
+      "DEFAULT": "#ca41d6",
+      "foreground": "#f6edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051bc",
+      "foreground": "#4c193f"
+    },
+    "ring": "#ca41d6",
+    "swirlParticleBaseHue": 295,
+    "swirlParticleHueRange": 25
+  },
+  "106": {
+    "primary": {
+      "DEFAULT": "#d641c7",
+      "foreground": "#f7edf6"
+    },
+    "accent": {
+      "DEFAULT": "#e051a2",
+      "foreground": "#4c1936"
+    },
+    "ring": "#d641c7",
+    "swirlParticleBaseHue": 306,
+    "swirlParticleHueRange": 26
+  },
+  "107": {
+    "primary": {
+      "DEFAULT": "#d641ac",
+      "foreground": "#f7edf4"
+    },
+    "accent": {
+      "DEFAULT": "#e05188",
+      "foreground": "#4c192d"
+    },
+    "ring": "#d641ac",
+    "swirlParticleBaseHue": 317,
+    "swirlParticleHueRange": 27
+  },
+  "108": {
+    "primary": {
+      "DEFAULT": "#d64191",
+      "foreground": "#f7edf2"
+    },
+    "accent": {
+      "DEFAULT": "#e0516e",
+      "foreground": "#4c1923"
+    },
+    "ring": "#d64191",
+    "swirlParticleBaseHue": 328,
+    "swirlParticleHueRange": 28
+  },
+  "109": {
+    "primary": {
+      "DEFAULT": "#d64175",
+      "foreground": "#f7edf0"
+    },
+    "accent": {
+      "DEFAULT": "#e05153",
+      "foreground": "#4c191a"
+    },
+    "ring": "#d64175",
+    "swirlParticleBaseHue": 339,
+    "swirlParticleHueRange": 29
+  },
+  "110": {
+    "primary": {
+      "DEFAULT": "#d6415a",
+      "foreground": "#f7edee"
+    },
+    "accent": {
+      "DEFAULT": "#e06951",
+      "foreground": "#4c2219"
+    },
+    "ring": "#d6415a",
+    "swirlParticleBaseHue": 350,
+    "swirlParticleHueRange": 20
+  },
+  "111": {
+    "primary": {
+      "DEFAULT": "#d64441",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e08351",
+      "foreground": "#4c2b19"
+    },
+    "ring": "#d64441",
+    "swirlParticleBaseHue": 1,
+    "swirlParticleHueRange": 21
+  },
+  "112": {
+    "primary": {
+      "DEFAULT": "#d65f41",
+      "foreground": "#f7efed"
+    },
+    "accent": {
+      "DEFAULT": "#e09d51",
+      "foreground": "#4c3419"
+    },
+    "ring": "#d65f41",
+    "swirlParticleBaseHue": 12,
+    "swirlParticleHueRange": 22
+  },
+  "113": {
+    "primary": {
+      "DEFAULT": "#d67a41",
+      "foreground": "#f7f1ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0b751",
+      "foreground": "#4c3e19"
+    },
+    "ring": "#d67a41",
+    "swirlParticleBaseHue": 23,
+    "swirlParticleHueRange": 23
+  },
+  "114": {
+    "primary": {
+      "DEFAULT": "#d69641",
+      "foreground": "#f7f2ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0d251",
+      "foreground": "#4c4719"
+    },
+    "ring": "#d69641",
+    "swirlParticleBaseHue": 34,
+    "swirlParticleHueRange": 24
+  },
+  "115": {
+    "primary": {
+      "DEFAULT": "#d6b141",
+      "foreground": "#f7f4ed"
+    },
+    "accent": {
+      "DEFAULT": "#d4e051",
+      "foreground": "#484c19"
+    },
+    "ring": "#d6b141",
+    "swirlParticleBaseHue": 45,
+    "swirlParticleHueRange": 25
+  },
+  "116": {
+    "primary": {
+      "DEFAULT": "#d6cc41",
+      "foreground": "#f7f6ed"
+    },
+    "accent": {
+      "DEFAULT": "#bae051",
+      "foreground": "#3e4c19"
+    },
+    "ring": "#d6cc41",
+    "swirlParticleBaseHue": 56,
+    "swirlParticleHueRange": 26
+  },
+  "117": {
+    "primary": {
+      "DEFAULT": "#c5d641",
+      "foreground": "#f6f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#a0e051",
+      "foreground": "#354c19"
+    },
+    "ring": "#c5d641",
+    "swirlParticleBaseHue": 67,
+    "swirlParticleHueRange": 27
+  },
+  "118": {
+    "primary": {
+      "DEFAULT": "#aad641",
+      "foreground": "#f4f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#85e051",
+      "foreground": "#2c4c19"
+    },
+    "ring": "#aad641",
+    "swirlParticleBaseHue": 78,
+    "swirlParticleHueRange": 28
+  },
+  "119": {
+    "primary": {
+      "DEFAULT": "#8ed641",
+      "foreground": "#f2f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#6be051",
+      "foreground": "#224c19"
+    },
+    "ring": "#8ed641",
+    "swirlParticleBaseHue": 89,
+    "swirlParticleHueRange": 29
+  },
+  "120": {
+    "primary": {
+      "DEFAULT": "#73d641",
+      "foreground": "#f0f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e051",
+      "foreground": "#194c19"
+    },
+    "ring": "#73d641",
+    "swirlParticleBaseHue": 100,
+    "swirlParticleHueRange": 20
+  },
+  "121": {
+    "primary": {
+      "DEFAULT": "#58d641",
+      "foreground": "#eef7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e06b",
+      "foreground": "#194c22"
+    },
+    "ring": "#58d641",
+    "swirlParticleBaseHue": 111,
+    "swirlParticleHueRange": 21
+  },
+  "122": {
+    "primary": {
+      "DEFAULT": "#41d646",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e085",
+      "foreground": "#194c2c"
+    },
+    "ring": "#41d646",
+    "swirlParticleBaseHue": 122,
+    "swirlParticleHueRange": 22
+  },
+  "123": {
+    "primary": {
+      "DEFAULT": "#41d661",
+      "foreground": "#edf7ef"
+    },
+    "accent": {
+      "DEFAULT": "#51e0a0",
+      "foreground": "#194c35"
+    },
+    "ring": "#41d661",
+    "swirlParticleBaseHue": 133,
+    "swirlParticleHueRange": 23
+  },
+  "124": {
+    "primary": {
+      "DEFAULT": "#41d67d",
+      "foreground": "#edf7f1"
+    },
+    "accent": {
+      "DEFAULT": "#51e0ba",
+      "foreground": "#194c3e"
+    },
+    "ring": "#41d67d",
+    "swirlParticleBaseHue": 144,
+    "swirlParticleHueRange": 24
+  },
+  "125": {
+    "primary": {
+      "DEFAULT": "#41d698",
+      "foreground": "#edf7f3"
+    },
+    "accent": {
+      "DEFAULT": "#51e0d4",
+      "foreground": "#194c48"
+    },
+    "ring": "#41d698",
+    "swirlParticleBaseHue": 155,
+    "swirlParticleHueRange": 25
+  },
+  "126": {
+    "primary": {
+      "DEFAULT": "#41d6b4",
+      "foreground": "#edf7f4"
+    },
+    "accent": {
+      "DEFAULT": "#51d2e0",
+      "foreground": "#19474c"
+    },
+    "ring": "#41d6b4",
+    "swirlParticleBaseHue": 166,
+    "swirlParticleHueRange": 26
+  },
+  "127": {
+    "primary": {
+      "DEFAULT": "#41d6cf",
+      "foreground": "#edf7f6"
+    },
+    "accent": {
+      "DEFAULT": "#51b7e0",
+      "foreground": "#193e4c"
+    },
+    "ring": "#41d6cf",
+    "swirlParticleBaseHue": 177,
+    "swirlParticleHueRange": 27
+  },
+  "128": {
+    "primary": {
+      "DEFAULT": "#41c2d6",
+      "foreground": "#edf5f7"
+    },
+    "accent": {
+      "DEFAULT": "#519de0",
+      "foreground": "#19344c"
+    },
+    "ring": "#41c2d6",
+    "swirlParticleBaseHue": 188,
+    "swirlParticleHueRange": 28
+  },
+  "129": {
+    "primary": {
+      "DEFAULT": "#41a7d6",
+      "foreground": "#edf4f7"
+    },
+    "accent": {
+      "DEFAULT": "#5183e0",
+      "foreground": "#192b4c"
+    },
+    "ring": "#41a7d6",
+    "swirlParticleBaseHue": 199,
+    "swirlParticleHueRange": 29
+  },
+  "130": {
+    "primary": {
+      "DEFAULT": "#418cd6",
+      "foreground": "#edf2f7"
+    },
+    "accent": {
+      "DEFAULT": "#5169e0",
+      "foreground": "#19224c"
+    },
+    "ring": "#418cd6",
+    "swirlParticleBaseHue": 210,
+    "swirlParticleHueRange": 20
+  },
+  "131": {
+    "primary": {
+      "DEFAULT": "#4170d6",
+      "foreground": "#edf0f7"
+    },
+    "accent": {
+      "DEFAULT": "#5351e0",
+      "foreground": "#1a194c"
+    },
+    "ring": "#4170d6",
+    "swirlParticleBaseHue": 221,
+    "swirlParticleHueRange": 21
+  },
+  "132": {
+    "primary": {
+      "DEFAULT": "#4155d6",
+      "foreground": "#edeef7"
+    },
+    "accent": {
+      "DEFAULT": "#6e51e0",
+      "foreground": "#23194c"
+    },
+    "ring": "#4155d6",
+    "swirlParticleBaseHue": 232,
+    "swirlParticleHueRange": 22
+  },
+  "133": {
+    "primary": {
+      "DEFAULT": "#4941d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8851e0",
+      "foreground": "#2d194c"
+    },
+    "ring": "#4941d6",
+    "swirlParticleBaseHue": 243,
+    "swirlParticleHueRange": 23
+  },
+  "134": {
+    "primary": {
+      "DEFAULT": "#6441d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#a251e0",
+      "foreground": "#36194c"
+    },
+    "ring": "#6441d6",
+    "swirlParticleBaseHue": 254,
+    "swirlParticleHueRange": 24
+  },
+  "135": {
+    "primary": {
+      "DEFAULT": "#7f41d6",
+      "foreground": "#f1edf7"
+    },
+    "accent": {
+      "DEFAULT": "#bc51e0",
+      "foreground": "#3f194c"
+    },
+    "ring": "#7f41d6",
+    "swirlParticleBaseHue": 265,
+    "swirlParticleHueRange": 25
+  },
+  "136": {
+    "primary": {
+      "DEFAULT": "#9b41d6",
+      "foreground": "#f3edf7"
+    },
+    "accent": {
+      "DEFAULT": "#d651e0",
+      "foreground": "#49194c"
+    },
+    "ring": "#9b41d6",
+    "swirlParticleBaseHue": 276,
+    "swirlParticleHueRange": 26
+  },
+  "137": {
+    "primary": {
+      "DEFAULT": "#b641d6",
+      "foreground": "#f5edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051cf",
+      "foreground": "#4c1946"
+    },
+    "ring": "#b641d6",
+    "swirlParticleBaseHue": 287,
+    "swirlParticleHueRange": 27
+  },
+  "138": {
+    "primary": {
+      "DEFAULT": "#d141d6",
+      "foreground": "#f7edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051b5",
+      "foreground": "#4c193d"
+    },
+    "ring": "#d141d6",
+    "swirlParticleBaseHue": 298,
+    "swirlParticleHueRange": 28
+  },
+  "139": {
+    "primary": {
+      "DEFAULT": "#d641c0",
+      "foreground": "#f7edf5"
+    },
+    "accent": {
+      "DEFAULT": "#e0519b",
+      "foreground": "#4c1933"
+    },
+    "ring": "#d641c0",
+    "swirlParticleBaseHue": 309,
+    "swirlParticleHueRange": 29
+  },
+  "140": {
+    "primary": {
+      "DEFAULT": "#d641a5",
+      "foreground": "#f7edf3"
+    },
+    "accent": {
+      "DEFAULT": "#e05181",
+      "foreground": "#4c192a"
+    },
+    "ring": "#d641a5",
+    "swirlParticleBaseHue": 320,
+    "swirlParticleHueRange": 20
+  },
+  "141": {
+    "primary": {
+      "DEFAULT": "#d64189",
+      "foreground": "#f7edf2"
+    },
+    "accent": {
+      "DEFAULT": "#e05167",
+      "foreground": "#4c1921"
+    },
+    "ring": "#d64189",
+    "swirlParticleBaseHue": 331,
+    "swirlParticleHueRange": 21
+  },
+  "142": {
+    "primary": {
+      "DEFAULT": "#d6416e",
+      "foreground": "#f7edf0"
+    },
+    "accent": {
+      "DEFAULT": "#e05651",
+      "foreground": "#4c1b19"
+    },
+    "ring": "#d6416e",
+    "swirlParticleBaseHue": 342,
+    "swirlParticleHueRange": 22
+  },
+  "143": {
+    "primary": {
+      "DEFAULT": "#d64153",
+      "foreground": "#f7edee"
+    },
+    "accent": {
+      "DEFAULT": "#e07051",
+      "foreground": "#4c2419"
+    },
+    "ring": "#d64153",
+    "swirlParticleBaseHue": 353,
+    "swirlParticleHueRange": 23
+  },
+  "144": {
+    "primary": {
+      "DEFAULT": "#d64b41",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e08a51",
+      "foreground": "#4c2d19"
+    },
+    "ring": "#d64b41",
+    "swirlParticleBaseHue": 4,
+    "swirlParticleHueRange": 24
+  },
+  "145": {
+    "primary": {
+      "DEFAULT": "#d66641",
+      "foreground": "#f7efed"
+    },
+    "accent": {
+      "DEFAULT": "#e0a451",
+      "foreground": "#4c3719"
+    },
+    "ring": "#d66641",
+    "swirlParticleBaseHue": 15,
+    "swirlParticleHueRange": 25
+  },
+  "146": {
+    "primary": {
+      "DEFAULT": "#d68241",
+      "foreground": "#f7f1ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0bf51",
+      "foreground": "#4c4019"
+    },
+    "ring": "#d68241",
+    "swirlParticleBaseHue": 26,
+    "swirlParticleHueRange": 26
+  },
+  "147": {
+    "primary": {
+      "DEFAULT": "#d69d41",
+      "foreground": "#f7f3ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0d951",
+      "foreground": "#4c4919"
+    },
+    "ring": "#d69d41",
+    "swirlParticleBaseHue": 37,
+    "swirlParticleHueRange": 27
+  },
+  "148": {
+    "primary": {
+      "DEFAULT": "#d6b941",
+      "foreground": "#f7f5ed"
+    },
+    "accent": {
+      "DEFAULT": "#cde051",
+      "foreground": "#454c19"
+    },
+    "ring": "#d6b941",
+    "swirlParticleBaseHue": 48,
+    "swirlParticleHueRange": 28
+  },
+  "149": {
+    "primary": {
+      "DEFAULT": "#d6d441",
+      "foreground": "#f7f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#b3e051",
+      "foreground": "#3c4c19"
+    },
+    "ring": "#d6d441",
+    "swirlParticleBaseHue": 59,
+    "swirlParticleHueRange": 29
+  },
+  "150": {
+    "primary": {
+      "DEFAULT": "#bdd641",
+      "foreground": "#f5f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#99e051",
+      "foreground": "#334c19"
+    },
+    "ring": "#bdd641",
+    "swirlParticleBaseHue": 70,
+    "swirlParticleHueRange": 20
+  },
+  "151": {
+    "primary": {
+      "DEFAULT": "#a2d641",
+      "foreground": "#f3f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#7ee051",
+      "foreground": "#294c19"
+    },
+    "ring": "#a2d641",
+    "swirlParticleBaseHue": 81,
+    "swirlParticleHueRange": 21
+  },
+  "152": {
+    "primary": {
+      "DEFAULT": "#87d641",
+      "foreground": "#f1f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#64e051",
+      "foreground": "#204c19"
+    },
+    "ring": "#87d641",
+    "swirlParticleBaseHue": 92,
+    "swirlParticleHueRange": 22
+  },
+  "153": {
+    "primary": {
+      "DEFAULT": "#6bd641",
+      "foreground": "#f0f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e058",
+      "foreground": "#194c1c"
+    },
+    "ring": "#6bd641",
+    "swirlParticleBaseHue": 103,
+    "swirlParticleHueRange": 23
+  },
+  "154": {
+    "primary": {
+      "DEFAULT": "#50d641",
+      "foreground": "#eef7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e072",
+      "foreground": "#194c25"
+    },
+    "ring": "#50d641",
+    "swirlParticleBaseHue": 114,
+    "swirlParticleHueRange": 24
+  },
+  "155": {
+    "primary": {
+      "DEFAULT": "#41d64e",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e08d",
+      "foreground": "#194c2e"
+    },
+    "ring": "#41d64e",
+    "swirlParticleBaseHue": 125,
+    "swirlParticleHueRange": 25
+  },
+  "156": {
+    "primary": {
+      "DEFAULT": "#41d669",
+      "foreground": "#edf7ef"
+    },
+    "accent": {
+      "DEFAULT": "#51e0a7",
+      "foreground": "#194c38"
+    },
+    "ring": "#41d669",
+    "swirlParticleBaseHue": 136,
+    "swirlParticleHueRange": 26
+  },
+  "157": {
+    "primary": {
+      "DEFAULT": "#41d684",
+      "foreground": "#edf7f1"
+    },
+    "accent": {
+      "DEFAULT": "#51e0c1",
+      "foreground": "#194c41"
+    },
+    "ring": "#41d684",
+    "swirlParticleBaseHue": 147,
+    "swirlParticleHueRange": 27
+  },
+  "158": {
+    "primary": {
+      "DEFAULT": "#41d6a0",
+      "foreground": "#edf7f3"
+    },
+    "accent": {
+      "DEFAULT": "#51e0db",
+      "foreground": "#194c4a"
+    },
+    "ring": "#41d6a0",
+    "swirlParticleBaseHue": 158,
+    "swirlParticleHueRange": 28
+  },
+  "159": {
+    "primary": {
+      "DEFAULT": "#41d6bb",
+      "foreground": "#edf7f5"
+    },
+    "accent": {
+      "DEFAULT": "#51cae0",
+      "foreground": "#19444c"
+    },
+    "ring": "#41d6bb",
+    "swirlParticleBaseHue": 169,
+    "swirlParticleHueRange": 29
+  },
+  "160": {
+    "primary": {
+      "DEFAULT": "#41d6d6",
+      "foreground": "#edf7f7"
+    },
+    "accent": {
+      "DEFAULT": "#51b0e0",
+      "foreground": "#193b4c"
+    },
+    "ring": "#41d6d6",
+    "swirlParticleBaseHue": 180,
+    "swirlParticleHueRange": 20
+  },
+  "161": {
+    "primary": {
+      "DEFAULT": "#41bbd6",
+      "foreground": "#edf5f7"
+    },
+    "accent": {
+      "DEFAULT": "#5196e0",
+      "foreground": "#19324c"
+    },
+    "ring": "#41bbd6",
+    "swirlParticleBaseHue": 191,
+    "swirlParticleHueRange": 21
+  },
+  "162": {
+    "primary": {
+      "DEFAULT": "#41a0d6",
+      "foreground": "#edf3f7"
+    },
+    "accent": {
+      "DEFAULT": "#517ce0",
+      "foreground": "#19284c"
+    },
+    "ring": "#41a0d6",
+    "swirlParticleBaseHue": 202,
+    "swirlParticleHueRange": 22
+  },
+  "163": {
+    "primary": {
+      "DEFAULT": "#4184d6",
+      "foreground": "#edf1f7"
+    },
+    "accent": {
+      "DEFAULT": "#5162e0",
+      "foreground": "#191f4c"
+    },
+    "ring": "#4184d6",
+    "swirlParticleBaseHue": 213,
+    "swirlParticleHueRange": 23
+  },
+  "164": {
+    "primary": {
+      "DEFAULT": "#4169d6",
+      "foreground": "#edeff7"
+    },
+    "accent": {
+      "DEFAULT": "#5b51e0",
+      "foreground": "#1c194c"
+    },
+    "ring": "#4169d6",
+    "swirlParticleBaseHue": 224,
+    "swirlParticleHueRange": 24
+  },
+  "165": {
+    "primary": {
+      "DEFAULT": "#414ed6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#7551e0",
+      "foreground": "#26194c"
+    },
+    "ring": "#414ed6",
+    "swirlParticleBaseHue": 235,
+    "swirlParticleHueRange": 25
+  },
+  "166": {
+    "primary": {
+      "DEFAULT": "#5041d6",
+      "foreground": "#eeedf7"
+    },
+    "accent": {
+      "DEFAULT": "#8f51e0",
+      "foreground": "#2f194c"
+    },
+    "ring": "#5041d6",
+    "swirlParticleBaseHue": 246,
+    "swirlParticleHueRange": 26
+  },
+  "167": {
+    "primary": {
+      "DEFAULT": "#6b41d6",
+      "foreground": "#f0edf7"
+    },
+    "accent": {
+      "DEFAULT": "#a951e0",
+      "foreground": "#38194c"
+    },
+    "ring": "#6b41d6",
+    "swirlParticleBaseHue": 257,
+    "swirlParticleHueRange": 27
+  },
+  "168": {
+    "primary": {
+      "DEFAULT": "#8741d6",
+      "foreground": "#f1edf7"
+    },
+    "accent": {
+      "DEFAULT": "#c351e0",
+      "foreground": "#42194c"
+    },
+    "ring": "#8741d6",
+    "swirlParticleBaseHue": 268,
+    "swirlParticleHueRange": 28
+  },
+  "169": {
+    "primary": {
+      "DEFAULT": "#a241d6",
+      "foreground": "#f3edf7"
+    },
+    "accent": {
+      "DEFAULT": "#de51e0",
+      "foreground": "#4b194c"
+    },
+    "ring": "#a241d6",
+    "swirlParticleBaseHue": 279,
+    "swirlParticleHueRange": 29
+  },
+  "170": {
+    "primary": {
+      "DEFAULT": "#bd41d6",
+      "foreground": "#f5edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051c8",
+      "foreground": "#4c1943"
+    },
+    "ring": "#bd41d6",
+    "swirlParticleBaseHue": 290,
+    "swirlParticleHueRange": 20
+  },
+  "171": {
+    "primary": {
+      "DEFAULT": "#d641d4",
+      "foreground": "#f7edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051ae",
+      "foreground": "#4c193a"
+    },
+    "ring": "#d641d4",
+    "swirlParticleBaseHue": 301,
+    "swirlParticleHueRange": 21
+  },
+  "172": {
+    "primary": {
+      "DEFAULT": "#d641b9",
+      "foreground": "#f7edf5"
+    },
+    "accent": {
+      "DEFAULT": "#e05194",
+      "foreground": "#4c1931"
+    },
+    "ring": "#d641b9",
+    "swirlParticleBaseHue": 312,
+    "swirlParticleHueRange": 22
+  },
+  "173": {
+    "primary": {
+      "DEFAULT": "#d6419d",
+      "foreground": "#f7edf3"
+    },
+    "accent": {
+      "DEFAULT": "#e0517a",
+      "foreground": "#4c1927"
+    },
+    "ring": "#d6419d",
+    "swirlParticleBaseHue": 323,
+    "swirlParticleHueRange": 23
+  },
+  "174": {
+    "primary": {
+      "DEFAULT": "#d64182",
+      "foreground": "#f7edf1"
+    },
+    "accent": {
+      "DEFAULT": "#e0515f",
+      "foreground": "#4c191e"
+    },
+    "ring": "#d64182",
+    "swirlParticleBaseHue": 334,
+    "swirlParticleHueRange": 24
+  },
+  "175": {
+    "primary": {
+      "DEFAULT": "#d64166",
+      "foreground": "#f7edef"
+    },
+    "accent": {
+      "DEFAULT": "#e05d51",
+      "foreground": "#4c1d19"
+    },
+    "ring": "#d64166",
+    "swirlParticleBaseHue": 345,
+    "swirlParticleHueRange": 25
+  },
+  "176": {
+    "primary": {
+      "DEFAULT": "#d6414b",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e07751",
+      "foreground": "#4c2719"
+    },
+    "ring": "#d6414b",
+    "swirlParticleBaseHue": 356,
+    "swirlParticleHueRange": 26
+  },
+  "177": {
+    "primary": {
+      "DEFAULT": "#d65341",
+      "foreground": "#f7eeed"
+    },
+    "accent": {
+      "DEFAULT": "#e09151",
+      "foreground": "#4c3019"
+    },
+    "ring": "#d65341",
+    "swirlParticleBaseHue": 7,
+    "swirlParticleHueRange": 27
+  },
+  "178": {
+    "primary": {
+      "DEFAULT": "#d66e41",
+      "foreground": "#f7f0ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0ac51",
+      "foreground": "#4c3919"
+    },
+    "ring": "#d66e41",
+    "swirlParticleBaseHue": 18,
+    "swirlParticleHueRange": 28
+  },
+  "179": {
+    "primary": {
+      "DEFAULT": "#d68941",
+      "foreground": "#f7f2ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0c651",
+      "foreground": "#4c4319"
+    },
+    "ring": "#d68941",
+    "swirlParticleBaseHue": 29,
+    "swirlParticleHueRange": 29
+  },
+  "180": {
+    "primary": {
+      "DEFAULT": "#d6a541",
+      "foreground": "#f7f3ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0e051",
+      "foreground": "#4c4c19"
+    },
+    "ring": "#d6a541",
+    "swirlParticleBaseHue": 40,
+    "swirlParticleHueRange": 20
+  },
+  "181": {
+    "primary": {
+      "DEFAULT": "#d6c041",
+      "foreground": "#f7f5ed"
+    },
+    "accent": {
+      "DEFAULT": "#c6e051",
+      "foreground": "#434c19"
+    },
+    "ring": "#d6c041",
+    "swirlParticleBaseHue": 51,
+    "swirlParticleHueRange": 21
+  },
+  "182": {
+    "primary": {
+      "DEFAULT": "#d1d641",
+      "foreground": "#f7f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#ace051",
+      "foreground": "#394c19"
+    },
+    "ring": "#d1d641",
+    "swirlParticleBaseHue": 62,
+    "swirlParticleHueRange": 22
+  },
+  "183": {
+    "primary": {
+      "DEFAULT": "#b6d641",
+      "foreground": "#f5f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#91e051",
+      "foreground": "#304c19"
+    },
+    "ring": "#b6d641",
+    "swirlParticleBaseHue": 73,
+    "swirlParticleHueRange": 23
+  },
+  "184": {
+    "primary": {
+      "DEFAULT": "#9bd641",
+      "foreground": "#f3f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#77e051",
+      "foreground": "#274c19"
+    },
+    "ring": "#9bd641",
+    "swirlParticleBaseHue": 84,
+    "swirlParticleHueRange": 24
+  },
+  "185": {
+    "primary": {
+      "DEFAULT": "#7fd641",
+      "foreground": "#f1f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#5de051",
+      "foreground": "#1d4c19"
+    },
+    "ring": "#7fd641",
+    "swirlParticleBaseHue": 95,
+    "swirlParticleHueRange": 25
+  },
+  "186": {
+    "primary": {
+      "DEFAULT": "#64d641",
+      "foreground": "#eff7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e05f",
+      "foreground": "#194c1e"
+    },
+    "ring": "#64d641",
+    "swirlParticleBaseHue": 106,
+    "swirlParticleHueRange": 26
+  },
+  "187": {
+    "primary": {
+      "DEFAULT": "#49d641",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e07a",
+      "foreground": "#194c27"
+    },
+    "ring": "#49d641",
+    "swirlParticleBaseHue": 117,
+    "swirlParticleHueRange": 27
+  },
+  "188": {
+    "primary": {
+      "DEFAULT": "#41d655",
+      "foreground": "#edf7ee"
+    },
+    "accent": {
+      "DEFAULT": "#51e094",
+      "foreground": "#194c31"
+    },
+    "ring": "#41d655",
+    "swirlParticleBaseHue": 128,
+    "swirlParticleHueRange": 28
+  },
+  "189": {
+    "primary": {
+      "DEFAULT": "#41d670",
+      "foreground": "#edf7f0"
+    },
+    "accent": {
+      "DEFAULT": "#51e0ae",
+      "foreground": "#194c3a"
+    },
+    "ring": "#41d670",
+    "swirlParticleBaseHue": 139,
+    "swirlParticleHueRange": 29
+  },
+  "190": {
+    "primary": {
+      "DEFAULT": "#41d68c",
+      "foreground": "#edf7f2"
+    },
+    "accent": {
+      "DEFAULT": "#51e0c8",
+      "foreground": "#194c44"
+    },
+    "ring": "#41d68c",
+    "swirlParticleBaseHue": 150,
+    "swirlParticleHueRange": 20
+  },
+  "191": {
+    "primary": {
+      "DEFAULT": "#41d6a7",
+      "foreground": "#edf7f4"
+    },
+    "accent": {
+      "DEFAULT": "#51dee0",
+      "foreground": "#194b4c"
+    },
+    "ring": "#41d6a7",
+    "swirlParticleBaseHue": 161,
+    "swirlParticleHueRange": 21
+  },
+  "192": {
+    "primary": {
+      "DEFAULT": "#41d6c2",
+      "foreground": "#edf7f5"
+    },
+    "accent": {
+      "DEFAULT": "#51c3e0",
+      "foreground": "#19424c"
+    },
+    "ring": "#41d6c2",
+    "swirlParticleBaseHue": 172,
+    "swirlParticleHueRange": 22
+  },
+  "193": {
+    "primary": {
+      "DEFAULT": "#41cfd6",
+      "foreground": "#edf6f7"
+    },
+    "accent": {
+      "DEFAULT": "#51a9e0",
+      "foreground": "#19384c"
+    },
+    "ring": "#41cfd6",
+    "swirlParticleBaseHue": 183,
+    "swirlParticleHueRange": 23
+  },
+  "194": {
+    "primary": {
+      "DEFAULT": "#41b4d6",
+      "foreground": "#edf4f7"
+    },
+    "accent": {
+      "DEFAULT": "#518fe0",
+      "foreground": "#192f4c"
+    },
+    "ring": "#41b4d6",
+    "swirlParticleBaseHue": 194,
+    "swirlParticleHueRange": 24
+  },
+  "195": {
+    "primary": {
+      "DEFAULT": "#4198d6",
+      "foreground": "#edf3f7"
+    },
+    "accent": {
+      "DEFAULT": "#5175e0",
+      "foreground": "#19264c"
+    },
+    "ring": "#4198d6",
+    "swirlParticleBaseHue": 205,
+    "swirlParticleHueRange": 25
+  },
+  "196": {
+    "primary": {
+      "DEFAULT": "#417dd6",
+      "foreground": "#edf1f7"
+    },
+    "accent": {
+      "DEFAULT": "#515be0",
+      "foreground": "#191c4c"
+    },
+    "ring": "#417dd6",
+    "swirlParticleBaseHue": 216,
+    "swirlParticleHueRange": 26
+  },
+  "197": {
+    "primary": {
+      "DEFAULT": "#4161d6",
+      "foreground": "#edeff7"
+    },
+    "accent": {
+      "DEFAULT": "#6251e0",
+      "foreground": "#1f194c"
+    },
+    "ring": "#4161d6",
+    "swirlParticleBaseHue": 227,
+    "swirlParticleHueRange": 27
+  },
+  "198": {
+    "primary": {
+      "DEFAULT": "#4146d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#7c51e0",
+      "foreground": "#28194c"
+    },
+    "ring": "#4146d6",
+    "swirlParticleBaseHue": 238,
+    "swirlParticleHueRange": 28
+  },
+  "199": {
+    "primary": {
+      "DEFAULT": "#5841d6",
+      "foreground": "#eeedf7"
+    },
+    "accent": {
+      "DEFAULT": "#9651e0",
+      "foreground": "#32194c"
+    },
+    "ring": "#5841d6",
+    "swirlParticleBaseHue": 249,
+    "swirlParticleHueRange": 29
+  },
+  "200": {
+    "primary": {
+      "DEFAULT": "#7341d6",
+      "foreground": "#f0edf7"
+    },
+    "accent": {
+      "DEFAULT": "#b051e0",
+      "foreground": "#3b194c"
+    },
+    "ring": "#7341d6",
+    "swirlParticleBaseHue": 260,
+    "swirlParticleHueRange": 20
+  },
+  "201": {
+    "primary": {
+      "DEFAULT": "#8e41d6",
+      "foreground": "#f2edf7"
+    },
+    "accent": {
+      "DEFAULT": "#ca51e0",
+      "foreground": "#44194c"
+    },
+    "ring": "#8e41d6",
+    "swirlParticleBaseHue": 271,
+    "swirlParticleHueRange": 21
+  },
+  "202": {
+    "primary": {
+      "DEFAULT": "#aa41d6",
+      "foreground": "#f4edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051db",
+      "foreground": "#4c194a"
+    },
+    "ring": "#aa41d6",
+    "swirlParticleBaseHue": 282,
+    "swirlParticleHueRange": 22
+  },
+  "203": {
+    "primary": {
+      "DEFAULT": "#c541d6",
+      "foreground": "#f6edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051c1",
+      "foreground": "#4c1941"
+    },
+    "ring": "#c541d6",
+    "swirlParticleBaseHue": 293,
+    "swirlParticleHueRange": 23
+  },
+  "204": {
+    "primary": {
+      "DEFAULT": "#d641cc",
+      "foreground": "#f7edf6"
+    },
+    "accent": {
+      "DEFAULT": "#e051a7",
+      "foreground": "#4c1938"
+    },
+    "ring": "#d641cc",
+    "swirlParticleBaseHue": 304,
+    "swirlParticleHueRange": 24
+  },
+  "205": {
+    "primary": {
+      "DEFAULT": "#d641b1",
+      "foreground": "#f7edf4"
+    },
+    "accent": {
+      "DEFAULT": "#e0518d",
+      "foreground": "#4c192e"
+    },
+    "ring": "#d641b1",
+    "swirlParticleBaseHue": 315,
+    "swirlParticleHueRange": 25
+  },
+  "206": {
+    "primary": {
+      "DEFAULT": "#d64196",
+      "foreground": "#f7edf2"
+    },
+    "accent": {
+      "DEFAULT": "#e05172",
+      "foreground": "#4c1925"
+    },
+    "ring": "#d64196",
+    "swirlParticleBaseHue": 326,
+    "swirlParticleHueRange": 26
+  },
+  "207": {
+    "primary": {
+      "DEFAULT": "#d6417a",
+      "foreground": "#f7edf1"
+    },
+    "accent": {
+      "DEFAULT": "#e05158",
+      "foreground": "#4c191c"
+    },
+    "ring": "#d6417a",
+    "swirlParticleBaseHue": 337,
+    "swirlParticleHueRange": 27
+  },
+  "208": {
+    "primary": {
+      "DEFAULT": "#d6415f",
+      "foreground": "#f7edef"
+    },
+    "accent": {
+      "DEFAULT": "#e06451",
+      "foreground": "#4c2019"
+    },
+    "ring": "#d6415f",
+    "swirlParticleBaseHue": 348,
+    "swirlParticleHueRange": 28
+  },
+  "209": {
+    "primary": {
+      "DEFAULT": "#d64144",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e07e51",
+      "foreground": "#4c2919"
+    },
+    "ring": "#d64144",
+    "swirlParticleBaseHue": 359,
+    "swirlParticleHueRange": 29
+  },
+  "210": {
+    "primary": {
+      "DEFAULT": "#d65a41",
+      "foreground": "#f7eeed"
+    },
+    "accent": {
+      "DEFAULT": "#e09951",
+      "foreground": "#4c3319"
+    },
+    "ring": "#d65a41",
+    "swirlParticleBaseHue": 10,
+    "swirlParticleHueRange": 20
+  },
+  "211": {
+    "primary": {
+      "DEFAULT": "#d67541",
+      "foreground": "#f7f0ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0b351",
+      "foreground": "#4c3c19"
+    },
+    "ring": "#d67541",
+    "swirlParticleBaseHue": 21,
+    "swirlParticleHueRange": 21
+  },
+  "212": {
+    "primary": {
+      "DEFAULT": "#d69141",
+      "foreground": "#f7f2ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0cd51",
+      "foreground": "#4c4519"
+    },
+    "ring": "#d69141",
+    "swirlParticleBaseHue": 32,
+    "swirlParticleHueRange": 22
+  },
+  "213": {
+    "primary": {
+      "DEFAULT": "#d6ac41",
+      "foreground": "#f7f4ed"
+    },
+    "accent": {
+      "DEFAULT": "#d9e051",
+      "foreground": "#494c19"
+    },
+    "ring": "#d6ac41",
+    "swirlParticleBaseHue": 43,
+    "swirlParticleHueRange": 23
+  },
+  "214": {
+    "primary": {
+      "DEFAULT": "#d6c741",
+      "foreground": "#f7f6ed"
+    },
+    "accent": {
+      "DEFAULT": "#bfe051",
+      "foreground": "#404c19"
+    },
+    "ring": "#d6c741",
+    "swirlParticleBaseHue": 54,
+    "swirlParticleHueRange": 24
+  },
+  "215": {
+    "primary": {
+      "DEFAULT": "#cad641",
+      "foreground": "#f6f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#a4e051",
+      "foreground": "#374c19"
+    },
+    "ring": "#cad641",
+    "swirlParticleBaseHue": 65,
+    "swirlParticleHueRange": 25
+  },
+  "216": {
+    "primary": {
+      "DEFAULT": "#afd641",
+      "foreground": "#f4f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#8ae051",
+      "foreground": "#2d4c19"
+    },
+    "ring": "#afd641",
+    "swirlParticleBaseHue": 76,
+    "swirlParticleHueRange": 26
+  },
+  "217": {
+    "primary": {
+      "DEFAULT": "#93d641",
+      "foreground": "#f2f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#70e051",
+      "foreground": "#244c19"
+    },
+    "ring": "#93d641",
+    "swirlParticleBaseHue": 87,
+    "swirlParticleHueRange": 27
+  },
+  "218": {
+    "primary": {
+      "DEFAULT": "#78d641",
+      "foreground": "#f0f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#56e051",
+      "foreground": "#1b4c19"
+    },
+    "ring": "#78d641",
+    "swirlParticleBaseHue": 98,
+    "swirlParticleHueRange": 28
+  },
+  "219": {
+    "primary": {
+      "DEFAULT": "#5dd641",
+      "foreground": "#eff7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e067",
+      "foreground": "#194c21"
+    },
+    "ring": "#5dd641",
+    "swirlParticleBaseHue": 109,
+    "swirlParticleHueRange": 29
+  },
+  "220": {
+    "primary": {
+      "DEFAULT": "#41d641",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e081",
+      "foreground": "#194c2a"
+    },
+    "ring": "#41d641",
+    "swirlParticleBaseHue": 120,
+    "swirlParticleHueRange": 20
+  },
+  "221": {
+    "primary": {
+      "DEFAULT": "#41d65d",
+      "foreground": "#edf7ef"
+    },
+    "accent": {
+      "DEFAULT": "#51e09b",
+      "foreground": "#194c33"
+    },
+    "ring": "#41d65d",
+    "swirlParticleBaseHue": 131,
+    "swirlParticleHueRange": 21
+  },
+  "222": {
+    "primary": {
+      "DEFAULT": "#41d678",
+      "foreground": "#edf7f0"
+    },
+    "accent": {
+      "DEFAULT": "#51e0b5",
+      "foreground": "#194c3d"
+    },
+    "ring": "#41d678",
+    "swirlParticleBaseHue": 142,
+    "swirlParticleHueRange": 22
+  },
+  "223": {
+    "primary": {
+      "DEFAULT": "#41d693",
+      "foreground": "#edf7f2"
+    },
+    "accent": {
+      "DEFAULT": "#51e0cf",
+      "foreground": "#194c46"
+    },
+    "ring": "#41d693",
+    "swirlParticleBaseHue": 153,
+    "swirlParticleHueRange": 23
+  },
+  "224": {
+    "primary": {
+      "DEFAULT": "#41d6af",
+      "foreground": "#edf7f4"
+    },
+    "accent": {
+      "DEFAULT": "#51d6e0",
+      "foreground": "#19494c"
+    },
+    "ring": "#41d6af",
+    "swirlParticleBaseHue": 164,
+    "swirlParticleHueRange": 24
+  },
+  "225": {
+    "primary": {
+      "DEFAULT": "#41d6ca",
+      "foreground": "#edf7f6"
+    },
+    "accent": {
+      "DEFAULT": "#51bce0",
+      "foreground": "#193f4c"
+    },
+    "ring": "#41d6ca",
+    "swirlParticleBaseHue": 175,
+    "swirlParticleHueRange": 25
+  },
+  "226": {
+    "primary": {
+      "DEFAULT": "#41c7d6",
+      "foreground": "#edf6f7"
+    },
+    "accent": {
+      "DEFAULT": "#51a2e0",
+      "foreground": "#19364c"
+    },
+    "ring": "#41c7d6",
+    "swirlParticleBaseHue": 186,
+    "swirlParticleHueRange": 26
+  },
+  "227": {
+    "primary": {
+      "DEFAULT": "#41acd6",
+      "foreground": "#edf4f7"
+    },
+    "accent": {
+      "DEFAULT": "#5188e0",
+      "foreground": "#192d4c"
+    },
+    "ring": "#41acd6",
+    "swirlParticleBaseHue": 197,
+    "swirlParticleHueRange": 27
+  },
+  "228": {
+    "primary": {
+      "DEFAULT": "#4191d6",
+      "foreground": "#edf2f7"
+    },
+    "accent": {
+      "DEFAULT": "#516ee0",
+      "foreground": "#19234c"
+    },
+    "ring": "#4191d6",
+    "swirlParticleBaseHue": 208,
+    "swirlParticleHueRange": 28
+  },
+  "229": {
+    "primary": {
+      "DEFAULT": "#4175d6",
+      "foreground": "#edf0f7"
+    },
+    "accent": {
+      "DEFAULT": "#5153e0",
+      "foreground": "#191a4c"
+    },
+    "ring": "#4175d6",
+    "swirlParticleBaseHue": 219,
+    "swirlParticleHueRange": 29
+  },
+  "230": {
+    "primary": {
+      "DEFAULT": "#415ad6",
+      "foreground": "#edeef7"
+    },
+    "accent": {
+      "DEFAULT": "#6951e0",
+      "foreground": "#21194c"
+    },
+    "ring": "#415ad6",
+    "swirlParticleBaseHue": 230,
+    "swirlParticleHueRange": 20
+  },
+  "231": {
+    "primary": {
+      "DEFAULT": "#4441d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8351e0",
+      "foreground": "#2b194c"
+    },
+    "ring": "#4441d6",
+    "swirlParticleBaseHue": 241,
+    "swirlParticleHueRange": 21
+  },
+  "232": {
+    "primary": {
+      "DEFAULT": "#5f41d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#9d51e0",
+      "foreground": "#34194c"
+    },
+    "ring": "#5f41d6",
+    "swirlParticleBaseHue": 252,
+    "swirlParticleHueRange": 22
+  },
+  "233": {
+    "primary": {
+      "DEFAULT": "#7a41d6",
+      "foreground": "#f1edf7"
+    },
+    "accent": {
+      "DEFAULT": "#b751e0",
+      "foreground": "#3e194c"
+    },
+    "ring": "#7a41d6",
+    "swirlParticleBaseHue": 263,
+    "swirlParticleHueRange": 23
+  },
+  "234": {
+    "primary": {
+      "DEFAULT": "#9641d6",
+      "foreground": "#f2edf7"
+    },
+    "accent": {
+      "DEFAULT": "#d251e0",
+      "foreground": "#47194c"
+    },
+    "ring": "#9641d6",
+    "swirlParticleBaseHue": 274,
+    "swirlParticleHueRange": 24
+  },
+  "235": {
+    "primary": {
+      "DEFAULT": "#b141d6",
+      "foreground": "#f4edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051d4",
+      "foreground": "#4c1948"
+    },
+    "ring": "#b141d6",
+    "swirlParticleBaseHue": 285,
+    "swirlParticleHueRange": 25
+  },
+  "236": {
+    "primary": {
+      "DEFAULT": "#cc41d6",
+      "foreground": "#f6edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051ba",
+      "foreground": "#4c193e"
+    },
+    "ring": "#cc41d6",
+    "swirlParticleBaseHue": 296,
+    "swirlParticleHueRange": 26
+  },
+  "237": {
+    "primary": {
+      "DEFAULT": "#d641c5",
+      "foreground": "#f7edf6"
+    },
+    "accent": {
+      "DEFAULT": "#e051a0",
+      "foreground": "#4c1935"
+    },
+    "ring": "#d641c5",
+    "swirlParticleBaseHue": 307,
+    "swirlParticleHueRange": 27
+  },
+  "238": {
+    "primary": {
+      "DEFAULT": "#d641aa",
+      "foreground": "#f7edf4"
+    },
+    "accent": {
+      "DEFAULT": "#e05185",
+      "foreground": "#4c192c"
+    },
+    "ring": "#d641aa",
+    "swirlParticleBaseHue": 318,
+    "swirlParticleHueRange": 28
+  },
+  "239": {
+    "primary": {
+      "DEFAULT": "#d6418e",
+      "foreground": "#f7edf2"
+    },
+    "accent": {
+      "DEFAULT": "#e0516b",
+      "foreground": "#4c1922"
+    },
+    "ring": "#d6418e",
+    "swirlParticleBaseHue": 329,
+    "swirlParticleHueRange": 29
+  },
+  "240": {
+    "primary": {
+      "DEFAULT": "#d64173",
+      "foreground": "#f7edf0"
+    },
+    "accent": {
+      "DEFAULT": "#e05151",
+      "foreground": "#4c1919"
+    },
+    "ring": "#d64173",
+    "swirlParticleBaseHue": 340,
+    "swirlParticleHueRange": 20
+  },
+  "241": {
+    "primary": {
+      "DEFAULT": "#d64158",
+      "foreground": "#f7edee"
+    },
+    "accent": {
+      "DEFAULT": "#e06b51",
+      "foreground": "#4c2219"
+    },
+    "ring": "#d64158",
+    "swirlParticleBaseHue": 351,
+    "swirlParticleHueRange": 21
+  },
+  "242": {
+    "primary": {
+      "DEFAULT": "#d64641",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e08551",
+      "foreground": "#4c2c19"
+    },
+    "ring": "#d64641",
+    "swirlParticleBaseHue": 2,
+    "swirlParticleHueRange": 22
+  },
+  "243": {
+    "primary": {
+      "DEFAULT": "#d66141",
+      "foreground": "#f7efed"
+    },
+    "accent": {
+      "DEFAULT": "#e0a051",
+      "foreground": "#4c3519"
+    },
+    "ring": "#d66141",
+    "swirlParticleBaseHue": 13,
+    "swirlParticleHueRange": 23
+  },
+  "244": {
+    "primary": {
+      "DEFAULT": "#d67d41",
+      "foreground": "#f7f1ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0ba51",
+      "foreground": "#4c3e19"
+    },
+    "ring": "#d67d41",
+    "swirlParticleBaseHue": 24,
+    "swirlParticleHueRange": 24
+  },
+  "245": {
+    "primary": {
+      "DEFAULT": "#d69841",
+      "foreground": "#f7f3ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0d451",
+      "foreground": "#4c4819"
+    },
+    "ring": "#d69841",
+    "swirlParticleBaseHue": 35,
+    "swirlParticleHueRange": 25
+  },
+  "246": {
+    "primary": {
+      "DEFAULT": "#d6b441",
+      "foreground": "#f7f4ed"
+    },
+    "accent": {
+      "DEFAULT": "#d2e051",
+      "foreground": "#474c19"
+    },
+    "ring": "#d6b441",
+    "swirlParticleBaseHue": 46,
+    "swirlParticleHueRange": 26
+  },
+  "247": {
+    "primary": {
+      "DEFAULT": "#d6cf41",
+      "foreground": "#f7f6ed"
+    },
+    "accent": {
+      "DEFAULT": "#b7e051",
+      "foreground": "#3e4c19"
+    },
+    "ring": "#d6cf41",
+    "swirlParticleBaseHue": 57,
+    "swirlParticleHueRange": 27
+  },
+  "248": {
+    "primary": {
+      "DEFAULT": "#c2d641",
+      "foreground": "#f5f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#9de051",
+      "foreground": "#344c19"
+    },
+    "ring": "#c2d641",
+    "swirlParticleBaseHue": 68,
+    "swirlParticleHueRange": 28
+  },
+  "249": {
+    "primary": {
+      "DEFAULT": "#a7d641",
+      "foreground": "#f4f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#83e051",
+      "foreground": "#2b4c19"
+    },
+    "ring": "#a7d641",
+    "swirlParticleBaseHue": 79,
+    "swirlParticleHueRange": 29
+  },
+  "250": {
+    "primary": {
+      "DEFAULT": "#8cd641",
+      "foreground": "#f2f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#69e051",
+      "foreground": "#224c19"
+    },
+    "ring": "#8cd641",
+    "swirlParticleBaseHue": 90,
+    "swirlParticleHueRange": 20
+  },
+  "251": {
+    "primary": {
+      "DEFAULT": "#70d641",
+      "foreground": "#f0f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e053",
+      "foreground": "#194c1a"
+    },
+    "ring": "#70d641",
+    "swirlParticleBaseHue": 101,
+    "swirlParticleHueRange": 21
+  },
+  "252": {
+    "primary": {
+      "DEFAULT": "#55d641",
+      "foreground": "#eef7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e06e",
+      "foreground": "#194c23"
+    },
+    "ring": "#55d641",
+    "swirlParticleBaseHue": 112,
+    "swirlParticleHueRange": 22
+  },
+  "253": {
+    "primary": {
+      "DEFAULT": "#41d649",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e088",
+      "foreground": "#194c2d"
+    },
+    "ring": "#41d649",
+    "swirlParticleBaseHue": 123,
+    "swirlParticleHueRange": 23
+  },
+  "254": {
+    "primary": {
+      "DEFAULT": "#41d664",
+      "foreground": "#edf7ef"
+    },
+    "accent": {
+      "DEFAULT": "#51e0a2",
+      "foreground": "#194c36"
+    },
+    "ring": "#41d664",
+    "swirlParticleBaseHue": 134,
+    "swirlParticleHueRange": 24
+  },
+  "255": {
+    "primary": {
+      "DEFAULT": "#41d67f",
+      "foreground": "#edf7f1"
+    },
+    "accent": {
+      "DEFAULT": "#51e0bc",
+      "foreground": "#194c3f"
+    },
+    "ring": "#41d67f",
+    "swirlParticleBaseHue": 145,
+    "swirlParticleHueRange": 25
+  },
+  "256": {
+    "primary": {
+      "DEFAULT": "#41d69b",
+      "foreground": "#edf7f3"
+    },
+    "accent": {
+      "DEFAULT": "#51e0d6",
+      "foreground": "#194c49"
+    },
+    "ring": "#41d69b",
+    "swirlParticleBaseHue": 156,
+    "swirlParticleHueRange": 26
+  },
+  "257": {
+    "primary": {
+      "DEFAULT": "#41d6b6",
+      "foreground": "#edf7f5"
+    },
+    "accent": {
+      "DEFAULT": "#51cfe0",
+      "foreground": "#19464c"
+    },
+    "ring": "#41d6b6",
+    "swirlParticleBaseHue": 167,
+    "swirlParticleHueRange": 27
+  },
+  "258": {
+    "primary": {
+      "DEFAULT": "#41d6d1",
+      "foreground": "#edf7f7"
+    },
+    "accent": {
+      "DEFAULT": "#51b5e0",
+      "foreground": "#193d4c"
+    },
+    "ring": "#41d6d1",
+    "swirlParticleBaseHue": 178,
+    "swirlParticleHueRange": 28
+  },
+  "259": {
+    "primary": {
+      "DEFAULT": "#41c0d6",
+      "foreground": "#edf5f7"
+    },
+    "accent": {
+      "DEFAULT": "#519be0",
+      "foreground": "#19334c"
+    },
+    "ring": "#41c0d6",
+    "swirlParticleBaseHue": 189,
+    "swirlParticleHueRange": 29
+  },
+  "260": {
+    "primary": {
+      "DEFAULT": "#41a5d6",
+      "foreground": "#edf3f7"
+    },
+    "accent": {
+      "DEFAULT": "#5181e0",
+      "foreground": "#192a4c"
+    },
+    "ring": "#41a5d6",
+    "swirlParticleBaseHue": 200,
+    "swirlParticleHueRange": 20
+  },
+  "261": {
+    "primary": {
+      "DEFAULT": "#4189d6",
+      "foreground": "#edf2f7"
+    },
+    "accent": {
+      "DEFAULT": "#5167e0",
+      "foreground": "#19214c"
+    },
+    "ring": "#4189d6",
+    "swirlParticleBaseHue": 211,
+    "swirlParticleHueRange": 21
+  },
+  "262": {
+    "primary": {
+      "DEFAULT": "#416ed6",
+      "foreground": "#edf0f7"
+    },
+    "accent": {
+      "DEFAULT": "#5651e0",
+      "foreground": "#1b194c"
+    },
+    "ring": "#416ed6",
+    "swirlParticleBaseHue": 222,
+    "swirlParticleHueRange": 22
+  },
+  "263": {
+    "primary": {
+      "DEFAULT": "#4153d6",
+      "foreground": "#edeef7"
+    },
+    "accent": {
+      "DEFAULT": "#7051e0",
+      "foreground": "#24194c"
+    },
+    "ring": "#4153d6",
+    "swirlParticleBaseHue": 233,
+    "swirlParticleHueRange": 23
+  },
+  "264": {
+    "primary": {
+      "DEFAULT": "#4b41d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8a51e0",
+      "foreground": "#2d194c"
+    },
+    "ring": "#4b41d6",
+    "swirlParticleBaseHue": 244,
+    "swirlParticleHueRange": 24
+  },
+  "265": {
+    "primary": {
+      "DEFAULT": "#6641d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#a451e0",
+      "foreground": "#37194c"
+    },
+    "ring": "#6641d6",
+    "swirlParticleBaseHue": 255,
+    "swirlParticleHueRange": 25
+  },
+  "266": {
+    "primary": {
+      "DEFAULT": "#8241d6",
+      "foreground": "#f1edf7"
+    },
+    "accent": {
+      "DEFAULT": "#bf51e0",
+      "foreground": "#40194c"
+    },
+    "ring": "#8241d6",
+    "swirlParticleBaseHue": 266,
+    "swirlParticleHueRange": 26
+  },
+  "267": {
+    "primary": {
+      "DEFAULT": "#9d41d6",
+      "foreground": "#f3edf7"
+    },
+    "accent": {
+      "DEFAULT": "#d951e0",
+      "foreground": "#49194c"
+    },
+    "ring": "#9d41d6",
+    "swirlParticleBaseHue": 277,
+    "swirlParticleHueRange": 27
+  },
+  "268": {
+    "primary": {
+      "DEFAULT": "#b941d6",
+      "foreground": "#f5edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051cd",
+      "foreground": "#4c1945"
+    },
+    "ring": "#b941d6",
+    "swirlParticleBaseHue": 288,
+    "swirlParticleHueRange": 28
+  },
+  "269": {
+    "primary": {
+      "DEFAULT": "#d441d6",
+      "foreground": "#f7edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051b3",
+      "foreground": "#4c193c"
+    },
+    "ring": "#d441d6",
+    "swirlParticleBaseHue": 299,
+    "swirlParticleHueRange": 29
+  },
+  "270": {
+    "primary": {
+      "DEFAULT": "#d641bd",
+      "foreground": "#f7edf5"
+    },
+    "accent": {
+      "DEFAULT": "#e05199",
+      "foreground": "#4c1933"
+    },
+    "ring": "#d641bd",
+    "swirlParticleBaseHue": 310,
+    "swirlParticleHueRange": 20
+  },
+  "271": {
+    "primary": {
+      "DEFAULT": "#d641a2",
+      "foreground": "#f7edf3"
+    },
+    "accent": {
+      "DEFAULT": "#e0517e",
+      "foreground": "#4c1929"
+    },
+    "ring": "#d641a2",
+    "swirlParticleBaseHue": 321,
+    "swirlParticleHueRange": 21
+  },
+  "272": {
+    "primary": {
+      "DEFAULT": "#d64187",
+      "foreground": "#f7edf1"
+    },
+    "accent": {
+      "DEFAULT": "#e05164",
+      "foreground": "#4c1920"
+    },
+    "ring": "#d64187",
+    "swirlParticleBaseHue": 332,
+    "swirlParticleHueRange": 22
+  },
+  "273": {
+    "primary": {
+      "DEFAULT": "#d6416b",
+      "foreground": "#f7edf0"
+    },
+    "accent": {
+      "DEFAULT": "#e05851",
+      "foreground": "#4c1c19"
+    },
+    "ring": "#d6416b",
+    "swirlParticleBaseHue": 343,
+    "swirlParticleHueRange": 23
+  },
+  "274": {
+    "primary": {
+      "DEFAULT": "#d64150",
+      "foreground": "#f7edee"
+    },
+    "accent": {
+      "DEFAULT": "#e07251",
+      "foreground": "#4c2519"
+    },
+    "ring": "#d64150",
+    "swirlParticleBaseHue": 354,
+    "swirlParticleHueRange": 24
+  },
+  "275": {
+    "primary": {
+      "DEFAULT": "#d64e41",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e08d51",
+      "foreground": "#4c2e19"
+    },
+    "ring": "#d64e41",
+    "swirlParticleBaseHue": 5,
+    "swirlParticleHueRange": 25
+  },
+  "276": {
+    "primary": {
+      "DEFAULT": "#d66941",
+      "foreground": "#f7efed"
+    },
+    "accent": {
+      "DEFAULT": "#e0a751",
+      "foreground": "#4c3819"
+    },
+    "ring": "#d66941",
+    "swirlParticleBaseHue": 16,
+    "swirlParticleHueRange": 26
+  },
+  "277": {
+    "primary": {
+      "DEFAULT": "#d68441",
+      "foreground": "#f7f1ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0c151",
+      "foreground": "#4c4119"
+    },
+    "ring": "#d68441",
+    "swirlParticleBaseHue": 27,
+    "swirlParticleHueRange": 27
+  },
+  "278": {
+    "primary": {
+      "DEFAULT": "#d6a041",
+      "foreground": "#f7f3ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0db51",
+      "foreground": "#4c4a19"
+    },
+    "ring": "#d6a041",
+    "swirlParticleBaseHue": 38,
+    "swirlParticleHueRange": 28
+  },
+  "279": {
+    "primary": {
+      "DEFAULT": "#d6bb41",
+      "foreground": "#f7f5ed"
+    },
+    "accent": {
+      "DEFAULT": "#cae051",
+      "foreground": "#444c19"
+    },
+    "ring": "#d6bb41",
+    "swirlParticleBaseHue": 49,
+    "swirlParticleHueRange": 29
+  },
+  "280": {
+    "primary": {
+      "DEFAULT": "#d6d641",
+      "foreground": "#f7f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#b0e051",
+      "foreground": "#3b4c19"
+    },
+    "ring": "#d6d641",
+    "swirlParticleBaseHue": 60,
+    "swirlParticleHueRange": 20
+  },
+  "281": {
+    "primary": {
+      "DEFAULT": "#bbd641",
+      "foreground": "#f5f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#96e051",
+      "foreground": "#324c19"
+    },
+    "ring": "#bbd641",
+    "swirlParticleBaseHue": 71,
+    "swirlParticleHueRange": 21
+  },
+  "282": {
+    "primary": {
+      "DEFAULT": "#a0d641",
+      "foreground": "#f3f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#7ce051",
+      "foreground": "#284c19"
+    },
+    "ring": "#a0d641",
+    "swirlParticleBaseHue": 82,
+    "swirlParticleHueRange": 22
+  },
+  "283": {
+    "primary": {
+      "DEFAULT": "#84d641",
+      "foreground": "#f1f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#62e051",
+      "foreground": "#1f4c19"
+    },
+    "ring": "#84d641",
+    "swirlParticleBaseHue": 93,
+    "swirlParticleHueRange": 23
+  },
+  "284": {
+    "primary": {
+      "DEFAULT": "#69d641",
+      "foreground": "#eff7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e05b",
+      "foreground": "#194c1c"
+    },
+    "ring": "#69d641",
+    "swirlParticleBaseHue": 104,
+    "swirlParticleHueRange": 24
+  },
+  "285": {
+    "primary": {
+      "DEFAULT": "#4ed641",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e075",
+      "foreground": "#194c26"
+    },
+    "ring": "#4ed641",
+    "swirlParticleBaseHue": 115,
+    "swirlParticleHueRange": 25
+  },
+  "286": {
+    "primary": {
+      "DEFAULT": "#41d650",
+      "foreground": "#edf7ee"
+    },
+    "accent": {
+      "DEFAULT": "#51e08f",
+      "foreground": "#194c2f"
+    },
+    "ring": "#41d650",
+    "swirlParticleBaseHue": 126,
+    "swirlParticleHueRange": 26
+  },
+  "287": {
+    "primary": {
+      "DEFAULT": "#41d66b",
+      "foreground": "#edf7f0"
+    },
+    "accent": {
+      "DEFAULT": "#51e0a9",
+      "foreground": "#194c38"
+    },
+    "ring": "#41d66b",
+    "swirlParticleBaseHue": 137,
+    "swirlParticleHueRange": 27
+  },
+  "288": {
+    "primary": {
+      "DEFAULT": "#41d687",
+      "foreground": "#edf7f1"
+    },
+    "accent": {
+      "DEFAULT": "#51e0c3",
+      "foreground": "#194c42"
+    },
+    "ring": "#41d687",
+    "swirlParticleBaseHue": 148,
+    "swirlParticleHueRange": 28
+  },
+  "289": {
+    "primary": {
+      "DEFAULT": "#41d6a2",
+      "foreground": "#edf7f3"
+    },
+    "accent": {
+      "DEFAULT": "#51e0de",
+      "foreground": "#194c4b"
+    },
+    "ring": "#41d6a2",
+    "swirlParticleBaseHue": 159,
+    "swirlParticleHueRange": 29
+  },
+  "290": {
+    "primary": {
+      "DEFAULT": "#41d6bd",
+      "foreground": "#edf7f5"
+    },
+    "accent": {
+      "DEFAULT": "#51c8e0",
+      "foreground": "#19434c"
+    },
+    "ring": "#41d6bd",
+    "swirlParticleBaseHue": 170,
+    "swirlParticleHueRange": 20
+  },
+  "291": {
+    "primary": {
+      "DEFAULT": "#41d4d6",
+      "foreground": "#edf7f7"
+    },
+    "accent": {
+      "DEFAULT": "#51aee0",
+      "foreground": "#193a4c"
+    },
+    "ring": "#41d4d6",
+    "swirlParticleBaseHue": 181,
+    "swirlParticleHueRange": 21
+  },
+  "292": {
+    "primary": {
+      "DEFAULT": "#41b9d6",
+      "foreground": "#edf5f7"
+    },
+    "accent": {
+      "DEFAULT": "#5194e0",
+      "foreground": "#19314c"
+    },
+    "ring": "#41b9d6",
+    "swirlParticleBaseHue": 192,
+    "swirlParticleHueRange": 22
+  },
+  "293": {
+    "primary": {
+      "DEFAULT": "#419dd6",
+      "foreground": "#edf3f7"
+    },
+    "accent": {
+      "DEFAULT": "#517ae0",
+      "foreground": "#19274c"
+    },
+    "ring": "#419dd6",
+    "swirlParticleBaseHue": 203,
+    "swirlParticleHueRange": 23
+  },
+  "294": {
+    "primary": {
+      "DEFAULT": "#4182d6",
+      "foreground": "#edf1f7"
+    },
+    "accent": {
+      "DEFAULT": "#515fe0",
+      "foreground": "#191e4c"
+    },
+    "ring": "#4182d6",
+    "swirlParticleBaseHue": 214,
+    "swirlParticleHueRange": 24
+  },
+  "295": {
+    "primary": {
+      "DEFAULT": "#4166d6",
+      "foreground": "#edeff7"
+    },
+    "accent": {
+      "DEFAULT": "#5d51e0",
+      "foreground": "#1d194c"
+    },
+    "ring": "#4166d6",
+    "swirlParticleBaseHue": 225,
+    "swirlParticleHueRange": 25
+  },
+  "296": {
+    "primary": {
+      "DEFAULT": "#414bd6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#7751e0",
+      "foreground": "#27194c"
+    },
+    "ring": "#414bd6",
+    "swirlParticleBaseHue": 236,
+    "swirlParticleHueRange": 26
+  },
+  "297": {
+    "primary": {
+      "DEFAULT": "#5341d6",
+      "foreground": "#eeedf7"
+    },
+    "accent": {
+      "DEFAULT": "#9151e0",
+      "foreground": "#30194c"
+    },
+    "ring": "#5341d6",
+    "swirlParticleBaseHue": 247,
+    "swirlParticleHueRange": 27
+  },
+  "298": {
+    "primary": {
+      "DEFAULT": "#6e41d6",
+      "foreground": "#f0edf7"
+    },
+    "accent": {
+      "DEFAULT": "#ac51e0",
+      "foreground": "#39194c"
+    },
+    "ring": "#6e41d6",
+    "swirlParticleBaseHue": 258,
+    "swirlParticleHueRange": 28
+  },
+  "299": {
+    "primary": {
+      "DEFAULT": "#8941d6",
+      "foreground": "#f2edf7"
+    },
+    "accent": {
+      "DEFAULT": "#c651e0",
+      "foreground": "#43194c"
+    },
+    "ring": "#8941d6",
+    "swirlParticleBaseHue": 269,
+    "swirlParticleHueRange": 29
+  },
+  "300": {
+    "primary": {
+      "DEFAULT": "#a541d6",
+      "foreground": "#f3edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051e0",
+      "foreground": "#4c194c"
+    },
+    "ring": "#a541d6",
+    "swirlParticleBaseHue": 280,
+    "swirlParticleHueRange": 20
+  },
+  "301": {
+    "primary": {
+      "DEFAULT": "#c041d6",
+      "foreground": "#f5edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051c6",
+      "foreground": "#4c1943"
+    },
+    "ring": "#c041d6",
+    "swirlParticleBaseHue": 291,
+    "swirlParticleHueRange": 21
+  },
+  "302": {
+    "primary": {
+      "DEFAULT": "#d641d1",
+      "foreground": "#f7edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051ac",
+      "foreground": "#4c1939"
+    },
+    "ring": "#d641d1",
+    "swirlParticleBaseHue": 302,
+    "swirlParticleHueRange": 22
+  },
+  "303": {
+    "primary": {
+      "DEFAULT": "#d641b6",
+      "foreground": "#f7edf5"
+    },
+    "accent": {
+      "DEFAULT": "#e05191",
+      "foreground": "#4c1930"
+    },
+    "ring": "#d641b6",
+    "swirlParticleBaseHue": 313,
+    "swirlParticleHueRange": 23
+  },
+  "304": {
+    "primary": {
+      "DEFAULT": "#d6419b",
+      "foreground": "#f7edf3"
+    },
+    "accent": {
+      "DEFAULT": "#e05177",
+      "foreground": "#4c1927"
+    },
+    "ring": "#d6419b",
+    "swirlParticleBaseHue": 324,
+    "swirlParticleHueRange": 24
+  },
+  "305": {
+    "primary": {
+      "DEFAULT": "#d6417f",
+      "foreground": "#f7edf1"
+    },
+    "accent": {
+      "DEFAULT": "#e0515d",
+      "foreground": "#4c191d"
+    },
+    "ring": "#d6417f",
+    "swirlParticleBaseHue": 335,
+    "swirlParticleHueRange": 25
+  },
+  "306": {
+    "primary": {
+      "DEFAULT": "#d64164",
+      "foreground": "#f7edef"
+    },
+    "accent": {
+      "DEFAULT": "#e05f51",
+      "foreground": "#4c1e19"
+    },
+    "ring": "#d64164",
+    "swirlParticleBaseHue": 346,
+    "swirlParticleHueRange": 26
+  },
+  "307": {
+    "primary": {
+      "DEFAULT": "#d64149",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e07a51",
+      "foreground": "#4c2719"
+    },
+    "ring": "#d64149",
+    "swirlParticleBaseHue": 357,
+    "swirlParticleHueRange": 27
+  },
+  "308": {
+    "primary": {
+      "DEFAULT": "#d65541",
+      "foreground": "#f7eeed"
+    },
+    "accent": {
+      "DEFAULT": "#e09451",
+      "foreground": "#4c3119"
+    },
+    "ring": "#d65541",
+    "swirlParticleBaseHue": 8,
+    "swirlParticleHueRange": 28
+  },
+  "309": {
+    "primary": {
+      "DEFAULT": "#d67041",
+      "foreground": "#f7f0ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0ae51",
+      "foreground": "#4c3a19"
+    },
+    "ring": "#d67041",
+    "swirlParticleBaseHue": 19,
+    "swirlParticleHueRange": 29
+  },
+  "310": {
+    "primary": {
+      "DEFAULT": "#d68c41",
+      "foreground": "#f7f2ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0c851",
+      "foreground": "#4c4419"
+    },
+    "ring": "#d68c41",
+    "swirlParticleBaseHue": 30,
+    "swirlParticleHueRange": 20
+  },
+  "311": {
+    "primary": {
+      "DEFAULT": "#d6a741",
+      "foreground": "#f7f4ed"
+    },
+    "accent": {
+      "DEFAULT": "#dee051",
+      "foreground": "#4b4c19"
+    },
+    "ring": "#d6a741",
+    "swirlParticleBaseHue": 41,
+    "swirlParticleHueRange": 21
+  },
+  "312": {
+    "primary": {
+      "DEFAULT": "#d6c241",
+      "foreground": "#f7f5ed"
+    },
+    "accent": {
+      "DEFAULT": "#c3e051",
+      "foreground": "#424c19"
+    },
+    "ring": "#d6c241",
+    "swirlParticleBaseHue": 52,
+    "swirlParticleHueRange": 22
+  },
+  "313": {
+    "primary": {
+      "DEFAULT": "#cfd641",
+      "foreground": "#f6f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#a9e051",
+      "foreground": "#384c19"
+    },
+    "ring": "#cfd641",
+    "swirlParticleBaseHue": 63,
+    "swirlParticleHueRange": 23
+  },
+  "314": {
+    "primary": {
+      "DEFAULT": "#b4d641",
+      "foreground": "#f4f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#8fe051",
+      "foreground": "#2f4c19"
+    },
+    "ring": "#b4d641",
+    "swirlParticleBaseHue": 74,
+    "swirlParticleHueRange": 24
+  },
+  "315": {
+    "primary": {
+      "DEFAULT": "#98d641",
+      "foreground": "#f3f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#75e051",
+      "foreground": "#264c19"
+    },
+    "ring": "#98d641",
+    "swirlParticleBaseHue": 85,
+    "swirlParticleHueRange": 25
+  },
+  "316": {
+    "primary": {
+      "DEFAULT": "#7dd641",
+      "foreground": "#f1f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#5be051",
+      "foreground": "#1c4c19"
+    },
+    "ring": "#7dd641",
+    "swirlParticleBaseHue": 96,
+    "swirlParticleHueRange": 26
+  },
+  "317": {
+    "primary": {
+      "DEFAULT": "#61d641",
+      "foreground": "#eff7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e062",
+      "foreground": "#194c1f"
+    },
+    "ring": "#61d641",
+    "swirlParticleBaseHue": 107,
+    "swirlParticleHueRange": 27
+  },
+  "318": {
+    "primary": {
+      "DEFAULT": "#46d641",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e07c",
+      "foreground": "#194c28"
+    },
+    "ring": "#46d641",
+    "swirlParticleBaseHue": 118,
+    "swirlParticleHueRange": 28
+  },
+  "319": {
+    "primary": {
+      "DEFAULT": "#41d658",
+      "foreground": "#edf7ee"
+    },
+    "accent": {
+      "DEFAULT": "#51e096",
+      "foreground": "#194c32"
+    },
+    "ring": "#41d658",
+    "swirlParticleBaseHue": 129,
+    "swirlParticleHueRange": 29
+  },
+  "320": {
+    "primary": {
+      "DEFAULT": "#41d673",
+      "foreground": "#edf7f0"
+    },
+    "accent": {
+      "DEFAULT": "#51e0b0",
+      "foreground": "#194c3b"
+    },
+    "ring": "#41d673",
+    "swirlParticleBaseHue": 140,
+    "swirlParticleHueRange": 20
+  },
+  "321": {
+    "primary": {
+      "DEFAULT": "#41d68e",
+      "foreground": "#edf7f2"
+    },
+    "accent": {
+      "DEFAULT": "#51e0ca",
+      "foreground": "#194c44"
+    },
+    "ring": "#41d68e",
+    "swirlParticleBaseHue": 151,
+    "swirlParticleHueRange": 21
+  },
+  "322": {
+    "primary": {
+      "DEFAULT": "#41d6aa",
+      "foreground": "#edf7f4"
+    },
+    "accent": {
+      "DEFAULT": "#51dbe0",
+      "foreground": "#194a4c"
+    },
+    "ring": "#41d6aa",
+    "swirlParticleBaseHue": 162,
+    "swirlParticleHueRange": 22
+  },
+  "323": {
+    "primary": {
+      "DEFAULT": "#41d6c5",
+      "foreground": "#edf7f6"
+    },
+    "accent": {
+      "DEFAULT": "#51c1e0",
+      "foreground": "#19414c"
+    },
+    "ring": "#41d6c5",
+    "swirlParticleBaseHue": 173,
+    "swirlParticleHueRange": 23
+  },
+  "324": {
+    "primary": {
+      "DEFAULT": "#41ccd6",
+      "foreground": "#edf6f7"
+    },
+    "accent": {
+      "DEFAULT": "#51a7e0",
+      "foreground": "#19384c"
+    },
+    "ring": "#41ccd6",
+    "swirlParticleBaseHue": 184,
+    "swirlParticleHueRange": 24
+  },
+  "325": {
+    "primary": {
+      "DEFAULT": "#41b1d6",
+      "foreground": "#edf4f7"
+    },
+    "accent": {
+      "DEFAULT": "#518de0",
+      "foreground": "#192e4c"
+    },
+    "ring": "#41b1d6",
+    "swirlParticleBaseHue": 195,
+    "swirlParticleHueRange": 25
+  },
+  "326": {
+    "primary": {
+      "DEFAULT": "#4196d6",
+      "foreground": "#edf2f7"
+    },
+    "accent": {
+      "DEFAULT": "#5172e0",
+      "foreground": "#19254c"
+    },
+    "ring": "#4196d6",
+    "swirlParticleBaseHue": 206,
+    "swirlParticleHueRange": 26
+  },
+  "327": {
+    "primary": {
+      "DEFAULT": "#417ad6",
+      "foreground": "#edf1f7"
+    },
+    "accent": {
+      "DEFAULT": "#5158e0",
+      "foreground": "#191c4c"
+    },
+    "ring": "#417ad6",
+    "swirlParticleBaseHue": 217,
+    "swirlParticleHueRange": 27
+  },
+  "328": {
+    "primary": {
+      "DEFAULT": "#415fd6",
+      "foreground": "#edeff7"
+    },
+    "accent": {
+      "DEFAULT": "#6451e0",
+      "foreground": "#20194c"
+    },
+    "ring": "#415fd6",
+    "swirlParticleBaseHue": 228,
+    "swirlParticleHueRange": 28
+  },
+  "329": {
+    "primary": {
+      "DEFAULT": "#4144d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#7e51e0",
+      "foreground": "#29194c"
+    },
+    "ring": "#4144d6",
+    "swirlParticleBaseHue": 239,
+    "swirlParticleHueRange": 29
+  },
+  "330": {
+    "primary": {
+      "DEFAULT": "#5a41d6",
+      "foreground": "#eeedf7"
+    },
+    "accent": {
+      "DEFAULT": "#9851e0",
+      "foreground": "#32194c"
+    },
+    "ring": "#5a41d6",
+    "swirlParticleBaseHue": 250,
+    "swirlParticleHueRange": 20
+  },
+  "331": {
+    "primary": {
+      "DEFAULT": "#7541d6",
+      "foreground": "#f0edf7"
+    },
+    "accent": {
+      "DEFAULT": "#b351e0",
+      "foreground": "#3c194c"
+    },
+    "ring": "#7541d6",
+    "swirlParticleBaseHue": 261,
+    "swirlParticleHueRange": 21
+  },
+  "332": {
+    "primary": {
+      "DEFAULT": "#9141d6",
+      "foreground": "#f2edf7"
+    },
+    "accent": {
+      "DEFAULT": "#cd51e0",
+      "foreground": "#45194c"
+    },
+    "ring": "#9141d6",
+    "swirlParticleBaseHue": 272,
+    "swirlParticleHueRange": 22
+  },
+  "333": {
+    "primary": {
+      "DEFAULT": "#ac41d6",
+      "foreground": "#f4edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051d9",
+      "foreground": "#4c1949"
+    },
+    "ring": "#ac41d6",
+    "swirlParticleBaseHue": 283,
+    "swirlParticleHueRange": 23
+  },
+  "334": {
+    "primary": {
+      "DEFAULT": "#c741d6",
+      "foreground": "#f6edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051bf",
+      "foreground": "#4c1940"
+    },
+    "ring": "#c741d6",
+    "swirlParticleBaseHue": 294,
+    "swirlParticleHueRange": 24
+  },
+  "335": {
+    "primary": {
+      "DEFAULT": "#d641ca",
+      "foreground": "#f7edf6"
+    },
+    "accent": {
+      "DEFAULT": "#e051a4",
+      "foreground": "#4c1937"
+    },
+    "ring": "#d641ca",
+    "swirlParticleBaseHue": 305,
+    "swirlParticleHueRange": 25
+  },
+  "336": {
+    "primary": {
+      "DEFAULT": "#d641af",
+      "foreground": "#f7edf4"
+    },
+    "accent": {
+      "DEFAULT": "#e0518a",
+      "foreground": "#4c192d"
+    },
+    "ring": "#d641af",
+    "swirlParticleBaseHue": 316,
+    "swirlParticleHueRange": 26
+  },
+  "337": {
+    "primary": {
+      "DEFAULT": "#d64193",
+      "foreground": "#f7edf2"
+    },
+    "accent": {
+      "DEFAULT": "#e05170",
+      "foreground": "#4c1924"
+    },
+    "ring": "#d64193",
+    "swirlParticleBaseHue": 327,
+    "swirlParticleHueRange": 27
+  },
+  "338": {
+    "primary": {
+      "DEFAULT": "#d64178",
+      "foreground": "#f7edf0"
+    },
+    "accent": {
+      "DEFAULT": "#e05156",
+      "foreground": "#4c191b"
+    },
+    "ring": "#d64178",
+    "swirlParticleBaseHue": 338,
+    "swirlParticleHueRange": 28
+  },
+  "339": {
+    "primary": {
+      "DEFAULT": "#d6415d",
+      "foreground": "#f7edef"
+    },
+    "accent": {
+      "DEFAULT": "#e06751",
+      "foreground": "#4c2119"
+    },
+    "ring": "#d6415d",
+    "swirlParticleBaseHue": 349,
+    "swirlParticleHueRange": 29
+  },
+  "340": {
+    "primary": {
+      "DEFAULT": "#d64141",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e08151",
+      "foreground": "#4c2a19"
+    },
+    "ring": "#d64141",
+    "swirlParticleBaseHue": 0,
+    "swirlParticleHueRange": 20
+  },
+  "341": {
+    "primary": {
+      "DEFAULT": "#d65d41",
+      "foreground": "#f7efed"
+    },
+    "accent": {
+      "DEFAULT": "#e09b51",
+      "foreground": "#4c3319"
+    },
+    "ring": "#d65d41",
+    "swirlParticleBaseHue": 11,
+    "swirlParticleHueRange": 21
+  },
+  "342": {
+    "primary": {
+      "DEFAULT": "#d67841",
+      "foreground": "#f7f0ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0b551",
+      "foreground": "#4c3d19"
+    },
+    "ring": "#d67841",
+    "swirlParticleBaseHue": 22,
+    "swirlParticleHueRange": 22
+  },
+  "343": {
+    "primary": {
+      "DEFAULT": "#d69341",
+      "foreground": "#f7f2ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0cf51",
+      "foreground": "#4c4619"
+    },
+    "ring": "#d69341",
+    "swirlParticleBaseHue": 33,
+    "swirlParticleHueRange": 23
+  },
+  "344": {
+    "primary": {
+      "DEFAULT": "#d6af41",
+      "foreground": "#f7f4ed"
+    },
+    "accent": {
+      "DEFAULT": "#d6e051",
+      "foreground": "#494c19"
+    },
+    "ring": "#d6af41",
+    "swirlParticleBaseHue": 44,
+    "swirlParticleHueRange": 24
+  },
+  "345": {
+    "primary": {
+      "DEFAULT": "#d6ca41",
+      "foreground": "#f7f6ed"
+    },
+    "accent": {
+      "DEFAULT": "#bce051",
+      "foreground": "#3f4c19"
+    },
+    "ring": "#d6ca41",
+    "swirlParticleBaseHue": 55,
+    "swirlParticleHueRange": 25
+  },
+  "346": {
+    "primary": {
+      "DEFAULT": "#c7d641",
+      "foreground": "#f6f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#a2e051",
+      "foreground": "#364c19"
+    },
+    "ring": "#c7d641",
+    "swirlParticleBaseHue": 66,
+    "swirlParticleHueRange": 26
+  },
+  "347": {
+    "primary": {
+      "DEFAULT": "#acd641",
+      "foreground": "#f4f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#88e051",
+      "foreground": "#2d4c19"
+    },
+    "ring": "#acd641",
+    "swirlParticleBaseHue": 77,
+    "swirlParticleHueRange": 27
+  },
+  "348": {
+    "primary": {
+      "DEFAULT": "#91d641",
+      "foreground": "#f2f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#6ee051",
+      "foreground": "#234c19"
+    },
+    "ring": "#91d641",
+    "swirlParticleBaseHue": 88,
+    "swirlParticleHueRange": 28
+  },
+  "349": {
+    "primary": {
+      "DEFAULT": "#75d641",
+      "foreground": "#f0f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#53e051",
+      "foreground": "#1a4c19"
+    },
+    "ring": "#75d641",
+    "swirlParticleBaseHue": 99,
+    "swirlParticleHueRange": 29
+  },
+  "350": {
+    "primary": {
+      "DEFAULT": "#5ad641",
+      "foreground": "#eef7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e069",
+      "foreground": "#194c22"
+    },
+    "ring": "#5ad641",
+    "swirlParticleBaseHue": 110,
+    "swirlParticleHueRange": 20
+  },
+  "351": {
+    "primary": {
+      "DEFAULT": "#41d644",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e083",
+      "foreground": "#194c2b"
+    },
+    "ring": "#41d644",
+    "swirlParticleBaseHue": 121,
+    "swirlParticleHueRange": 21
+  },
+  "352": {
+    "primary": {
+      "DEFAULT": "#41d65f",
+      "foreground": "#edf7ef"
+    },
+    "accent": {
+      "DEFAULT": "#51e09d",
+      "foreground": "#194c34"
+    },
+    "ring": "#41d65f",
+    "swirlParticleBaseHue": 132,
+    "swirlParticleHueRange": 22
+  },
+  "353": {
+    "primary": {
+      "DEFAULT": "#41d67a",
+      "foreground": "#edf7f1"
+    },
+    "accent": {
+      "DEFAULT": "#51e0b7",
+      "foreground": "#194c3e"
+    },
+    "ring": "#41d67a",
+    "swirlParticleBaseHue": 143,
+    "swirlParticleHueRange": 23
+  },
+  "354": {
+    "primary": {
+      "DEFAULT": "#41d696",
+      "foreground": "#edf7f2"
+    },
+    "accent": {
+      "DEFAULT": "#51e0d2",
+      "foreground": "#194c47"
+    },
+    "ring": "#41d696",
+    "swirlParticleBaseHue": 154,
+    "swirlParticleHueRange": 24
+  },
+  "355": {
+    "primary": {
+      "DEFAULT": "#41d6b1",
+      "foreground": "#edf7f4"
+    },
+    "accent": {
+      "DEFAULT": "#51d4e0",
+      "foreground": "#19484c"
+    },
+    "ring": "#41d6b1",
+    "swirlParticleBaseHue": 165,
+    "swirlParticleHueRange": 25
+  },
+  "356": {
+    "primary": {
+      "DEFAULT": "#41d6cc",
+      "foreground": "#edf7f6"
+    },
+    "accent": {
+      "DEFAULT": "#51bae0",
+      "foreground": "#193e4c"
+    },
+    "ring": "#41d6cc",
+    "swirlParticleBaseHue": 176,
+    "swirlParticleHueRange": 26
+  },
+  "357": {
+    "primary": {
+      "DEFAULT": "#41c5d6",
+      "foreground": "#edf6f7"
+    },
+    "accent": {
+      "DEFAULT": "#51a0e0",
+      "foreground": "#19354c"
+    },
+    "ring": "#41c5d6",
+    "swirlParticleBaseHue": 187,
+    "swirlParticleHueRange": 27
+  },
+  "358": {
+    "primary": {
+      "DEFAULT": "#41aad6",
+      "foreground": "#edf4f7"
+    },
+    "accent": {
+      "DEFAULT": "#5185e0",
+      "foreground": "#192c4c"
+    },
+    "ring": "#41aad6",
+    "swirlParticleBaseHue": 198,
+    "swirlParticleHueRange": 28
+  },
+  "359": {
+    "primary": {
+      "DEFAULT": "#418ed6",
+      "foreground": "#edf2f7"
+    },
+    "accent": {
+      "DEFAULT": "#516be0",
+      "foreground": "#19224c"
+    },
+    "ring": "#418ed6",
+    "swirlParticleBaseHue": 209,
+    "swirlParticleHueRange": 29
+  },
+  "360": {
+    "primary": {
+      "DEFAULT": "#4173d6",
+      "foreground": "#edf0f7"
+    },
+    "accent": {
+      "DEFAULT": "#5151e0",
+      "foreground": "#19194c"
+    },
+    "ring": "#4173d6",
+    "swirlParticleBaseHue": 220,
+    "swirlParticleHueRange": 20
+  },
+  "361": {
+    "primary": {
+      "DEFAULT": "#4158d6",
+      "foreground": "#edeef7"
+    },
+    "accent": {
+      "DEFAULT": "#6b51e0",
+      "foreground": "#22194c"
+    },
+    "ring": "#4158d6",
+    "swirlParticleBaseHue": 231,
+    "swirlParticleHueRange": 21
+  },
+  "362": {
+    "primary": {
+      "DEFAULT": "#4641d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8551e0",
+      "foreground": "#2c194c"
+    },
+    "ring": "#4641d6",
+    "swirlParticleBaseHue": 242,
+    "swirlParticleHueRange": 22
+  },
+  "363": {
+    "primary": {
+      "DEFAULT": "#6141d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#a051e0",
+      "foreground": "#35194c"
+    },
+    "ring": "#6141d6",
+    "swirlParticleBaseHue": 253,
+    "swirlParticleHueRange": 23
+  },
+  "364": {
+    "primary": {
+      "DEFAULT": "#7d41d6",
+      "foreground": "#f1edf7"
+    },
+    "accent": {
+      "DEFAULT": "#ba51e0",
+      "foreground": "#3e194c"
+    },
+    "ring": "#7d41d6",
+    "swirlParticleBaseHue": 264,
+    "swirlParticleHueRange": 24
+  },
+  "365": {
+    "primary": {
+      "DEFAULT": "#9841d6",
+      "foreground": "#f3edf7"
+    },
+    "accent": {
+      "DEFAULT": "#d451e0",
+      "foreground": "#48194c"
+    },
+    "ring": "#9841d6",
+    "swirlParticleBaseHue": 275,
+    "swirlParticleHueRange": 25
+  },
+  "366": {
+    "primary": {
+      "DEFAULT": "#b441d6",
+      "foreground": "#f4edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051d2",
+      "foreground": "#4c1947"
+    },
+    "ring": "#b441d6",
+    "swirlParticleBaseHue": 286,
+    "swirlParticleHueRange": 26
+  },
+  "367": {
+    "primary": {
+      "DEFAULT": "#cf41d6",
+      "foreground": "#f6edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051b7",
+      "foreground": "#4c193e"
+    },
+    "ring": "#cf41d6",
+    "swirlParticleBaseHue": 297,
+    "swirlParticleHueRange": 27
+  },
+  "368": {
+    "primary": {
+      "DEFAULT": "#d641c2",
+      "foreground": "#f7edf5"
+    },
+    "accent": {
+      "DEFAULT": "#e0519d",
+      "foreground": "#4c1934"
+    },
+    "ring": "#d641c2",
+    "swirlParticleBaseHue": 308,
+    "swirlParticleHueRange": 28
+  },
+  "369": {
+    "primary": {
+      "DEFAULT": "#d641a7",
+      "foreground": "#f7edf4"
+    },
+    "accent": {
+      "DEFAULT": "#e05183",
+      "foreground": "#4c192b"
+    },
+    "ring": "#d641a7",
+    "swirlParticleBaseHue": 319,
+    "swirlParticleHueRange": 29
+  },
+  "370": {
+    "primary": {
+      "DEFAULT": "#d6418c",
+      "foreground": "#f7edf2"
+    },
+    "accent": {
+      "DEFAULT": "#e05169",
+      "foreground": "#4c1922"
+    },
+    "ring": "#d6418c",
+    "swirlParticleBaseHue": 330,
+    "swirlParticleHueRange": 20
+  },
+  "371": {
+    "primary": {
+      "DEFAULT": "#d64170",
+      "foreground": "#f7edf0"
+    },
+    "accent": {
+      "DEFAULT": "#e05351",
+      "foreground": "#4c1a19"
+    },
+    "ring": "#d64170",
+    "swirlParticleBaseHue": 341,
+    "swirlParticleHueRange": 21
+  },
+  "372": {
+    "primary": {
+      "DEFAULT": "#d64155",
+      "foreground": "#f7edee"
+    },
+    "accent": {
+      "DEFAULT": "#e06e51",
+      "foreground": "#4c2319"
+    },
+    "ring": "#d64155",
+    "swirlParticleBaseHue": 352,
+    "swirlParticleHueRange": 22
+  },
+  "373": {
+    "primary": {
+      "DEFAULT": "#d64941",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e08851",
+      "foreground": "#4c2d19"
+    },
+    "ring": "#d64941",
+    "swirlParticleBaseHue": 3,
+    "swirlParticleHueRange": 23
+  },
+  "374": {
+    "primary": {
+      "DEFAULT": "#d66441",
+      "foreground": "#f7efed"
+    },
+    "accent": {
+      "DEFAULT": "#e0a251",
+      "foreground": "#4c3619"
+    },
+    "ring": "#d66441",
+    "swirlParticleBaseHue": 14,
+    "swirlParticleHueRange": 24
+  },
+  "375": {
+    "primary": {
+      "DEFAULT": "#d67f41",
+      "foreground": "#f7f1ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0bc51",
+      "foreground": "#4c3f19"
+    },
+    "ring": "#d67f41",
+    "swirlParticleBaseHue": 25,
+    "swirlParticleHueRange": 25
+  },
+  "376": {
+    "primary": {
+      "DEFAULT": "#d69b41",
+      "foreground": "#f7f3ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0d651",
+      "foreground": "#4c4919"
+    },
+    "ring": "#d69b41",
+    "swirlParticleBaseHue": 36,
+    "swirlParticleHueRange": 26
+  },
+  "377": {
+    "primary": {
+      "DEFAULT": "#d6b641",
+      "foreground": "#f7f5ed"
+    },
+    "accent": {
+      "DEFAULT": "#cfe051",
+      "foreground": "#464c19"
+    },
+    "ring": "#d6b641",
+    "swirlParticleBaseHue": 47,
+    "swirlParticleHueRange": 27
+  },
+  "378": {
+    "primary": {
+      "DEFAULT": "#d6d141",
+      "foreground": "#f7f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#b5e051",
+      "foreground": "#3d4c19"
+    },
+    "ring": "#d6d141",
+    "swirlParticleBaseHue": 58,
+    "swirlParticleHueRange": 28
+  },
+  "379": {
+    "primary": {
+      "DEFAULT": "#c0d641",
+      "foreground": "#f5f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#9be051",
+      "foreground": "#334c19"
+    },
+    "ring": "#c0d641",
+    "swirlParticleBaseHue": 69,
+    "swirlParticleHueRange": 29
+  },
+  "380": {
+    "primary": {
+      "DEFAULT": "#a5d641",
+      "foreground": "#f3f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#81e051",
+      "foreground": "#2a4c19"
+    },
+    "ring": "#a5d641",
+    "swirlParticleBaseHue": 80,
+    "swirlParticleHueRange": 20
+  },
+  "381": {
+    "primary": {
+      "DEFAULT": "#89d641",
+      "foreground": "#f2f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#67e051",
+      "foreground": "#214c19"
+    },
+    "ring": "#89d641",
+    "swirlParticleBaseHue": 91,
+    "swirlParticleHueRange": 21
+  },
+  "382": {
+    "primary": {
+      "DEFAULT": "#6ed641",
+      "foreground": "#f0f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e056",
+      "foreground": "#194c1b"
+    },
+    "ring": "#6ed641",
+    "swirlParticleBaseHue": 102,
+    "swirlParticleHueRange": 22
+  },
+  "383": {
+    "primary": {
+      "DEFAULT": "#53d641",
+      "foreground": "#eef7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e070",
+      "foreground": "#194c24"
+    },
+    "ring": "#53d641",
+    "swirlParticleBaseHue": 113,
+    "swirlParticleHueRange": 23
+  },
+  "384": {
+    "primary": {
+      "DEFAULT": "#41d64b",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e08a",
+      "foreground": "#194c2d"
+    },
+    "ring": "#41d64b",
+    "swirlParticleBaseHue": 124,
+    "swirlParticleHueRange": 24
+  },
+  "385": {
+    "primary": {
+      "DEFAULT": "#41d666",
+      "foreground": "#edf7ef"
+    },
+    "accent": {
+      "DEFAULT": "#51e0a4",
+      "foreground": "#194c37"
+    },
+    "ring": "#41d666",
+    "swirlParticleBaseHue": 135,
+    "swirlParticleHueRange": 25
+  },
+  "386": {
+    "primary": {
+      "DEFAULT": "#41d682",
+      "foreground": "#edf7f1"
+    },
+    "accent": {
+      "DEFAULT": "#51e0bf",
+      "foreground": "#194c40"
+    },
+    "ring": "#41d682",
+    "swirlParticleBaseHue": 146,
+    "swirlParticleHueRange": 26
+  },
+  "387": {
+    "primary": {
+      "DEFAULT": "#41d69d",
+      "foreground": "#edf7f3"
+    },
+    "accent": {
+      "DEFAULT": "#51e0d9",
+      "foreground": "#194c49"
+    },
+    "ring": "#41d69d",
+    "swirlParticleBaseHue": 157,
+    "swirlParticleHueRange": 27
+  },
+  "388": {
+    "primary": {
+      "DEFAULT": "#41d6b9",
+      "foreground": "#edf7f5"
+    },
+    "accent": {
+      "DEFAULT": "#51cde0",
+      "foreground": "#19454c"
+    },
+    "ring": "#41d6b9",
+    "swirlParticleBaseHue": 168,
+    "swirlParticleHueRange": 28
+  },
+  "389": {
+    "primary": {
+      "DEFAULT": "#41d6d4",
+      "foreground": "#edf7f7"
+    },
+    "accent": {
+      "DEFAULT": "#51b3e0",
+      "foreground": "#193c4c"
+    },
+    "ring": "#41d6d4",
+    "swirlParticleBaseHue": 179,
+    "swirlParticleHueRange": 29
+  },
+  "390": {
+    "primary": {
+      "DEFAULT": "#41bdd6",
+      "foreground": "#edf5f7"
+    },
+    "accent": {
+      "DEFAULT": "#5198e0",
+      "foreground": "#19324c"
+    },
+    "ring": "#41bdd6",
+    "swirlParticleBaseHue": 190,
+    "swirlParticleHueRange": 20
+  },
+  "391": {
+    "primary": {
+      "DEFAULT": "#41a2d6",
+      "foreground": "#edf3f7"
+    },
+    "accent": {
+      "DEFAULT": "#517ee0",
+      "foreground": "#19294c"
+    },
+    "ring": "#41a2d6",
+    "swirlParticleBaseHue": 201,
+    "swirlParticleHueRange": 21
+  },
+  "392": {
+    "primary": {
+      "DEFAULT": "#4187d6",
+      "foreground": "#edf1f7"
+    },
+    "accent": {
+      "DEFAULT": "#5164e0",
+      "foreground": "#19204c"
+    },
+    "ring": "#4187d6",
+    "swirlParticleBaseHue": 212,
+    "swirlParticleHueRange": 22
+  },
+  "393": {
+    "primary": {
+      "DEFAULT": "#416bd6",
+      "foreground": "#edf0f7"
+    },
+    "accent": {
+      "DEFAULT": "#5851e0",
+      "foreground": "#1c194c"
+    },
+    "ring": "#416bd6",
+    "swirlParticleBaseHue": 223,
+    "swirlParticleHueRange": 23
+  },
+  "394": {
+    "primary": {
+      "DEFAULT": "#4150d6",
+      "foreground": "#edeef7"
+    },
+    "accent": {
+      "DEFAULT": "#7251e0",
+      "foreground": "#25194c"
+    },
+    "ring": "#4150d6",
+    "swirlParticleBaseHue": 234,
+    "swirlParticleHueRange": 24
+  },
+  "395": {
+    "primary": {
+      "DEFAULT": "#4e41d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8d51e0",
+      "foreground": "#2e194c"
+    },
+    "ring": "#4e41d6",
+    "swirlParticleBaseHue": 245,
+    "swirlParticleHueRange": 25
+  },
+  "396": {
+    "primary": {
+      "DEFAULT": "#6941d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#a751e0",
+      "foreground": "#38194c"
+    },
+    "ring": "#6941d6",
+    "swirlParticleBaseHue": 256,
+    "swirlParticleHueRange": 26
+  },
+  "397": {
+    "primary": {
+      "DEFAULT": "#8441d6",
+      "foreground": "#f1edf7"
+    },
+    "accent": {
+      "DEFAULT": "#c151e0",
+      "foreground": "#41194c"
+    },
+    "ring": "#8441d6",
+    "swirlParticleBaseHue": 267,
+    "swirlParticleHueRange": 27
+  },
+  "398": {
+    "primary": {
+      "DEFAULT": "#a041d6",
+      "foreground": "#f3edf7"
+    },
+    "accent": {
+      "DEFAULT": "#db51e0",
+      "foreground": "#4a194c"
+    },
+    "ring": "#a041d6",
+    "swirlParticleBaseHue": 278,
+    "swirlParticleHueRange": 28
+  },
+  "399": {
+    "primary": {
+      "DEFAULT": "#bb41d6",
+      "foreground": "#f5edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051ca",
+      "foreground": "#4c1944"
+    },
+    "ring": "#bb41d6",
+    "swirlParticleBaseHue": 289,
+    "swirlParticleHueRange": 29
+  },
+  "400": {
+    "primary": {
+      "DEFAULT": "#d641d6",
+      "foreground": "#f7edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051b0",
+      "foreground": "#4c193b"
+    },
+    "ring": "#d641d6",
+    "swirlParticleBaseHue": 300,
+    "swirlParticleHueRange": 20
+  },
+  "401": {
+    "primary": {
+      "DEFAULT": "#d641bb",
+      "foreground": "#f7edf5"
+    },
+    "accent": {
+      "DEFAULT": "#e05196",
+      "foreground": "#4c1932"
+    },
+    "ring": "#d641bb",
+    "swirlParticleBaseHue": 311,
+    "swirlParticleHueRange": 21
+  },
+  "402": {
+    "primary": {
+      "DEFAULT": "#d641a0",
+      "foreground": "#f7edf3"
+    },
+    "accent": {
+      "DEFAULT": "#e0517c",
+      "foreground": "#4c1928"
+    },
+    "ring": "#d641a0",
+    "swirlParticleBaseHue": 322,
+    "swirlParticleHueRange": 22
+  },
+  "403": {
+    "primary": {
+      "DEFAULT": "#d64184",
+      "foreground": "#f7edf1"
+    },
+    "accent": {
+      "DEFAULT": "#e05162",
+      "foreground": "#4c191f"
+    },
+    "ring": "#d64184",
+    "swirlParticleBaseHue": 333,
+    "swirlParticleHueRange": 23
+  },
+  "404": {
+    "primary": {
+      "DEFAULT": "#d64169",
+      "foreground": "#f7edef"
+    },
+    "accent": {
+      "DEFAULT": "#e05b51",
+      "foreground": "#4c1c19"
+    },
+    "ring": "#d64169",
+    "swirlParticleBaseHue": 344,
+    "swirlParticleHueRange": 24
+  },
+  "405": {
+    "primary": {
+      "DEFAULT": "#d6414e",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e07551",
+      "foreground": "#4c2619"
+    },
+    "ring": "#d6414e",
+    "swirlParticleBaseHue": 355,
+    "swirlParticleHueRange": 25
+  },
+  "406": {
+    "primary": {
+      "DEFAULT": "#d65041",
+      "foreground": "#f7eeed"
+    },
+    "accent": {
+      "DEFAULT": "#e08f51",
+      "foreground": "#4c2f19"
+    },
+    "ring": "#d65041",
+    "swirlParticleBaseHue": 6,
+    "swirlParticleHueRange": 26
+  },
+  "407": {
+    "primary": {
+      "DEFAULT": "#d66b41",
+      "foreground": "#f7f0ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0a951",
+      "foreground": "#4c3819"
+    },
+    "ring": "#d66b41",
+    "swirlParticleBaseHue": 17,
+    "swirlParticleHueRange": 27
+  },
+  "408": {
+    "primary": {
+      "DEFAULT": "#d68741",
+      "foreground": "#f7f1ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0c351",
+      "foreground": "#4c4219"
+    },
+    "ring": "#d68741",
+    "swirlParticleBaseHue": 28,
+    "swirlParticleHueRange": 28
+  },
+  "409": {
+    "primary": {
+      "DEFAULT": "#d6a241",
+      "foreground": "#f7f3ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0de51",
+      "foreground": "#4c4b19"
+    },
+    "ring": "#d6a241",
+    "swirlParticleBaseHue": 39,
+    "swirlParticleHueRange": 29
+  },
+  "410": {
+    "primary": {
+      "DEFAULT": "#d6bd41",
+      "foreground": "#f7f5ed"
+    },
+    "accent": {
+      "DEFAULT": "#c8e051",
+      "foreground": "#434c19"
+    },
+    "ring": "#d6bd41",
+    "swirlParticleBaseHue": 50,
+    "swirlParticleHueRange": 20
+  },
+  "411": {
+    "primary": {
+      "DEFAULT": "#d4d641",
+      "foreground": "#f7f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#aee051",
+      "foreground": "#3a4c19"
+    },
+    "ring": "#d4d641",
+    "swirlParticleBaseHue": 61,
+    "swirlParticleHueRange": 21
+  },
+  "412": {
+    "primary": {
+      "DEFAULT": "#b9d641",
+      "foreground": "#f5f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#94e051",
+      "foreground": "#314c19"
+    },
+    "ring": "#b9d641",
+    "swirlParticleBaseHue": 72,
+    "swirlParticleHueRange": 22
+  },
+  "413": {
+    "primary": {
+      "DEFAULT": "#9dd641",
+      "foreground": "#f3f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#7ae051",
+      "foreground": "#274c19"
+    },
+    "ring": "#9dd641",
+    "swirlParticleBaseHue": 83,
+    "swirlParticleHueRange": 23
+  },
+  "414": {
+    "primary": {
+      "DEFAULT": "#82d641",
+      "foreground": "#f1f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#5fe051",
+      "foreground": "#1e4c19"
+    },
+    "ring": "#82d641",
+    "swirlParticleBaseHue": 94,
+    "swirlParticleHueRange": 24
+  },
+  "415": {
+    "primary": {
+      "DEFAULT": "#66d641",
+      "foreground": "#eff7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e05d",
+      "foreground": "#194c1d"
+    },
+    "ring": "#66d641",
+    "swirlParticleBaseHue": 105,
+    "swirlParticleHueRange": 25
+  },
+  "416": {
+    "primary": {
+      "DEFAULT": "#4bd641",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e077",
+      "foreground": "#194c27"
+    },
+    "ring": "#4bd641",
+    "swirlParticleBaseHue": 116,
+    "swirlParticleHueRange": 26
+  },
+  "417": {
+    "primary": {
+      "DEFAULT": "#41d653",
+      "foreground": "#edf7ee"
+    },
+    "accent": {
+      "DEFAULT": "#51e091",
+      "foreground": "#194c30"
+    },
+    "ring": "#41d653",
+    "swirlParticleBaseHue": 127,
+    "swirlParticleHueRange": 27
+  },
+  "418": {
+    "primary": {
+      "DEFAULT": "#41d66e",
+      "foreground": "#edf7f0"
+    },
+    "accent": {
+      "DEFAULT": "#51e0ac",
+      "foreground": "#194c39"
+    },
+    "ring": "#41d66e",
+    "swirlParticleBaseHue": 138,
+    "swirlParticleHueRange": 28
+  },
+  "419": {
+    "primary": {
+      "DEFAULT": "#41d689",
+      "foreground": "#edf7f2"
+    },
+    "accent": {
+      "DEFAULT": "#51e0c6",
+      "foreground": "#194c43"
+    },
+    "ring": "#41d689",
+    "swirlParticleBaseHue": 149,
+    "swirlParticleHueRange": 29
+  },
+  "420": {
+    "primary": {
+      "DEFAULT": "#41d6a5",
+      "foreground": "#edf7f3"
+    },
+    "accent": {
+      "DEFAULT": "#51e0e0",
+      "foreground": "#194c4c"
+    },
+    "ring": "#41d6a5",
+    "swirlParticleBaseHue": 160,
+    "swirlParticleHueRange": 20
+  },
+  "421": {
+    "primary": {
+      "DEFAULT": "#41d6c0",
+      "foreground": "#edf7f5"
+    },
+    "accent": {
+      "DEFAULT": "#51c6e0",
+      "foreground": "#19434c"
+    },
+    "ring": "#41d6c0",
+    "swirlParticleBaseHue": 171,
+    "swirlParticleHueRange": 21
+  },
+  "422": {
+    "primary": {
+      "DEFAULT": "#41d1d6",
+      "foreground": "#edf7f7"
+    },
+    "accent": {
+      "DEFAULT": "#51ace0",
+      "foreground": "#19394c"
+    },
+    "ring": "#41d1d6",
+    "swirlParticleBaseHue": 182,
+    "swirlParticleHueRange": 22
+  },
+  "423": {
+    "primary": {
+      "DEFAULT": "#41b6d6",
+      "foreground": "#edf5f7"
+    },
+    "accent": {
+      "DEFAULT": "#5191e0",
+      "foreground": "#19304c"
+    },
+    "ring": "#41b6d6",
+    "swirlParticleBaseHue": 193,
+    "swirlParticleHueRange": 23
+  },
+  "424": {
+    "primary": {
+      "DEFAULT": "#419bd6",
+      "foreground": "#edf3f7"
+    },
+    "accent": {
+      "DEFAULT": "#5177e0",
+      "foreground": "#19274c"
+    },
+    "ring": "#419bd6",
+    "swirlParticleBaseHue": 204,
+    "swirlParticleHueRange": 24
+  },
+  "425": {
+    "primary": {
+      "DEFAULT": "#417fd6",
+      "foreground": "#edf1f7"
+    },
+    "accent": {
+      "DEFAULT": "#515de0",
+      "foreground": "#191d4c"
+    },
+    "ring": "#417fd6",
+    "swirlParticleBaseHue": 215,
+    "swirlParticleHueRange": 25
+  },
+  "426": {
+    "primary": {
+      "DEFAULT": "#4164d6",
+      "foreground": "#edeff7"
+    },
+    "accent": {
+      "DEFAULT": "#5f51e0",
+      "foreground": "#1e194c"
+    },
+    "ring": "#4164d6",
+    "swirlParticleBaseHue": 226,
+    "swirlParticleHueRange": 26
+  },
+  "427": {
+    "primary": {
+      "DEFAULT": "#4149d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#7a51e0",
+      "foreground": "#27194c"
+    },
+    "ring": "#4149d6",
+    "swirlParticleBaseHue": 237,
+    "swirlParticleHueRange": 27
+  },
+  "428": {
+    "primary": {
+      "DEFAULT": "#5541d6",
+      "foreground": "#eeedf7"
+    },
+    "accent": {
+      "DEFAULT": "#9451e0",
+      "foreground": "#31194c"
+    },
+    "ring": "#5541d6",
+    "swirlParticleBaseHue": 248,
+    "swirlParticleHueRange": 28
+  },
+  "429": {
+    "primary": {
+      "DEFAULT": "#7041d6",
+      "foreground": "#f0edf7"
+    },
+    "accent": {
+      "DEFAULT": "#ae51e0",
+      "foreground": "#3a194c"
+    },
+    "ring": "#7041d6",
+    "swirlParticleBaseHue": 259,
+    "swirlParticleHueRange": 29
+  },
+  "430": {
+    "primary": {
+      "DEFAULT": "#8c41d6",
+      "foreground": "#f2edf7"
+    },
+    "accent": {
+      "DEFAULT": "#c851e0",
+      "foreground": "#43194c"
+    },
+    "ring": "#8c41d6",
+    "swirlParticleBaseHue": 270,
+    "swirlParticleHueRange": 20
+  },
+  "431": {
+    "primary": {
+      "DEFAULT": "#a741d6",
+      "foreground": "#f4edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051de",
+      "foreground": "#4c194b"
+    },
+    "ring": "#a741d6",
+    "swirlParticleBaseHue": 281,
+    "swirlParticleHueRange": 21
+  },
+  "432": {
+    "primary": {
+      "DEFAULT": "#c241d6",
+      "foreground": "#f5edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051c3",
+      "foreground": "#4c1942"
+    },
+    "ring": "#c241d6",
+    "swirlParticleBaseHue": 292,
+    "swirlParticleHueRange": 22
+  },
+  "433": {
+    "primary": {
+      "DEFAULT": "#d641cf",
+      "foreground": "#f7edf6"
+    },
+    "accent": {
+      "DEFAULT": "#e051a9",
+      "foreground": "#4c1938"
+    },
+    "ring": "#d641cf",
+    "swirlParticleBaseHue": 303,
+    "swirlParticleHueRange": 23
+  },
+  "434": {
+    "primary": {
+      "DEFAULT": "#d641b4",
+      "foreground": "#f7edf4"
+    },
+    "accent": {
+      "DEFAULT": "#e0518f",
+      "foreground": "#4c192f"
+    },
+    "ring": "#d641b4",
+    "swirlParticleBaseHue": 314,
+    "swirlParticleHueRange": 24
+  },
+  "435": {
+    "primary": {
+      "DEFAULT": "#d64198",
+      "foreground": "#f7edf3"
+    },
+    "accent": {
+      "DEFAULT": "#e05175",
+      "foreground": "#4c1926"
+    },
+    "ring": "#d64198",
+    "swirlParticleBaseHue": 325,
+    "swirlParticleHueRange": 25
+  },
+  "436": {
+    "primary": {
+      "DEFAULT": "#d6417d",
+      "foreground": "#f7edf1"
+    },
+    "accent": {
+      "DEFAULT": "#e0515b",
+      "foreground": "#4c191c"
+    },
+    "ring": "#d6417d",
+    "swirlParticleBaseHue": 336,
+    "swirlParticleHueRange": 26
+  },
+  "437": {
+    "primary": {
+      "DEFAULT": "#d64161",
+      "foreground": "#f7edef"
+    },
+    "accent": {
+      "DEFAULT": "#e06251",
+      "foreground": "#4c1f19"
+    },
+    "ring": "#d64161",
+    "swirlParticleBaseHue": 347,
+    "swirlParticleHueRange": 27
+  },
+  "438": {
+    "primary": {
+      "DEFAULT": "#d64146",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e07c51",
+      "foreground": "#4c2819"
+    },
+    "ring": "#d64146",
+    "swirlParticleBaseHue": 358,
+    "swirlParticleHueRange": 28
+  },
+  "439": {
+    "primary": {
+      "DEFAULT": "#d65841",
+      "foreground": "#f7eeed"
+    },
+    "accent": {
+      "DEFAULT": "#e09651",
+      "foreground": "#4c3219"
+    },
+    "ring": "#d65841",
+    "swirlParticleBaseHue": 9,
+    "swirlParticleHueRange": 29
+  },
+  "440": {
+    "primary": {
+      "DEFAULT": "#d67341",
+      "foreground": "#f7f0ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0b051",
+      "foreground": "#4c3b19"
+    },
+    "ring": "#d67341",
+    "swirlParticleBaseHue": 20,
+    "swirlParticleHueRange": 20
+  },
+  "441": {
+    "primary": {
+      "DEFAULT": "#d68e41",
+      "foreground": "#f7f2ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0ca51",
+      "foreground": "#4c4419"
+    },
+    "ring": "#d68e41",
+    "swirlParticleBaseHue": 31,
+    "swirlParticleHueRange": 21
+  },
+  "442": {
+    "primary": {
+      "DEFAULT": "#d6aa41",
+      "foreground": "#f7f4ed"
+    },
+    "accent": {
+      "DEFAULT": "#dbe051",
+      "foreground": "#4a4c19"
+    },
+    "ring": "#d6aa41",
+    "swirlParticleBaseHue": 42,
+    "swirlParticleHueRange": 22
+  },
+  "443": {
+    "primary": {
+      "DEFAULT": "#d6c541",
+      "foreground": "#f7f6ed"
+    },
+    "accent": {
+      "DEFAULT": "#c1e051",
+      "foreground": "#414c19"
+    },
+    "ring": "#d6c541",
+    "swirlParticleBaseHue": 53,
+    "swirlParticleHueRange": 23
+  },
+  "444": {
+    "primary": {
+      "DEFAULT": "#ccd641",
+      "foreground": "#f6f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#a7e051",
+      "foreground": "#384c19"
+    },
+    "ring": "#ccd641",
+    "swirlParticleBaseHue": 64,
+    "swirlParticleHueRange": 24
+  },
+  "445": {
+    "primary": {
+      "DEFAULT": "#b1d641",
+      "foreground": "#f4f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#8de051",
+      "foreground": "#2e4c19"
+    },
+    "ring": "#b1d641",
+    "swirlParticleBaseHue": 75,
+    "swirlParticleHueRange": 25
+  },
+  "446": {
+    "primary": {
+      "DEFAULT": "#96d641",
+      "foreground": "#f2f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#72e051",
+      "foreground": "#254c19"
+    },
+    "ring": "#96d641",
+    "swirlParticleBaseHue": 86,
+    "swirlParticleHueRange": 26
+  },
+  "447": {
+    "primary": {
+      "DEFAULT": "#7ad641",
+      "foreground": "#f1f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#58e051",
+      "foreground": "#1c4c19"
+    },
+    "ring": "#7ad641",
+    "swirlParticleBaseHue": 97,
+    "swirlParticleHueRange": 27
+  },
+  "448": {
+    "primary": {
+      "DEFAULT": "#5fd641",
+      "foreground": "#eff7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e064",
+      "foreground": "#194c20"
+    },
+    "ring": "#5fd641",
+    "swirlParticleBaseHue": 108,
+    "swirlParticleHueRange": 28
+  },
+  "449": {
+    "primary": {
+      "DEFAULT": "#44d641",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e07e",
+      "foreground": "#194c29"
+    },
+    "ring": "#44d641",
+    "swirlParticleBaseHue": 119,
+    "swirlParticleHueRange": 29
+  },
+  "450": {
+    "primary": {
+      "DEFAULT": "#41d65a",
+      "foreground": "#edf7ee"
+    },
+    "accent": {
+      "DEFAULT": "#51e099",
+      "foreground": "#194c33"
+    },
+    "ring": "#41d65a",
+    "swirlParticleBaseHue": 130,
+    "swirlParticleHueRange": 20
+  },
+  "451": {
+    "primary": {
+      "DEFAULT": "#41d675",
+      "foreground": "#edf7f0"
+    },
+    "accent": {
+      "DEFAULT": "#51e0b3",
+      "foreground": "#194c3c"
+    },
+    "ring": "#41d675",
+    "swirlParticleBaseHue": 141,
+    "swirlParticleHueRange": 21
+  },
+  "452": {
+    "primary": {
+      "DEFAULT": "#41d691",
+      "foreground": "#edf7f2"
+    },
+    "accent": {
+      "DEFAULT": "#51e0cd",
+      "foreground": "#194c45"
+    },
+    "ring": "#41d691",
+    "swirlParticleBaseHue": 152,
+    "swirlParticleHueRange": 22
+  },
+  "453": {
+    "primary": {
+      "DEFAULT": "#41d6ac",
+      "foreground": "#edf7f4"
+    },
+    "accent": {
+      "DEFAULT": "#51d9e0",
+      "foreground": "#19494c"
+    },
+    "ring": "#41d6ac",
+    "swirlParticleBaseHue": 163,
+    "swirlParticleHueRange": 23
+  },
+  "454": {
+    "primary": {
+      "DEFAULT": "#41d6c7",
+      "foreground": "#edf7f6"
+    },
+    "accent": {
+      "DEFAULT": "#51bfe0",
+      "foreground": "#19404c"
+    },
+    "ring": "#41d6c7",
+    "swirlParticleBaseHue": 174,
+    "swirlParticleHueRange": 24
+  },
+  "455": {
+    "primary": {
+      "DEFAULT": "#41cad6",
+      "foreground": "#edf6f7"
+    },
+    "accent": {
+      "DEFAULT": "#51a4e0",
+      "foreground": "#19374c"
+    },
+    "ring": "#41cad6",
+    "swirlParticleBaseHue": 185,
+    "swirlParticleHueRange": 25
+  },
+  "456": {
+    "primary": {
+      "DEFAULT": "#41afd6",
+      "foreground": "#edf4f7"
+    },
+    "accent": {
+      "DEFAULT": "#518ae0",
+      "foreground": "#192d4c"
+    },
+    "ring": "#41afd6",
+    "swirlParticleBaseHue": 196,
+    "swirlParticleHueRange": 26
+  },
+  "457": {
+    "primary": {
+      "DEFAULT": "#4193d6",
+      "foreground": "#edf2f7"
+    },
+    "accent": {
+      "DEFAULT": "#5170e0",
+      "foreground": "#19244c"
+    },
+    "ring": "#4193d6",
+    "swirlParticleBaseHue": 207,
+    "swirlParticleHueRange": 27
+  },
+  "458": {
+    "primary": {
+      "DEFAULT": "#4178d6",
+      "foreground": "#edf0f7"
+    },
+    "accent": {
+      "DEFAULT": "#5156e0",
+      "foreground": "#191b4c"
+    },
+    "ring": "#4178d6",
+    "swirlParticleBaseHue": 218,
+    "swirlParticleHueRange": 28
+  },
+  "459": {
+    "primary": {
+      "DEFAULT": "#415dd6",
+      "foreground": "#edeff7"
+    },
+    "accent": {
+      "DEFAULT": "#6751e0",
+      "foreground": "#21194c"
+    },
+    "ring": "#415dd6",
+    "swirlParticleBaseHue": 229,
+    "swirlParticleHueRange": 29
+  },
+  "460": {
+    "primary": {
+      "DEFAULT": "#4141d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8151e0",
+      "foreground": "#2a194c"
+    },
+    "ring": "#4141d6",
+    "swirlParticleBaseHue": 240,
+    "swirlParticleHueRange": 20
+  },
+  "461": {
+    "primary": {
+      "DEFAULT": "#5d41d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#9b51e0",
+      "foreground": "#33194c"
+    },
+    "ring": "#5d41d6",
+    "swirlParticleBaseHue": 251,
+    "swirlParticleHueRange": 21
+  },
+  "462": {
+    "primary": {
+      "DEFAULT": "#7841d6",
+      "foreground": "#f0edf7"
+    },
+    "accent": {
+      "DEFAULT": "#b551e0",
+      "foreground": "#3d194c"
+    },
+    "ring": "#7841d6",
+    "swirlParticleBaseHue": 262,
+    "swirlParticleHueRange": 22
+  },
+  "463": {
+    "primary": {
+      "DEFAULT": "#9341d6",
+      "foreground": "#f2edf7"
+    },
+    "accent": {
+      "DEFAULT": "#cf51e0",
+      "foreground": "#46194c"
+    },
+    "ring": "#9341d6",
+    "swirlParticleBaseHue": 273,
+    "swirlParticleHueRange": 23
+  },
+  "464": {
+    "primary": {
+      "DEFAULT": "#af41d6",
+      "foreground": "#f4edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051d6",
+      "foreground": "#4c1949"
+    },
+    "ring": "#af41d6",
+    "swirlParticleBaseHue": 284,
+    "swirlParticleHueRange": 24
+  },
+  "465": {
+    "primary": {
+      "DEFAULT": "#ca41d6",
+      "foreground": "#f6edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051bc",
+      "foreground": "#4c193f"
+    },
+    "ring": "#ca41d6",
+    "swirlParticleBaseHue": 295,
+    "swirlParticleHueRange": 25
+  },
+  "466": {
+    "primary": {
+      "DEFAULT": "#d641c7",
+      "foreground": "#f7edf6"
+    },
+    "accent": {
+      "DEFAULT": "#e051a2",
+      "foreground": "#4c1936"
+    },
+    "ring": "#d641c7",
+    "swirlParticleBaseHue": 306,
+    "swirlParticleHueRange": 26
+  },
+  "467": {
+    "primary": {
+      "DEFAULT": "#d641ac",
+      "foreground": "#f7edf4"
+    },
+    "accent": {
+      "DEFAULT": "#e05188",
+      "foreground": "#4c192d"
+    },
+    "ring": "#d641ac",
+    "swirlParticleBaseHue": 317,
+    "swirlParticleHueRange": 27
+  },
+  "468": {
+    "primary": {
+      "DEFAULT": "#d64191",
+      "foreground": "#f7edf2"
+    },
+    "accent": {
+      "DEFAULT": "#e0516e",
+      "foreground": "#4c1923"
+    },
+    "ring": "#d64191",
+    "swirlParticleBaseHue": 328,
+    "swirlParticleHueRange": 28
+  },
+  "469": {
+    "primary": {
+      "DEFAULT": "#d64175",
+      "foreground": "#f7edf0"
+    },
+    "accent": {
+      "DEFAULT": "#e05153",
+      "foreground": "#4c191a"
+    },
+    "ring": "#d64175",
+    "swirlParticleBaseHue": 339,
+    "swirlParticleHueRange": 29
+  },
+  "470": {
+    "primary": {
+      "DEFAULT": "#d6415a",
+      "foreground": "#f7edee"
+    },
+    "accent": {
+      "DEFAULT": "#e06951",
+      "foreground": "#4c2219"
+    },
+    "ring": "#d6415a",
+    "swirlParticleBaseHue": 350,
+    "swirlParticleHueRange": 20
+  },
+  "471": {
+    "primary": {
+      "DEFAULT": "#d64441",
+      "foreground": "#f7eded"
+    },
+    "accent": {
+      "DEFAULT": "#e08351",
+      "foreground": "#4c2b19"
+    },
+    "ring": "#d64441",
+    "swirlParticleBaseHue": 1,
+    "swirlParticleHueRange": 21
+  },
+  "472": {
+    "primary": {
+      "DEFAULT": "#d65f41",
+      "foreground": "#f7efed"
+    },
+    "accent": {
+      "DEFAULT": "#e09d51",
+      "foreground": "#4c3419"
+    },
+    "ring": "#d65f41",
+    "swirlParticleBaseHue": 12,
+    "swirlParticleHueRange": 22
+  },
+  "473": {
+    "primary": {
+      "DEFAULT": "#d67a41",
+      "foreground": "#f7f1ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0b751",
+      "foreground": "#4c3e19"
+    },
+    "ring": "#d67a41",
+    "swirlParticleBaseHue": 23,
+    "swirlParticleHueRange": 23
+  },
+  "474": {
+    "primary": {
+      "DEFAULT": "#d69641",
+      "foreground": "#f7f2ed"
+    },
+    "accent": {
+      "DEFAULT": "#e0d251",
+      "foreground": "#4c4719"
+    },
+    "ring": "#d69641",
+    "swirlParticleBaseHue": 34,
+    "swirlParticleHueRange": 24
+  },
+  "475": {
+    "primary": {
+      "DEFAULT": "#d6b141",
+      "foreground": "#f7f4ed"
+    },
+    "accent": {
+      "DEFAULT": "#d4e051",
+      "foreground": "#484c19"
+    },
+    "ring": "#d6b141",
+    "swirlParticleBaseHue": 45,
+    "swirlParticleHueRange": 25
+  },
+  "476": {
+    "primary": {
+      "DEFAULT": "#d6cc41",
+      "foreground": "#f7f6ed"
+    },
+    "accent": {
+      "DEFAULT": "#bae051",
+      "foreground": "#3e4c19"
+    },
+    "ring": "#d6cc41",
+    "swirlParticleBaseHue": 56,
+    "swirlParticleHueRange": 26
+  },
+  "477": {
+    "primary": {
+      "DEFAULT": "#c5d641",
+      "foreground": "#f6f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#a0e051",
+      "foreground": "#354c19"
+    },
+    "ring": "#c5d641",
+    "swirlParticleBaseHue": 67,
+    "swirlParticleHueRange": 27
+  },
+  "478": {
+    "primary": {
+      "DEFAULT": "#aad641",
+      "foreground": "#f4f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#85e051",
+      "foreground": "#2c4c19"
+    },
+    "ring": "#aad641",
+    "swirlParticleBaseHue": 78,
+    "swirlParticleHueRange": 28
+  },
+  "479": {
+    "primary": {
+      "DEFAULT": "#8ed641",
+      "foreground": "#f2f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#6be051",
+      "foreground": "#224c19"
+    },
+    "ring": "#8ed641",
+    "swirlParticleBaseHue": 89,
+    "swirlParticleHueRange": 29
+  },
+  "480": {
+    "primary": {
+      "DEFAULT": "#73d641",
+      "foreground": "#f0f7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e051",
+      "foreground": "#194c19"
+    },
+    "ring": "#73d641",
+    "swirlParticleBaseHue": 100,
+    "swirlParticleHueRange": 20
+  },
+  "481": {
+    "primary": {
+      "DEFAULT": "#58d641",
+      "foreground": "#eef7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e06b",
+      "foreground": "#194c22"
+    },
+    "ring": "#58d641",
+    "swirlParticleBaseHue": 111,
+    "swirlParticleHueRange": 21
+  },
+  "482": {
+    "primary": {
+      "DEFAULT": "#41d646",
+      "foreground": "#edf7ed"
+    },
+    "accent": {
+      "DEFAULT": "#51e085",
+      "foreground": "#194c2c"
+    },
+    "ring": "#41d646",
+    "swirlParticleBaseHue": 122,
+    "swirlParticleHueRange": 22
+  },
+  "483": {
+    "primary": {
+      "DEFAULT": "#41d661",
+      "foreground": "#edf7ef"
+    },
+    "accent": {
+      "DEFAULT": "#51e0a0",
+      "foreground": "#194c35"
+    },
+    "ring": "#41d661",
+    "swirlParticleBaseHue": 133,
+    "swirlParticleHueRange": 23
+  },
+  "484": {
+    "primary": {
+      "DEFAULT": "#41d67d",
+      "foreground": "#edf7f1"
+    },
+    "accent": {
+      "DEFAULT": "#51e0ba",
+      "foreground": "#194c3e"
+    },
+    "ring": "#41d67d",
+    "swirlParticleBaseHue": 144,
+    "swirlParticleHueRange": 24
+  },
+  "485": {
+    "primary": {
+      "DEFAULT": "#41d698",
+      "foreground": "#edf7f3"
+    },
+    "accent": {
+      "DEFAULT": "#51e0d4",
+      "foreground": "#194c48"
+    },
+    "ring": "#41d698",
+    "swirlParticleBaseHue": 155,
+    "swirlParticleHueRange": 25
+  },
+  "486": {
+    "primary": {
+      "DEFAULT": "#41d6b4",
+      "foreground": "#edf7f4"
+    },
+    "accent": {
+      "DEFAULT": "#51d2e0",
+      "foreground": "#19474c"
+    },
+    "ring": "#41d6b4",
+    "swirlParticleBaseHue": 166,
+    "swirlParticleHueRange": 26
+  },
+  "487": {
+    "primary": {
+      "DEFAULT": "#41d6cf",
+      "foreground": "#edf7f6"
+    },
+    "accent": {
+      "DEFAULT": "#51b7e0",
+      "foreground": "#193e4c"
+    },
+    "ring": "#41d6cf",
+    "swirlParticleBaseHue": 177,
+    "swirlParticleHueRange": 27
+  },
+  "488": {
+    "primary": {
+      "DEFAULT": "#41c2d6",
+      "foreground": "#edf5f7"
+    },
+    "accent": {
+      "DEFAULT": "#519de0",
+      "foreground": "#19344c"
+    },
+    "ring": "#41c2d6",
+    "swirlParticleBaseHue": 188,
+    "swirlParticleHueRange": 28
+  },
+  "489": {
+    "primary": {
+      "DEFAULT": "#41a7d6",
+      "foreground": "#edf4f7"
+    },
+    "accent": {
+      "DEFAULT": "#5183e0",
+      "foreground": "#192b4c"
+    },
+    "ring": "#41a7d6",
+    "swirlParticleBaseHue": 199,
+    "swirlParticleHueRange": 29
+  },
+  "490": {
+    "primary": {
+      "DEFAULT": "#418cd6",
+      "foreground": "#edf2f7"
+    },
+    "accent": {
+      "DEFAULT": "#5169e0",
+      "foreground": "#19224c"
+    },
+    "ring": "#418cd6",
+    "swirlParticleBaseHue": 210,
+    "swirlParticleHueRange": 20
+  },
+  "491": {
+    "primary": {
+      "DEFAULT": "#4170d6",
+      "foreground": "#edf0f7"
+    },
+    "accent": {
+      "DEFAULT": "#5351e0",
+      "foreground": "#1a194c"
+    },
+    "ring": "#4170d6",
+    "swirlParticleBaseHue": 221,
+    "swirlParticleHueRange": 21
+  },
+  "492": {
+    "primary": {
+      "DEFAULT": "#4155d6",
+      "foreground": "#edeef7"
+    },
+    "accent": {
+      "DEFAULT": "#6e51e0",
+      "foreground": "#23194c"
+    },
+    "ring": "#4155d6",
+    "swirlParticleBaseHue": 232,
+    "swirlParticleHueRange": 22
+  },
+  "493": {
+    "primary": {
+      "DEFAULT": "#4941d6",
+      "foreground": "#ededf7"
+    },
+    "accent": {
+      "DEFAULT": "#8851e0",
+      "foreground": "#2d194c"
+    },
+    "ring": "#4941d6",
+    "swirlParticleBaseHue": 243,
+    "swirlParticleHueRange": 23
+  },
+  "494": {
+    "primary": {
+      "DEFAULT": "#6441d6",
+      "foreground": "#efedf7"
+    },
+    "accent": {
+      "DEFAULT": "#a251e0",
+      "foreground": "#36194c"
+    },
+    "ring": "#6441d6",
+    "swirlParticleBaseHue": 254,
+    "swirlParticleHueRange": 24
+  },
+  "495": {
+    "primary": {
+      "DEFAULT": "#7f41d6",
+      "foreground": "#f1edf7"
+    },
+    "accent": {
+      "DEFAULT": "#bc51e0",
+      "foreground": "#3f194c"
+    },
+    "ring": "#7f41d6",
+    "swirlParticleBaseHue": 265,
+    "swirlParticleHueRange": 25
+  },
+  "496": {
+    "primary": {
+      "DEFAULT": "#9b41d6",
+      "foreground": "#f3edf7"
+    },
+    "accent": {
+      "DEFAULT": "#d651e0",
+      "foreground": "#49194c"
+    },
+    "ring": "#9b41d6",
+    "swirlParticleBaseHue": 276,
+    "swirlParticleHueRange": 26
+  },
+  "497": {
+    "primary": {
+      "DEFAULT": "#b641d6",
+      "foreground": "#f5edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051cf",
+      "foreground": "#4c1946"
+    },
+    "ring": "#b641d6",
+    "swirlParticleBaseHue": 287,
+    "swirlParticleHueRange": 27
+  },
+  "498": {
+    "primary": {
+      "DEFAULT": "#d141d6",
+      "foreground": "#f7edf7"
+    },
+    "accent": {
+      "DEFAULT": "#e051b5",
+      "foreground": "#4c193d"
+    },
+    "ring": "#d141d6",
+    "swirlParticleBaseHue": 298,
+    "swirlParticleHueRange": 28
+  },
+  "499": {
+    "primary": {
+      "DEFAULT": "#d641c0",
+      "foreground": "#f7edf5"
+    },
+    "accent": {
+      "DEFAULT": "#e0519b",
+      "foreground": "#4c1933"
+    },
+    "ring": "#d641c0",
+    "swirlParticleBaseHue": 309,
+    "swirlParticleHueRange": 29
+  },
+  "500": {
+    "primary": {
+      "DEFAULT": "#d641a5",
+      "foreground": "#f7edf3"
+    },
+    "accent": {
+      "DEFAULT": "#e05181",
+      "foreground": "#4c192a"
+    },
+    "ring": "#d641a5",
+    "swirlParticleBaseHue": 320,
+    "swirlParticleHueRange": 20
+  }
+}

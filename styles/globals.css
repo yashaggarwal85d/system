@@ -4,10 +4,54 @@
 
 @layer base {
   :root {
-    --radius: 0.5rem;
+    --background: 240 0% 5%;
+    --foreground: 0 0% 94%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 0 0% 94%;
+
+    --popover: 217 33% 17%;
+    --popover-foreground: 0 0% 94%;
+
+    --primary: 200 92% 60%;
+    --primary-foreground: 240 0% 5%;
+
+    --secondary: 215 39% 17%;
+    --secondary-foreground: 0 0% 94%;
+
+    --muted: 215 28% 26%;
+    --muted-foreground: 215 25% 65%;
+
+    --accent: 200 95% 74%;
+    --accent-foreground: 240 0% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 80% 97%;
+
+    --success: 142 71% 45%;
+    --success-foreground: 140 89% 97%;
+
+    --warning: 45 93% 47%;
+    --warning-foreground: 48 94% 95%;
+
+    --info: 203 92% 59%;
+    --info-foreground: 204 100% 97%;
+
+    --border: 217 33% 17%;
+    --input: 215 39% 17%;
+    --ring: 203 92% 59%;
+
+    --radius: 0.5rem; /* Keep existing radius */
+
+    /* Custom theme variables */
+    --swirl-background: 245 30% 6%;
+    --swirl-particle-base-hue: 200;
+    --swirl-particle-hue-range: 40;
   }
 
   .dark {
+    /* Define dark mode overrides here if needed,
+       though the ThemeProvider now handles dynamic themes */
   }
 }
 

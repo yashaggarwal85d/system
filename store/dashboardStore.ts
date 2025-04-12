@@ -1,5 +1,6 @@
 import { create, StateCreator } from "zustand";
 import { Player, PlayerFullInfo } from "@/lib/utils/interfaces";
+import { ColorTheme, defaultTheme, getThemeForLevel } from "@/lib/utils/colors";
 import {
   fetchPlayerFullInfoAPI,
   updateEntityAPI,
@@ -13,6 +14,7 @@ import useScrambleStore from "./scrambleStore";
 interface DashboardState {
   activeTab: string;
   player: Player | null;
+  currentTheme: ColorTheme;
   isLoading: boolean;
   error: string | null;
 
@@ -24,15 +26,23 @@ interface DashboardState {
 const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
   activeTab: "tasks",
   player: null,
+  currentTheme: defaultTheme,
   isLoading: false,
   error: null,
 
   setActiveTab: (tab) => set({ activeTab: tab }),
 
   fetchPlayer: async () => {
+    set({ isLoading: true, error: null });
     try {
       const fullPlayerData: PlayerFullInfo = await fetchPlayerFullInfoAPI();
-      set({ isLoading: true, error: null, player: fullPlayerData.player });
+      const playerLevel = fullPlayerData.player.level;
+      const theme = getThemeForLevel(playerLevel);
+      set({
+        player: fullPlayerData.player,
+        currentTheme: theme,
+        isLoading: false,
+      });
       useHabitStore.getState().setHabits(fullPlayerData.habits);
       useTaskStore.getState().setTasks(fullPlayerData.tasks);
       useRoutineStore.getState().setRoutines(fullPlayerData.routines);
@@ -59,13 +69,22 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
       aura: newAura,
     };
     if (newAura >= currentPlayer.level * 100) {
+      const newLevel = currentPlayer.level + 1;
       newPlayer = {
         ...newPlayer,
-        level: currentPlayer.level + 1,
-        description: " You are now level " + (currentPlayer.level + 1),
+        level: newLevel,
+        description: " You are now level " + newLevel,
       };
+      // Update theme if level changed
+      const newTheme = getThemeForLevel(newLevel);
+      set({
+        player: { ...currentPlayer, ...newPlayer },
+        currentTheme: newTheme,
+      });
+    } else {
+      set({ player: { ...currentPlayer, ...newPlayer } });
     }
-    set({ player: { ...currentPlayer, ...newPlayer } });
+
     console.log(newAura, get().player);
     await updatePlayer({ ...newPlayer });
   },
