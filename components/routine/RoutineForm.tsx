@@ -7,7 +7,7 @@ import { Checkbox } from "@/components/common/checkbox";
 import { NumberWheelPicker } from "@/components/common/number-wheel-picker";
 import { PeriodWheelPicker } from "@/components/common/period-wheel-picker";
 import { Routine, ChecklistItemData } from "@/lib/utils/interfaces";
-import { Trash2, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { v4 as uuidv4 } from "uuid";
 import { ChecklistItem, ChecklistItemHandle } from "../common/checklist-item";
 import { Reorder, useDragControls } from "framer-motion";

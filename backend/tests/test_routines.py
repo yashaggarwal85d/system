@@ -22,6 +22,10 @@ def test_create_routine_success(authenticated_client: TestClient, mock_redis, te
     assert data["userId"] == test_user_username
     assert data["name"] == test_routine_data.name
     assert data["checklist"] == test_routine_data.checklist
+    assert data["start_date"] == "04-04-25" # Check serialized date format
+    assert data["last_completed"] == "04-04-25" # Check serialized date format
+    assert data["occurence"] == test_routine_data.occurence.value
+    assert data["x_occurence"] == test_routine_data.x_occurence
 
     # Check if redis_set was called correctly
     mock_redis["set"].assert_called_once_with(mock_redis["connection"], expected_key, test_routine_data)
@@ -51,8 +55,15 @@ def test_read_user_routines_success(authenticated_client: TestClient, mock_redis
     data = response.json()
     assert isinstance(data, list)
     assert len(data) == 1
-    assert data[0]["id"] == test_routine_data.id
-    assert data[0]["userId"] == test_user_username
+    routine_in_list = data[0]
+    assert routine_in_list["id"] == test_routine_data.id
+    assert routine_in_list["userId"] == test_user_username
+    assert routine_in_list["name"] == test_routine_data.name
+    assert routine_in_list["checklist"] == test_routine_data.checklist
+    assert routine_in_list["start_date"] == "04-04-25" # Check serialized date format
+    assert routine_in_list["last_completed"] == "04-04-25" # Check serialized date format
+    assert routine_in_list["occurence"] == test_routine_data.occurence.value
+    assert routine_in_list["x_occurence"] == test_routine_data.x_occurence
 
     mock_redis["get_all"].assert_called_once_with(mock_redis["connection"], expected_pattern, models.Routine)
 
@@ -85,6 +96,11 @@ def test_read_routine_success(authenticated_client: TestClient, mock_redis, test
     assert data["id"] == routine_id
     assert data["userId"] == test_user_username
     assert data["name"] == test_routine_data.name
+    assert data["checklist"] == test_routine_data.checklist
+    assert data["start_date"] == "04-04-25" # Check serialized date format
+    assert data["last_completed"] == "04-04-25" # Check serialized date format
+    assert data["occurence"] == test_routine_data.occurence.value
+    assert data["x_occurence"] == test_routine_data.x_occurence
 
     mock_redis["get"].assert_called_once_with(mock_redis["connection"], expected_key, models.Routine)
 
@@ -139,7 +155,11 @@ def test_update_routine_success(authenticated_client: TestClient, mock_redis, te
     assert data["name"] == update_payload["name"]
     assert data["aura"] == update_payload["aura"]
     assert data["checklist"] == update_payload["checklist"]
+    # Dates should remain the same unless updated, check serialized format
+    assert data["start_date"] == "04-04-25"
+    assert data["last_completed"] == "04-04-25"
 
+    # Assert mock call
     mock_redis["update"].assert_called_once_with(
         mock_redis["connection"], expected_key, update_payload, models.Routine
     )
@@ -149,7 +169,7 @@ def test_update_routine_partial_success(authenticated_client: TestClient, mock_r
     """Test partially updating a routine."""
     routine_id = test_routine_data.id
     expected_key = routine_key(test_user_username, routine_id)
-    update_payload = {"repeat": 10} # Only update repeat
+    update_payload = {"x_occurence": 3} # Update x_occurence instead of removed 'repeat'
 
     # Mock redis_update to return the updated routine data
     updated_routine = test_routine_data.model_copy(update=update_payload)
@@ -161,8 +181,12 @@ def test_update_routine_partial_success(authenticated_client: TestClient, mock_r
     data = response.json()
     assert data["id"] == routine_id
     assert data["name"] == test_routine_data.name # Name should be unchanged
-    assert data["repeat"] == update_payload["repeat"] # repeat should be updated
+    assert data["x_occurence"] == update_payload["x_occurence"] # x_occurence should be updated
+    assert data["aura"] == test_routine_data.aura # Aura unchanged
+    assert data["start_date"] == "04-04-25" # Date unchanged
+    assert data["last_completed"] == "04-04-25" # Date unchanged
 
+    # Assert mock call
     mock_redis["update"].assert_called_once_with(
         mock_redis["connection"], expected_key, update_payload, models.Routine
     )
@@ -181,6 +205,7 @@ def test_update_routine_not_found(authenticated_client: TestClient, mock_redis, 
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
     assert "Routine not found or update failed" in response.json()["detail"]
+    # Assert mock call
     mock_redis["update"].assert_called_once_with(
         mock_redis["connection"], expected_key, update_payload, models.Routine
     )

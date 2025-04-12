@@ -21,6 +21,9 @@ def test_create_task_success(authenticated_client: TestClient, mock_redis, test_
     assert data["id"] == test_task_data.id
     assert data["userId"] == test_user_username
     assert data["name"] == test_task_data.name
+    assert data["due_date"] == "10-04-25" # Check serialized date format
+    assert data["aura"] == test_task_data.aura # Check correct field name
+    assert data["completed"] is False # Check default value
 
     # Check if redis_set was called correctly
     mock_redis["set"].assert_called_once_with(mock_redis["connection"], expected_key, test_task_data)
@@ -50,8 +53,13 @@ def test_read_user_tasks_success(authenticated_client: TestClient, mock_redis, t
     data = response.json()
     assert isinstance(data, list)
     assert len(data) == 1
-    assert data[0]["id"] == test_task_data.id
-    assert data[0]["userId"] == test_user_username
+    task_in_list = data[0]
+    assert task_in_list["id"] == test_task_data.id
+    assert task_in_list["userId"] == test_user_username
+    assert task_in_list["name"] == test_task_data.name
+    assert task_in_list["due_date"] == "10-04-25" # Check serialized date format
+    assert task_in_list["aura"] == test_task_data.aura # Check correct field name
+    assert task_in_list["completed"] is False # Check default value
 
     mock_redis["get_all"].assert_called_once_with(mock_redis["connection"], expected_pattern, models.Task)
 
@@ -84,6 +92,9 @@ def test_read_task_success(authenticated_client: TestClient, mock_redis, test_ta
     assert data["id"] == task_id
     assert data["userId"] == test_user_username
     assert data["name"] == test_task_data.name
+    assert data["due_date"] == "10-04-25" # Check serialized date format
+    assert data["aura"] == test_task_data.aura # Check correct field name
+    assert data["completed"] is False # Check default value
 
     mock_redis["get"].assert_called_once_with(mock_redis["connection"], expected_key, models.Task)
 
@@ -123,9 +134,11 @@ def test_update_task_success(authenticated_client: TestClient, mock_redis, test_
     """Test successfully updating a task."""
     task_id = test_task_data.id
     expected_key = task_key(test_user_username, task_id)
-    update_payload = {"name": "Updated Test Task", "aura_value": 15}
+    # Use correct field name 'aura' in payload
+    update_payload = {"name": "Updated Test Task", "aura": 15}
 
     # Mock redis_update to return the updated task data
+    # Use correct field name 'aura' when copying
     updated_task = test_task_data.model_copy(update=update_payload)
     mock_redis["update"].return_value = updated_task
 
@@ -136,8 +149,11 @@ def test_update_task_success(authenticated_client: TestClient, mock_redis, test_
     assert data["id"] == task_id
     assert data["userId"] == test_user_username
     assert data["name"] == update_payload["name"]
-    assert data["aura_value"] == update_payload["aura_value"]
+    assert data["aura"] == update_payload["aura"] # Check correct field name
+    assert data["due_date"] == "10-04-25" # Date unchanged, check format
+    assert data["completed"] is False # Completed unchanged
 
+    # Assert mock call
     mock_redis["update"].assert_called_once_with(
         mock_redis["connection"], expected_key, update_payload, models.Task
     )
@@ -147,10 +163,14 @@ def test_update_task_partial_success(authenticated_client: TestClient, mock_redi
     """Test partially updating a task."""
     task_id = test_task_data.id
     expected_key = task_key(test_user_username, task_id)
-    update_payload = {"due_date": "2025-05-01"} # Only update due_date
+    # Input date format can be YYYY-MM-DD as validator handles it
+    update_payload = {"due_date": "2025-05-01"}
 
     # Mock redis_update to return the updated task data
-    updated_task = test_task_data.model_copy(update=update_payload)
+    # The model's validator will handle the date format conversion internally
+    # The serializer will format the output date. Mock should return the correct type.
+    from datetime import date
+    updated_task = test_task_data.model_copy(update={"due_date": date(2025, 5, 1)}) # Return date object
     mock_redis["update"].return_value = updated_task
 
     response = authenticated_client.put(f"/tasks/{task_id}", json=update_payload)
@@ -159,8 +179,11 @@ def test_update_task_partial_success(authenticated_client: TestClient, mock_redi
     data = response.json()
     assert data["id"] == task_id
     assert data["name"] == test_task_data.name # Name should be unchanged
-    assert data["due_date"] == update_payload["due_date"] # due_date should be updated
+    assert data["due_date"] == "01-05-25" # Check serialized date format
+    assert data["aura"] == test_task_data.aura # Aura unchanged
+    assert data["completed"] is False # Completed unchanged
 
+    # Assert mock call
     mock_redis["update"].assert_called_once_with(
         mock_redis["connection"], expected_key, update_payload, models.Task
     )
@@ -179,6 +202,7 @@ def test_update_task_not_found(authenticated_client: TestClient, mock_redis, tes
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
     assert "Task not found or update failed" in response.json()["detail"]
+    # Assert mock call
     mock_redis["update"].assert_called_once_with(
         mock_redis["connection"], expected_key, update_payload, models.Task
     )

@@ -112,6 +112,7 @@ export const ChecklistItem = forwardRef<
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.1 }}
       >
         <motion.div
           className={cn("group flex items-start gap-2 py-1", {
@@ -190,6 +191,7 @@ export const ChecklistItem = forwardRef<
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.1 }}
       >
         <motion.div
           className={cn("group flex items-start gap-2 py-1", {

@@ -1,8 +1,7 @@
-Make theme dynamic and fetch from backend
-Make use of Mp4s
-Cleanup
-Test suite
-    Rewrite backend testcases
+backend testing
+fix errors
+performance checks
+frontend testing
 AI integration
 CI/CD
 Deployment - Amazon

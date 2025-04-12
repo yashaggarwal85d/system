@@ -162,10 +162,15 @@ def test_update_player_me_success(authenticated_client: TestClient, mock_redis, 
     assert data["password"] == "hidden" # Ensure password is the hidden placeholder
 
     mock_redis["get"].assert_called_once_with(mock_redis["connection"], f"player:{test_user_username}", models.Player)
-    mock_redis["update"].assert_called_once()
+    # Assert mock call
+    mock_redis["update"].assert_called_once_with(
+        mock_redis["connection"], f"player:{test_user_username}", update_payload, models.Player
+    )
     # Check that password was excluded from the update data passed to redis_update
-    update_args = mock_redis["update"].call_args[0][2] # The dict passed for updates
-    assert "password" not in update_args
+    # This check is implicitly covered by the assert_called_once_with above,
+    # as update_payload itself doesn't contain 'password'.
+    # update_args = mock_redis["update"].call_args[0][2] # The dict passed for updates
+    # assert "password" not in update_args # Keep this commented or remove if redundant
 
 
 # Removed test_update_player_me_cannot_change_username as PlayerUpdate model prevents sending username

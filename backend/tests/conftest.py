@@ -115,11 +115,10 @@ def test_habit_data(test_user_username) -> models.Habit:
         userId=test_user_username,
         name="Test Habit",
         aura=10,
-        next_due_date="2025-04-05",
-        start_date="2025-04-04",
-        occurence=models.Occurence.DAYS, # Corrected Enum
+        start_date="2025-04-04", # Validator handles YYYY-MM-DD input
+        last_completed="2025-04-04", # Added field, validator handles YYYY-MM-DD input
+        occurence=models.Occurence.DAYS,
         x_occurence=1,
-        repeat=7,
     )
 
 @pytest.fixture
@@ -129,8 +128,8 @@ def test_task_data(test_user_username) -> models.Task:
         id="task123",
         userId=test_user_username,
         name="Test Task",
-        due_date="2025-04-10",
-        aura_value=5,
+        due_date="2025-04-10", # Validator handles YYYY-MM-DD input
+        aura=5, # Corrected field name
     )
 
 @pytest.fixture
@@ -141,10 +140,9 @@ def test_routine_data(test_user_username) -> models.Routine:
         userId=test_user_username,
         name="Test Routine",
         aura=20,
-        next_due_date="2025-04-06",
-        start_date="2025-04-04",
-        occurence=models.Occurence.WEEKS, # Corrected Enum
+        start_date="2025-04-04", # Validator handles YYYY-MM-DD input
+        last_completed="2025-04-04", # Added field, validator handles YYYY-MM-DD input
+        occurence=models.Occurence.WEEKS,
         x_occurence=1,
-        repeat=4,
         checklist="[ ] Item 1\n[ ] Item 2"
     )

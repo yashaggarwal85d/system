@@ -20,8 +20,13 @@ def test_create_habit_success(authenticated_client: TestClient, mock_redis, test
     assert data["id"] == test_habit_data.id
     assert data["userId"] == test_user_username
     assert data["name"] == test_habit_data.name
+    assert data["start_date"] == "04-04-25" # Check serialized date format
+    assert data["last_completed"] == "04-04-25" # Check serialized date format
+    assert data["occurence"] == test_habit_data.occurence.value
+    assert data["x_occurence"] == test_habit_data.x_occurence
 
-    # Check if redis_set was called correctly
+    # Check if redis_set was called correctly - Ensure the object passed matches the updated fixture
+    # The assertion below correctly compares the passed object to the fixture object
     mock_redis["set"].assert_called_once_with(mock_redis["connection"], expected_key, test_habit_data)
 
 
@@ -49,8 +54,15 @@ def test_read_user_habits_success(authenticated_client: TestClient, mock_redis, 
     data = response.json()
     assert isinstance(data, list)
     assert len(data) == 1
-    assert data[0]["id"] == test_habit_data.id
-    assert data[0]["userId"] == test_user_username
+    habit_in_list = data[0]
+    assert habit_in_list["id"] == test_habit_data.id
+    assert habit_in_list["userId"] == test_user_username
+    assert habit_in_list["name"] == test_habit_data.name
+    assert habit_in_list["start_date"] == "04-04-25" # Check serialized date format
+    assert habit_in_list["last_completed"] == "04-04-25" # Check serialized date format
+    assert habit_in_list["occurence"] == test_habit_data.occurence.value
+    assert habit_in_list["x_occurence"] == test_habit_data.x_occurence
+
 
     mock_redis["get_all"].assert_called_once_with(mock_redis["connection"], expected_pattern, models.Habit)
 
@@ -83,6 +95,10 @@ def test_read_habit_success(authenticated_client: TestClient, mock_redis, test_h
     assert data["id"] == habit_id
     assert data["userId"] == test_user_username
     assert data["name"] == test_habit_data.name
+    assert data["start_date"] == "04-04-25" # Check serialized date format
+    assert data["last_completed"] == "04-04-25" # Check serialized date format
+    assert data["occurence"] == test_habit_data.occurence.value
+    assert data["x_occurence"] == test_habit_data.x_occurence
 
     mock_redis["get"].assert_called_once_with(mock_redis["connection"], expected_key, models.Habit)
 
@@ -142,7 +158,11 @@ def test_update_habit_success(authenticated_client: TestClient, mock_redis, test
     assert data["userId"] == test_user_username
     assert data["name"] == update_payload["name"]
     assert data["aura"] == update_payload["aura"]
+    # Dates should remain the same unless updated, check serialized format
+    assert data["start_date"] == "04-04-25"
+    assert data["last_completed"] == "04-04-25"
 
+    # The update payload passed to redis_update should be the dictionary
     mock_redis["update"].assert_called_once_with(
         mock_redis["connection"], expected_key, update_payload, models.Habit
     )
@@ -165,7 +185,11 @@ def test_update_habit_partial_success(authenticated_client: TestClient, mock_red
     assert data["id"] == habit_id
     assert data["name"] == test_habit_data.name # Name should be unchanged
     assert data["aura"] == update_payload["aura"] # Aura should be updated
+    # Dates should remain the same unless updated, check serialized format
+    assert data["start_date"] == "04-04-25"
+    assert data["last_completed"] == "04-04-25"
 
+    # The update payload passed to redis_update should be the dictionary
     mock_redis["update"].assert_called_once_with(
         mock_redis["connection"], expected_key, update_payload, models.Habit
     )
@@ -184,6 +208,7 @@ def test_update_habit_not_found(authenticated_client: TestClient, mock_redis, te
 
     assert response.status_code == status.HTTP_404_NOT_FOUND
     assert "Habit not found" in response.json()["detail"]
+    # The update payload passed to redis_update should be the dictionary
     mock_redis["update"].assert_called_once_with(
         mock_redis["connection"], expected_key, update_payload, models.Habit
     )
