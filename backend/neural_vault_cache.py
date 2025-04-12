@@ -6,33 +6,33 @@ from typing import List, Dict, Any, Optional, Tuple
 from pathlib import Path
 from dotenv import load_dotenv
 
-# Load environment variables from .env file located in the same directory as main.py usually
-# Assuming .env is in the parent directory relative to this file (backend/.env)
+
+
 dotenv_path = Path(__file__).resolve().parent / '.env'
 load_dotenv(dotenv_path=dotenv_path)
 
-# --- Configuration ---
+
 CACHE_DIR = Path(__file__).parent / "neural_vault_files"
 
-# Load from environment variables with defaults
+
 REPO_API_URL = os.getenv(
     "NEURAL_VAULT_REPO_API_URL",
     "https://api.github.com/repos/yashaggarwal85d/Neural-Vault/contents/"
 )
 TARGET_FOLDERS_STR = os.getenv("NEURAL_VAULT_TARGET_FOLDERS", "Books,Internet,Misc")
-# Parse comma-separated string into a list, stripping whitespace
+
 TARGET_FOLDERS = [folder.strip() for folder in TARGET_FOLDERS_STR.split(',') if folder.strip()]
 
 REQUEST_TIMEOUT = int(os.getenv("NEURAL_VAULT_REQUEST_TIMEOUT", 15))
 
 GITHUB_HEADERS = {"Accept": "application/vnd.github.v3+json"}
-# Optional: Add GitHub Token if needed for private repos or rate limiting
-# GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
-# if GITHUB_TOKEN:
-#     GITHUB_HEADERS["Authorization"] = f"token {GITHUB_TOKEN}"
 
 
-# --- Helper Functions ---
+
+
+
+
+
 
 def _fetch_github_contents(url: str) -> List[Dict[str, Any]]:
     """Fetches directory contents from GitHub API."""
@@ -42,18 +42,18 @@ def _fetch_github_contents(url: str) -> List[Dict[str, Any]]:
         return response.json()
     except requests.exceptions.RequestException as e:
         print(f"Error fetching GitHub contents from {url}: {e}")
-        return [] # Return empty list on error
+        return [] 
 
 def _fetch_and_save_file(download_url: str, save_path: Path):
     """Fetches file content and saves it locally."""
     try:
         content_response = requests.get(download_url, timeout=REQUEST_TIMEOUT)
         content_response.raise_for_status()
-        # Ensure parent directory exists
+        
         save_path.parent.mkdir(parents=True, exist_ok=True)
         with open(save_path, 'w', encoding='utf-8') as f:
             f.write(content_response.text)
-        # print(f"Saved: {save_path}") # Optional: verbose logging
+        
         return True
     except requests.exceptions.RequestException as e:
         print(f"Error downloading file {download_url}: {e}")
@@ -76,17 +76,17 @@ def _get_files_recursive(url: str, current_path_prefix: str = "") -> List[Tuple[
 
         if item['type'] == 'file' and item_name.endswith('.md'):
             if item.get('download_url'):
-                 # Replace path separators for local saving if needed, ensure uniqueness
-                local_save_path = relative_path.replace("/", "_") # Simple replacement
+                 
+                local_save_path = relative_path.replace("/", "_") 
                 files_to_download.append((local_save_path, item['download_url']))
             else:
                 print(f"Warning: No download_url found for file: {item['path']}")
         elif item['type'] == 'dir':
-            files_to_download.extend(_get_files_recursive(item['url'], f"{relative_path}/")) # Pass API URL for subdir
+            files_to_download.extend(_get_files_recursive(item['url'], f"{relative_path}/")) 
 
     return files_to_download
 
-# --- Public Caching Functions ---
+
 
 def update_cache():
     """
@@ -95,7 +95,7 @@ def update_cache():
     """
     print("Starting Neural Vault cache update...")
 
-    # --- Step 1: Fetch list of all files to download ---
+    
     all_files_to_download: List[Tuple[str, str]] = []
     print("Fetching file lists from GitHub...")
     fetch_error = False
@@ -103,18 +103,18 @@ def update_cache():
         folder_url = f"{REPO_API_URL}{folder}"
         print(f"  - Fetching from: {folder}...")
         try:
-            # Assuming _get_files_recursive handles its own errors and returns []
+            
             files_in_folder = _get_files_recursive(folder_url, f"{folder}/")
-            if not files_in_folder and folder_url == f"{REPO_API_URL}{folder}": # Basic check if top-level fetch failed
-                 # More robust error checking might be needed inside _get_files_recursive
-                 # For now, we just note if a top-level folder returned nothing.
+            if not files_in_folder and folder_url == f"{REPO_API_URL}{folder}": 
+                 
+                 
                  print(f"Warning: Could not fetch or find files in folder: {folder}")
-                 # Decide if this is a critical error: fetch_error = True
+                 
             all_files_to_download.extend(files_in_folder)
-        except Exception as e: # Catch broader exceptions during fetch planning
+        except Exception as e: 
             print(f"Error during file list fetching for {folder}: {e}")
             fetch_error = True
-            break # Stop fetching if one folder causes a major issue
+            break 
 
     if fetch_error:
         print("Aborting cache update due to errors during file list fetching.")
@@ -126,7 +126,7 @@ def update_cache():
 
     print(f"Successfully fetched list of {len(all_files_to_download)} markdown files.")
 
-    # --- Step 2: Clear existing cache (only if file list fetch succeeded) ---
+    
     print("Preparing local cache directory...")
     try:
         if CACHE_DIR.exists():
@@ -139,7 +139,7 @@ def update_cache():
         print("Aborting cache update.")
         return
 
-    # --- Step 3: Download and save files ---
+    
     print("Downloading files...")
     saved_count = 0
     failed_count = 0
@@ -160,8 +160,8 @@ def get_random_cached_entry() -> Optional[Tuple[str, str]]:
     """
     if not CACHE_DIR.exists() or not any(CACHE_DIR.iterdir()):
         print("Cache directory does not exist or is empty.")
-        # Optionally trigger an immediate cache update here?
-        # update_cache()
+        
+        
         return None
 
     try:
@@ -175,8 +175,8 @@ def get_random_cached_entry() -> Optional[Tuple[str, str]]:
         with open(random_file_path, 'r', encoding='utf-8') as f:
             content = f.read()
 
-        # Return the original-like filename (e.g., remove folder prefix if desired)
-        # For now, return the name as saved in cache (e.g., Books_Subfolder_File.md)
+        
+        
         filename = random_file_path.name
         return filename, content
 
@@ -190,7 +190,7 @@ def get_random_cached_entry() -> Optional[Tuple[str, str]]:
         print(f"Unexpected error retrieving cached entry: {e}")
         return None
 
-# --- Main block for testing ---
+
 if __name__ == "__main__":
     print("Running cache update manually...")
     update_cache()
@@ -200,7 +200,7 @@ if __name__ == "__main__":
         filename, content = entry
         print(f"\nGot entry: {filename}")
         print("-" * 20)
-        print(content[:300] + "...") # Print snippet
+        print(content[:300] + "...") 
         print("-" * 20)
     else:
         print("Could not retrieve an entry.")

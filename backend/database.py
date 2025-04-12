@@ -5,23 +5,23 @@ import json
 from typing import List, Optional, Type, TypeVar, Dict, Any
 from pydantic import BaseModel
 
-# Load environment variables from .env file
+
 load_dotenv()
 
 REDIS_HOST = os.getenv("REDIS_HOST", "localhost")
 REDIS_PORT = int(os.getenv("REDIS_PORT", 6379))
 REDIS_DB = int(os.getenv("REDIS_DB", 0))
 
-# Create an asynchronous Redis connection pool
+
 redis_pool = redis.ConnectionPool(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, decode_responses=True)
 
 async def get_redis_connection() -> redis.Redis:
     """Gets a Redis connection from the pool."""
     return redis.Redis(connection_pool=redis_pool)
 
-# --- Generic CRUD Helper Functions ---
 
-T = TypeVar('T', bound=BaseModel) # Type variable for Pydantic models
+
+T = TypeVar('T', bound=BaseModel) 
 
 async def redis_set(r: redis.Redis, key: str, model_instance: BaseModel):
     """Serializes a Pydantic model and stores it in Redis."""
@@ -51,15 +51,15 @@ async def redis_get_all_by_prefix(r: redis.Redis, prefix: str, model_class: Type
     items = []
     if not keys:
         return items
-    # Use MGET for potentially better performance if many keys
+    
     raw_data = await r.mget(keys)
     for item_json in raw_data:
-        if item_json: # Ensure data exists before parsing
+        if item_json: 
             try:
                 items.append(model_class.model_validate_json(item_json))
             except Exception as e:
-                print(f"Error parsing JSON for key (prefix: {prefix}): {e}") # Log potential parsing errors
-                # Decide how to handle: skip, raise, etc. Skipping for now.
+                print(f"Error parsing JSON for key (prefix: {prefix}): {e}") 
+                
     return items
 
 async def redis_update(r: redis.Redis, key: str, update_data: Dict[str, Any], model_class: Type[T]) -> Optional[T]:
@@ -68,15 +68,15 @@ async def redis_update(r: redis.Redis, key: str, update_data: Dict[str, Any], mo
     if not existing_item:
         return None
 
-    # Create a dictionary from the existing model
+    
     item_dict = existing_item.model_dump()
 
-    # Update the dictionary with non-None values from update_data
+    
     for field, value in update_data.items():
         if value is not None:
             item_dict[field] = value
 
-    # Validate the updated data with the model and save
+    
     updated_item = model_class.model_validate(item_dict)
     await redis_set(r, key, updated_item)
     return updated_item

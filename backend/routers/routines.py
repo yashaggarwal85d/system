@@ -3,19 +3,19 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 from .. import models, database, auth
-from .players import get_current_username # Reuse the dependency
+from .players import get_current_username 
 
 router = APIRouter(
     prefix="/routines",
     tags=["routines"],
-    dependencies=[Depends(auth.get_current_user)], # Protect all routes
+    dependencies=[Depends(auth.get_current_user)], 
 )
 
-# Redis key prefix for routines associated with a user
+
 def routine_key(user_id: str, routine_id: str) -> str:
     return f"routine:{user_id}:{routine_id}"
 
-# Redis key pattern for scanning user's routines
+
 def user_routines_pattern(user_id: str) -> str:
     return f"routine:{user_id}:*"
 
@@ -73,7 +73,7 @@ async def delete_routine(routine_id: str, current_username: str = Depends(get_cu
     """Deletes a specific routine by ID for the current user."""
     r = await database.get_redis_connection()
     key = routine_key(current_username, routine_id)
-    # Verify ownership before deleting
+    
     routine = await database.redis_get(r, key, models.Routine)
     if routine is None or routine.userId != current_username:
          raise HTTPException(status_code=404, detail="Routine not found or not authorized")

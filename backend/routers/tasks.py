@@ -2,19 +2,19 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
 
 from .. import models, database, auth
-from .players import get_current_username # Reuse the dependency
+from .players import get_current_username 
 
 router = APIRouter(
     prefix="/tasks",
     tags=["tasks"],
-    dependencies=[Depends(auth.get_current_user)], # Protect all routes
+    dependencies=[Depends(auth.get_current_user)], 
 )
 
-# Redis key prefix for tasks associated with a user
+
 def task_key(user_id: str, task_id: str) -> str:
     return f"task:{user_id}:{task_id}"
 
-# Redis key pattern for scanning user's tasks
+
 def user_tasks_pattern(user_id: str) -> str:
     return f"task:{user_id}:*"
 
@@ -73,7 +73,7 @@ async def delete_task(task_id: str, current_username: str = Depends(get_current_
     """Deletes a specific task by ID for the current user."""
     r = await database.get_redis_connection()
     key = task_key(current_username, task_id)
-    # Verify ownership before deleting
+    
     task = await database.redis_get(r, key, models.Task)
     if task is None or task.userId != current_username:
          raise HTTPException(status_code=404, detail="Task not found or not authorized")

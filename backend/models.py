@@ -4,7 +4,7 @@ from enum import Enum
 import uuid
 from datetime import date, datetime
 
-# Define an Enum
+
 class Occurence(str, Enum):
     WEEKS = "weeks"
     MONTHS = "months"
@@ -44,7 +44,7 @@ class Habit(BaseModel):
     start_date: date
     last_completed: date
     occurence: Occurence
-    x_occurence: int # Number of units of occurence
+    x_occurence: int 
     _validate_habit_dates = field_validator('start_date', 'last_completed', mode='before')(validate_date_format)
 
     @field_serializer('start_date', 'last_completed')
@@ -80,7 +80,7 @@ class Task(BaseModel):
 
 class TaskUpdate(BaseModel):
     name: Optional[str] = None
-    due_date: Optional[date] = None # Changed from Optional[str] to Optional[date]
+    due_date: Optional[date] = None 
     aura: Optional[int] = None
     completed: Optional[bool] = None
 
@@ -97,11 +97,11 @@ class Routine(BaseModel):
     aura: int = 5
     start_date: date
     occurence: Occurence
-    x_occurence: int # Number of units of occurence
+    x_occurence: int 
     last_completed: date
     checklist: str
 
-    # Apply reusable validator
+    
     _validate_routine_dates = field_validator('start_date','last_completed', mode='before')(validate_date_format)
 
     @field_serializer('start_date', 'last_completed')
