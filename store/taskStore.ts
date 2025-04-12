@@ -41,10 +41,7 @@ const taskStoreCreator: StateCreator<TaskState> = (set, get) => ({
         userId: player?.username,
         name: name,
         due_date: due_date,
-        aura: getAuraValue("task", {
-          name: name,
-          due_date: due_date,
-        }),
+        aura: getAuraValue("task"),
         completed: false,
       };
 

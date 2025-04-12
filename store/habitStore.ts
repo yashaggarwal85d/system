@@ -46,10 +46,7 @@ const HabitStoreCreator: StateCreator<HabitState> = (set, get) => ({
     set({ isLoading: true });
     const player = useDashboardStore.getState().player;
     try {
-      let aura = getAuraValue("habit", {
-        occurence: occurence,
-        x_occurence: x_occurence,
-      });
+      let aura = getAuraValue("habit");
       const HabitPayload = {
         name: name,
         start_date: formatDateToDDMMYY(new Date()),

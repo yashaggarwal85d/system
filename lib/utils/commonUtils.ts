@@ -13,17 +13,16 @@ export const formatDateToDDMMYY = (date: Date): string => {
   return `${day}-${month}-${year}`;
 };
 
-export const getAuraValue = <T>(
-  category: "habit" | "task" | "routine",
-  object: T
+export const getAuraValue = (
+  category: "habit" | "task" | "routine"
 ): number => {
   switch (category) {
     case "habit":
-      return 15;
-    case "task":
       return 10;
+    case "task":
+      return 7;
     case "routine":
-      return 20;
+      return 17;
     default:
       return 10;
   }
@@ -83,10 +82,10 @@ export const getDaysRemaining = (date: string): number => {
 
 export const getDeadlineColor = (date: string): string => {
   const daysRemaining = getDaysRemaining(date);
-  if (daysRemaining === null) return "text-primary/70"; 
-  if (daysRemaining < 0) return "text-destructive"; 
-  if (daysRemaining <= 3) return "text-warning"; 
-  return "text-success"; 
+  if (daysRemaining === null) return "text-primary/70";
+  if (daysRemaining < 0) return "text-destructive";
+  if (daysRemaining <= 3) return "text-warning";
+  return "text-success";
 };
 
 export const getDeadlineText = (deadline: string): string => {
@@ -105,10 +104,10 @@ export const getRefreshColor = (
   const daysRemaining = getDaysRemaining(
     calculateNextDueDate(start_date, occurence, x_occurence)
   );
-  if (daysRemaining === null) return "text-primary/70"; 
-  if (daysRemaining < 0) return "text-destructive"; 
-  if (daysRemaining <= 3) return "text-warning"; 
-  return "text-success"; 
+  if (daysRemaining === null) return "text-primary/70";
+  if (daysRemaining < 0) return "text-destructive";
+  if (daysRemaining <= 3) return "text-warning";
+  return "text-success";
 };
 
 export const getRefreshText = (

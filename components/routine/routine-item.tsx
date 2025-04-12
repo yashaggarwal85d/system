@@ -127,16 +127,18 @@ export const RoutineItem = ({
     }
   }, [last_completed, start_date]);
   useEffect(() => {
-    var now = new Date();
-    var nc = parseDate(
-      calculateNextDueDate(start_date, occurence, x_occurence)
-    );
-    now.setHours(0, 0, 0, 0);
-    nc.setHours(0, 0, 0, 0);
-    if (now >= nc) {
-      refreshRoutine();
+    if (isCompleted) {
+      var now = new Date();
+      var nc = parseDate(
+        calculateNextDueDate(start_date, occurence, x_occurence)
+      );
+      now.setHours(0, 0, 0, 0);
+      nc.setHours(0, 0, 0, 0);
+      if (now >= nc) {
+        refreshRoutine();
+      }
     }
-  }, [isCompleted, start_date, occurence, x_occurence, refreshRoutine]);
+  }, [isCompleted]);
 
   useEffect(() => {
     setChecklistState(checklist ? JSON.parse(JSON.stringify(checklist)) : []);

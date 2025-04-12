@@ -1,7 +1,6 @@
-backend testing
 fix errors
+    refresh overdue item
+    overdue items subtracts aura
 performance checks
-frontend testing
 AI integration
-CI/CD
-Deployment - Amazon
+Deployment - railway

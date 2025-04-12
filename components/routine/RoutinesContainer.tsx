@@ -18,6 +18,17 @@ import {
 import { containerVariants } from "@/lib/utils/animationUtils";
 import { RoutineItem } from "./routine-item";
 
+// Helper function to recursively mark checklist items as incomplete
+const markChecklistIncomplete = (
+  items: ChecklistItemData[]
+): ChecklistItemData[] => {
+  return items.map((item) => ({
+    ...item,
+    completed: false,
+    children: item.children ? markChecklistIncomplete(item.children) : [],
+  }));
+};
+
 const RoutinesContainer = () => {
   const {
     Routines,
@@ -140,9 +151,13 @@ const RoutinesContainer = () => {
 
   const handleRefreshRoutine = (routine: Routine) => {
     if (routine.id) {
+      const updatedChecklist = routine.checklist
+        ? markChecklistIncomplete(routine.checklist)
+        : [];
       updateRoutine(routine.id, {
         start_date: formatDateToDDMMYY(new Date()),
         last_completed: formatDateToDDMMYY(new Date()),
+        checklist: updatedChecklist,
       });
     }
   };

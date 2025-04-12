@@ -60,14 +60,16 @@ export const HabitItem = ({
   }, [last_completed]);
 
   useEffect(() => {
-    var now = new Date();
-    var nc = parseDate(
-      calculateNextDueDate(start_date, occurence, x_occurence)
-    );
-    now.setHours(0, 0, 0, 0);
-    nc.setHours(0, 0, 0, 0);
-    if (now >= nc) {
-      refreshHabit();
+    if (isCompleted) {
+      var now = new Date();
+      var nc = parseDate(
+        calculateNextDueDate(start_date, occurence, x_occurence)
+      );
+      now.setHours(0, 0, 0, 0);
+      nc.setHours(0, 0, 0, 0);
+      if (now >= nc) {
+        refreshHabit();
+      }
     }
   }, [isCompleted]);
 

@@ -59,10 +59,7 @@ const RoutineStoreCreator: StateCreator<RoutineState> = (set, get) => ({
     set({ isLoading: true });
     const player = useDashboardStore.getState().player;
     try {
-      let aura = getAuraValue("routine", {
-        occurence: occurence,
-        x_occurence: x_occurence,
-      });
+      let aura = getAuraValue("routine");
       const RoutinePayload = {
         name: name,
         start_date: formatDateToDDMMYY(new Date()),
