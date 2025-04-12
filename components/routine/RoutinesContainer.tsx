@@ -12,6 +12,8 @@ import { Routine, ChecklistItemData } from "@/lib/utils/interfaces";
 import {
   calculateNextDueDate,
   formatDateToDDMMYY,
+  getDaysRemaining,
+  parseDate,
 } from "@/lib/utils/commonUtils";
 import { containerVariants } from "@/lib/utils/animationUtils";
 import { RoutineItem } from "./routine-item";
@@ -147,31 +149,13 @@ const RoutinesContainer = () => {
 
   const sortedRoutines = useMemo(() => {
     return [...Routines].sort((a, b) => {
-      if (a.last_completed !== b.last_completed) {
-        const startDateA = a.last_completed
-          ? new Date(a.last_completed).getTime()
-          : Infinity;
-        const startDateB = b.last_completed
-          ? new Date(b.last_completed).getTime()
-          : Infinity;
-
-        const validStartDateA = isNaN(startDateA) ? Infinity : startDateA;
-        const validStartDateB = isNaN(startDateB) ? Infinity : startDateB;
-
-        return validStartDateA - validStartDateB;
-      } else {
-        const startDateA = a.start_date
-          ? new Date(a.start_date).getTime()
-          : Infinity;
-        const startDateB = b.start_date
-          ? new Date(b.start_date).getTime()
-          : Infinity;
-
-        const validStartDateA = isNaN(startDateA) ? Infinity : startDateA;
-        const validStartDateB = isNaN(startDateB) ? Infinity : startDateB;
-
-        return validStartDateA - validStartDateB;
-      }
+      const a_remaining = getDaysRemaining(
+        calculateNextDueDate(a.start_date, a.occurence, a.x_occurence)
+      );
+      const b_remaining = getDaysRemaining(
+        calculateNextDueDate(b.start_date, b.occurence, b.x_occurence)
+      );
+      return a_remaining - b_remaining;
     });
   }, [Routines]);
 

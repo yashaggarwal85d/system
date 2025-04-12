@@ -80,9 +80,15 @@ class Task(BaseModel):
 
 class TaskUpdate(BaseModel):
     name: Optional[str] = None
-    due_date: Optional[str] = None
+    due_date: Optional[date] = None # Changed from Optional[str] to Optional[date]
     aura: Optional[int] = None
     completed: Optional[bool] = None
+
+    _validate_task_update_date = field_validator('due_date', mode='before')(validate_date_format)
+    
+    @field_serializer('due_date')
+    def serialize_date(self, v: date):
+        return v.strftime('%d-%m-%y')
 
 class Routine(BaseModel):
     id: str = Field(default_factory=generate_uuid)

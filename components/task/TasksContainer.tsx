@@ -10,7 +10,11 @@ import TaskForm from "./TaskForm";
 import useTaskStore from "@/store/taskStore";
 import useDashboardStore from "@/store/dashboardStore";
 import { Task } from "@/lib/utils/interfaces";
-import { getDeadlineColor, getDeadlineText } from "@/lib/utils/commonUtils";
+import {
+  getDeadlineColor,
+  getDeadlineText,
+  parseDate,
+} from "@/lib/utils/commonUtils"; // Import parseDate
 import { containerVariants } from "@/lib/utils/animationUtils";
 
 const TasksContainer = () => {
@@ -39,11 +43,27 @@ const TasksContainer = () => {
   const handleEditTask = (task: Task) => {
     setEditingTask(task);
     setNewTaskText(task.name);
-    const deadlineDate = new Date(task.due_date);
-    setSelectedDay(deadlineDate.getDate());
-    setSelectedMonth(deadlineDate.getMonth() + 1);
-    setSelectedYear(parseInt(deadlineDate.getFullYear().toString().slice(-2)));
-    setDeadlineError("");
+    const deadlineDate = parseDate(task.due_date); // Use parseDate utility
+    if (!isNaN(deadlineDate.getTime())) {
+      // Check if date is valid after parsing
+      setSelectedDay(deadlineDate.getDate());
+      setSelectedMonth(deadlineDate.getMonth() + 1);
+      // Ensure getFullYear() is called on a valid date object
+      const yearShort = parseInt(
+        deadlineDate.getFullYear().toString().slice(-2)
+      );
+      setSelectedYear(yearShort);
+      setDeadlineError("");
+    } else {
+      // Handle invalid date string if necessary, e.g., set default or show error
+      console.error("Failed to parse due_date:", task.due_date);
+      setDeadlineError("Could not read the task's deadline date.");
+      // Optionally set default date values
+      const today = new Date();
+      setSelectedDay(today.getDate());
+      setSelectedMonth(today.getMonth() + 1);
+      setSelectedYear(parseInt(today.getFullYear().toString().slice(-2)));
+    }
     setShowTaskForm(true);
   };
 
@@ -156,8 +176,8 @@ const TasksContainer = () => {
       if (a.completed !== b.completed) {
         return a.completed ? 1 : -1;
       }
-      const a_date = new Date(a.due_date);
-      const b_date = new Date(b.due_date);
+      const a_date = new Date(parseDate(a.due_date));
+      const b_date = new Date(parseDate(b.due_date));
       return a_date.getTime() - b_date.getTime();
     });
   }, [tasks]);
@@ -186,7 +206,7 @@ const TasksContainer = () => {
               handleSaveTask();
             }
           }}
-          className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" 
+          className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30"
         />
         <Button
           onClick={() => {
@@ -194,7 +214,7 @@ const TasksContainer = () => {
             setDeadlineError("");
             setShowTaskForm(true);
           }}
-          className="gap-2 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50 whitespace-nowrap" 
+          className="gap-2 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50 whitespace-nowrap"
         >
           <PlusCircle className="h-4 w-4" /> Add Task
         </Button>

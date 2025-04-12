@@ -12,6 +12,7 @@ import { Habit } from "@/lib/utils/interfaces";
 import {
   calculateNextDueDate,
   formatDateToDDMMYY,
+  getDaysRemaining,
 } from "@/lib/utils/commonUtils";
 import { containerVariants } from "@/lib/utils/animationUtils";
 import { HabitItem } from "./habit-item";
@@ -137,31 +138,13 @@ const HabitsContainer = () => {
 
   const sortedHabits = useMemo(() => {
     return [...Habits].sort((a, b) => {
-      if (a.last_completed !== b.last_completed) {
-        const startDateA = a.last_completed
-          ? new Date(a.last_completed).getTime()
-          : Infinity;
-        const startDateB = b.last_completed
-          ? new Date(b.last_completed).getTime()
-          : Infinity;
-
-        const validStartDateA = isNaN(startDateA) ? Infinity : startDateA;
-        const validStartDateB = isNaN(startDateB) ? Infinity : startDateB;
-
-        return validStartDateA - validStartDateB;
-      } else {
-        const startDateA = a.start_date
-          ? new Date(a.start_date).getTime()
-          : Infinity;
-        const startDateB = b.start_date
-          ? new Date(b.start_date).getTime()
-          : Infinity;
-
-        const validStartDateA = isNaN(startDateA) ? Infinity : startDateA;
-        const validStartDateB = isNaN(startDateB) ? Infinity : startDateB;
-
-        return validStartDateA - validStartDateB;
-      }
+      const a_remaining = getDaysRemaining(
+        calculateNextDueDate(a.start_date, a.occurence, a.x_occurence)
+      );
+      const b_remaining = getDaysRemaining(
+        calculateNextDueDate(b.start_date, b.occurence, b.x_occurence)
+      );
+      return a_remaining - b_remaining;
     });
   }, [Habits]);
 
@@ -192,7 +175,7 @@ const HabitsContainer = () => {
               handleSaveHabit();
             }
           }}
-          className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30" 
+          className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30"
         />
         <Button
           onClick={() => {
@@ -201,7 +184,7 @@ const HabitsContainer = () => {
             setFormError(null);
             setShowHabitForm(true);
           }}
-          className="gap-2 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50 whitespace-nowrap" 
+          className="gap-2 bg-primary/20 text-primary hover:bg-primary/30 border border-primary/50 whitespace-nowrap"
         >
           <PlusCircle className="h-4 w-4" /> Add Habit
         </Button>
