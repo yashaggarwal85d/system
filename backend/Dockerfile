@@ -28,4 +28,4 @@ ENV VARIABLE_NAME="app"
 # Use --host 0.0.0.0 to make it accessible from outside the container
 # Use --port 8000 to match the EXPOSE instruction
 # Use --reload for development (optional, remove for production)
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
