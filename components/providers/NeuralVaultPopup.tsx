@@ -42,9 +42,8 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
         setIsLoading(true);
         setError(null);
         try {
-          const response = await fetch(
-            "http://localhost:8000/players/neural-vault"
-          );
+          const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/players/neural-vault`;
+          const response = await fetch(apiUrl);
 
           if (!response.ok) {
             let errorText = `HTTP error! status: ${response.status}`;

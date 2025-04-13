@@ -10,6 +10,7 @@ import useTaskStore from "./taskStore";
 import useHabitStore from "./habitStore";
 import useRoutineStore from "./routineStore";
 import useScrambleStore from "./scrambleStore";
+import { stringToChecklist } from "@/lib/utils/commonUtils";
 
 interface DashboardState {
   activeTab: string;
@@ -35,7 +36,11 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
   fetchPlayer: async () => {
     set({ isLoading: true, error: null });
     try {
-      const fullPlayerData: PlayerFullInfo = await fetchPlayerFullInfoAPI();
+      var fullPlayerData: PlayerFullInfo = await fetchPlayerFullInfoAPI();
+      fullPlayerData.routines = fullPlayerData.routines.map((routine) => ({
+        ...routine,
+        checklist: stringToChecklist(routine.checklist.toString()),
+      }));
       const playerLevel = fullPlayerData.player.level;
       const theme = getThemeForLevel(playerLevel);
       set({
@@ -43,9 +48,9 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
         currentTheme: theme,
         isLoading: false,
       });
-      useHabitStore.getState().setHabits(fullPlayerData.habits);
-      useTaskStore.getState().setTasks(fullPlayerData.tasks);
-      useRoutineStore.getState().setRoutines(fullPlayerData.routines);
+      useHabitStore.getState().setEntities(fullPlayerData.habits);
+      useTaskStore.getState().setEntities(fullPlayerData.tasks);
+      useRoutineStore.getState().setEntities(fullPlayerData.routines);
       const scramble = fullPlayerData.player.description.split(",");
       useScrambleStore.getState().setPhrases(scramble);
     } catch (err) {
@@ -75,7 +80,7 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
         level: newLevel,
         description: " You are now level " + newLevel,
       };
-      // Update theme if level changed
+
       const newTheme = getThemeForLevel(newLevel);
       set({
         player: { ...currentPlayer, ...newPlayer },

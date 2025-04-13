@@ -46,7 +46,8 @@ const AuthForm = () => {
       formData.append("username", username);
       formData.append("password", password);
 
-      const response = await fetch("http://localhost:8000/players/login", {
+      const loginUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/players/login`;
+      const response = await fetch(loginUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -109,7 +110,8 @@ const AuthForm = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:8000/players/signup", {
+      const signupUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/players/signup`;
+      const response = await fetch(signupUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
 

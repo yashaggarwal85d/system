@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 const config = {
-  darkMode: ["class"], // Keep dark mode class handling if needed elsewhere
+  darkMode: ["class"],
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
@@ -62,7 +62,7 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        // Add success, warning, info if used directly in Tailwind classes
+
         success: {
           DEFAULT: "hsl(var(--success))",
           foreground: "hsl(var(--success-foreground))",
@@ -75,7 +75,7 @@ const config = {
           DEFAULT: "hsl(var(--info))",
           foreground: "hsl(var(--info-foreground))",
         },
-        // Add swirl colors if needed in Tailwind
+
         swirlBackground: "hsl(var(--swirl-background))",
       },
       borderRadius: {

@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import useDashboardStore from "@/store/dashboardStore";
-import { ColorTheme } from "@/lib/utils/colors"; // Import ColorTheme type
+import { ColorTheme } from "@/lib/utils/colors";
 
-// Helper function to convert HEX to HSL string (e.g., "207 90% 61%")
 function hexToHslString(hex: string): string {
   hex = hex.replace(/^#/, "");
   const bigint = parseInt(hex, 16);
@@ -46,16 +45,12 @@ function hexToHslString(hex: string): string {
   return `${h} ${s}% ${l}%`;
 }
 
-// Helper to apply theme colors as CSS variables
 function applyTheme(theme: ColorTheme) {
   const root = document.documentElement;
   if (!root) return;
 
-  // Map theme object to CSS variables
   Object.entries(theme).forEach(([key, value]) => {
     if (typeof value === "string") {
-      // Simple color value (e.g., background, border)
-      // Convert key from camelCase to kebab-case (e.g., swirlBackground -> --swirl-background)
       const cssVarName = `--${key.replace(/([A-Z])/g, "-$1").toLowerCase()}`;
       root.style.setProperty(cssVarName, hexToHslString(value));
     } else if (
@@ -63,7 +58,6 @@ function applyTheme(theme: ColorTheme) {
       value !== null &&
       "DEFAULT" in value
     ) {
-      // Complex color value with DEFAULT and foreground (e.g., primary, card)
       const baseName = key.replace(/([A-Z])/g, "-$1").toLowerCase();
       root.style.setProperty(`--${baseName}`, hexToHslString(value.DEFAULT));
       if ("foreground" in value && typeof value.foreground === "string") {
@@ -73,7 +67,7 @@ function applyTheme(theme: ColorTheme) {
         );
       }
     }
-    // Handle swirlParticle specific properties if needed as CSS vars
+
     if (key === "swirlParticleBaseHue") {
       root.style.setProperty("--swirl-particle-base-hue", String(value));
     }
@@ -88,8 +82,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     applyTheme(currentTheme);
-  }, [currentTheme]); // Re-apply theme when it changes in the store
+  }, [currentTheme]);
 
-  // We no longer need NextThemesProvider for this dynamic theming approach
   return <>{children}</>;
 }

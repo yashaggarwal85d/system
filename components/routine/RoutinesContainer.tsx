@@ -1,11 +1,12 @@
 "use client";
 
 import { useState, useRef, useMemo, useEffect } from "react";
+import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { PlusCircle } from "lucide-react";
 import { Input } from "@/components/common/input";
 import { Button } from "@/components/common/button";
-import RoutineForm from "./RoutineForm";
+
 import useRoutineStore from "@/store/routineStore";
 import useDashboardStore from "@/store/dashboardStore";
 import { Routine, ChecklistItemData } from "@/lib/utils/interfaces";
@@ -13,33 +14,28 @@ import {
   calculateNextDueDate,
   formatDateToDDMMYY,
   getDaysRemaining,
-  parseDate,
+  getAuraValue,
+  markChecklistIncomplete,
 } from "@/lib/utils/commonUtils";
 import { containerVariants } from "@/lib/utils/animationUtils";
 import { RoutineItem } from "./routine-item";
 
-// Helper function to recursively mark checklist items as incomplete
-const markChecklistIncomplete = (
-  items: ChecklistItemData[]
-): ChecklistItemData[] => {
-  return items.map((item) => ({
-    ...item,
-    completed: false,
-    children: item.children ? markChecklistIncomplete(item.children) : [],
-  }));
-};
+const DynamicRoutineForm = dynamic(() => import("./RoutineForm"), {
+  ssr: false,
+});
 
 const RoutinesContainer = () => {
   const {
-    Routines,
-    addRoutine,
-    updateRoutine,
-    deleteRoutine,
+    entities: routines,
     isLoading,
-    setError,
     error,
+    setError,
+    addEntity: addRoutine,
+    updateEntity: updateRoutine,
+    deleteEntity: deleteRoutine,
   } = useRoutineStore();
-  const { modifyAura } = useDashboardStore();
+
+  const { player, modifyAura } = useDashboardStore();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [routineText, setRoutineText] = useState("");
@@ -51,7 +47,8 @@ const RoutinesContainer = () => {
   const [showRoutineForm, setShowRoutineForm] = useState(false);
   const [editingRoutine, setEditingRoutine] = useState<Routine | null>(null);
   const [formError, setFormError] = useState<string | null>(null);
-  useEffect(() => {}, [Routines]);
+
+  useEffect(() => {}, [routines, isLoading, setError]);
 
   const handleEditRoutine = (routine: Routine) => {
     setEditingRoutine(routine);
@@ -70,14 +67,9 @@ const RoutinesContainer = () => {
       setFormError("Please enter a routine name");
       return;
     }
-    console.log(
-      "Saving routine:",
-      editingRoutine,
-      "with checklist:",
-      checklist
-    );
+
     if (editingRoutine && editingRoutine.id) {
-      updateRoutine(editingRoutine.id, {
+      const updatedRoutineDetails = {
         name: routineText,
         occurence: routineConfig.period,
         x_occurence: routineConfig.value,
@@ -85,15 +77,28 @@ const RoutinesContainer = () => {
           Math.abs(editingRoutine.aura) *
           (routineConfig.isGoodRoutine ? 1 : -1),
         checklist: checklist,
-      });
+      };
+      updateRoutine(editingRoutine.id, updatedRoutineDetails);
     } else {
-      addRoutine(
-        routineText,
-        routineConfig.period,
-        routineConfig.value,
-        routineConfig.isGoodRoutine,
-        checklist
-      );
+      if (player?.username) {
+        const auraSign = routineConfig.isGoodRoutine ? 1 : -1;
+        const routineData = {
+          userId: player.username,
+          name: routineText,
+          occurence: routineConfig.period,
+          x_occurence: routineConfig.value,
+          aura: getAuraValue("routine") * auraSign,
+          start_date: formatDateToDDMMYY(new Date()),
+          last_completed: formatDateToDDMMYY(new Date()),
+          checklist: checklist,
+        };
+        addRoutine(routineData);
+      } else {
+        setError("Cannot add routine: User not found.");
+        console.error("User not found in dashboard store when adding routine.");
+
+        return;
+      }
     }
 
     setShowRoutineForm(false);
@@ -107,7 +112,7 @@ const RoutinesContainer = () => {
     routineId: string | undefined,
     completed: boolean
   ) => {
-    const routine = Routines.find((r) => r.id === routineId);
+    const routine = routines.find((r: Routine) => r.id === routineId);
     if (!routineId || !routine) {
       setError("Routine ID is undefined, cannot toggle.");
       return;
@@ -121,23 +126,18 @@ const RoutinesContainer = () => {
           routine.x_occurence
         )
       );
+      let updatePayload: Partial<Routine>;
       if (!completed) {
-        updateRoutine(routineId, {
-          last_completed: routine.start_date,
-        });
+        updatePayload = { last_completed: routine.start_date };
         modifyAura(-routine.aura);
       } else {
-        updateRoutine(routineId, {
-          last_completed: calculateNextDueDate(
-            routine.start_date,
-            routine.occurence,
-            routine.x_occurence
-          ),
-        });
+        updatePayload = { last_completed: formatDateToDDMMYY(new Date()) };
         modifyAura(routine.aura);
       }
+      updateRoutine(routineId, updatePayload);
     } catch (updateError) {
       setError("Failed to update routine state");
+      console.error("Error toggling routine:", updateError);
     }
   };
 
@@ -145,6 +145,7 @@ const RoutinesContainer = () => {
     if (routineId) {
       deleteRoutine(routineId);
     } else {
+      setError("Cannot delete routine without ID");
       console.error("Cannot delete routine without ID");
     }
   };
@@ -154,16 +155,17 @@ const RoutinesContainer = () => {
       const updatedChecklist = routine.checklist
         ? markChecklistIncomplete(routine.checklist)
         : [];
+      const todayStr = formatDateToDDMMYY(new Date());
       updateRoutine(routine.id, {
-        start_date: formatDateToDDMMYY(new Date()),
-        last_completed: formatDateToDDMMYY(new Date()),
+        start_date: todayStr,
+        last_completed: todayStr,
         checklist: updatedChecklist,
       });
     }
   };
 
   const sortedRoutines = useMemo(() => {
-    return [...Routines].sort((a, b) => {
+    return [...routines].sort((a: Routine, b: Routine) => {
       const a_remaining = getDaysRemaining(
         calculateNextDueDate(a.start_date, a.occurence, a.x_occurence)
       );
@@ -172,19 +174,15 @@ const RoutinesContainer = () => {
       );
       return a_remaining - b_remaining;
     });
-  }, [Routines]);
+  }, [routines]);
 
-  if (isLoading && !Routines.length) {
+  if (isLoading && !routines.length) {
     return (
       <p className="text-center text-muted-foreground">Loading routines...</p>
     );
   }
   if (error) {
-    return (
-      <p className="text-center text-destructive">
-        Error loading routines: {error}
-      </p>
-    );
+    return <p className="text-center text-destructive">Error: {error}</p>;
   }
 
   return (
@@ -206,7 +204,7 @@ const RoutinesContainer = () => {
         <Button
           onClick={() => {
             setEditingRoutine(null);
-
+            setRoutineConfig({ period: "days", value: 1, isGoodRoutine: true });
             setFormError(null);
             setShowRoutineForm(true);
           }}
@@ -251,7 +249,8 @@ const RoutinesContainer = () => {
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
         >
-          <RoutineForm
+          {/* Use the dynamically imported form */}
+          <DynamicRoutineForm
             routineText={routineText}
             setRoutineText={setRoutineText}
             routineConfig={routineConfig}

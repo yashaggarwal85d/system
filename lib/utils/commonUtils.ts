@@ -148,3 +148,15 @@ export function stringToChecklist(str: string): ChecklistItemData[] {
 export function checklistToString(checklist: ChecklistItemData[]): string {
   return JSON.stringify(checklist);
 }
+
+export const markChecklistIncomplete = (
+  items: ChecklistItemData[]
+): ChecklistItemData[] => {
+  if (!Array.isArray(items)) return [];
+  return items.map((item) => ({
+    ...item,
+    completed: false,
+
+    children: item.children ? markChecklistIncomplete(item.children) : [],
+  }));
+};

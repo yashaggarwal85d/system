@@ -10,3 +10,5 @@ pytest-cov
 python-multipart
 requests
 apscheduler
+httpx 
+aiofiles 

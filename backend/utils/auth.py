@@ -6,16 +6,17 @@ from fastapi.security import OAuth2PasswordBearer
 from pydantic import BaseModel
 import os
 from dotenv import load_dotenv
+from pathlib import Path
 
-
-load_dotenv()
-
+dotenv_path = Path(__file__).resolve().parent.parent.parent / '.env'
+load_dotenv(dotenv_path=dotenv_path)
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verifies a plain password against a hashed password."""
     return pwd_context.verify(plain_password, hashed_password)
+
 
 def get_password_hash(password: str) -> str:
     """Hashes a plain password."""
@@ -29,7 +30,8 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
 if not SECRET_KEY:
     raise EnvironmentError("SECRET_KEY environment variable not set.")
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="players/login") 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="players/login")
+
 
 class TokenData(BaseModel):
     username: str | None = None
@@ -41,7 +43,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
     else:
-        expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        expire = datetime.now(timezone.utc) + timedelta(
+            minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+        )
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
@@ -63,18 +67,3 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> TokenData:
     except JWTError:
         raise credentials_exception
     return token_data
-
-
-
-
-#
-
-
-
-
-
-
-
-
-
-

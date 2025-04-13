@@ -1,15 +1,23 @@
-from fastapi import FastAPI
+import logging
 import asyncio
+import os
+from pathlib import Path
+from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from apscheduler.triggers.cron import CronTrigger
-
 
 from .routers import players, habits, tasks, routines
-from . import neural_vault_cache
-from . import scheduler as app_scheduler
+from .jobs import neural_vault_cache
+from .utils import scheduler as app_scheduler
+from .jobs.penalise import check_overdue_and_penalize
 
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
+logger = logging.getLogger(__name__)
+
+dotenv_path = Path(__file__).resolve().parent.parent / ".env"
+load_dotenv(dotenv_path=dotenv_path)
 
 app = FastAPI(
     title="Flickering Letters API",
@@ -17,11 +25,16 @@ app = FastAPI(
     version="0.1.0",
 )
 
-
+allowed_origins_str = os.getenv("ALLOWED_ORIGINS", "")
 origins = [
-    "http://localhost:3000",
-    "http://localhost:3001",
+    origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()
 ]
+
+if not origins:
+    logger.warning(
+        "ALLOWED_ORIGINS not set in .env, defaulting to ['http://localhost:3000']"
+    )
+    origins = ["http://localhost:3000"]
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,7 +43,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 app.include_router(players.router)
 app.include_router(habits.router)
@@ -45,31 +57,36 @@ async def read_root():
 
 @app.on_event("startup")
 async def startup_event():
-    """Populate the Neural Vault cache and start the scheduler."""
-    print("Server starting up...")
-
-    await asyncio.sleep(2)
-    asyncio.create_task(run_initial_cache_update())
-
+    """Start the scheduler and run initial cache update."""
+    logger.info("Server starting up...")
     app_scheduler.start_scheduler()
+    logger.info("Scheduling initial tasks (Cache Update & Penalize Check)...")
+    asyncio.create_task(initial_cache_update_task())
+    asyncio.create_task(initial_penalize_check_task())
 
 
-async def run_initial_cache_update():
-    """Wrapper to run the potentially blocking cache update."""
-    print("Running initial Neural Vault cache update...")
+async def initial_cache_update_task():
+    """Task to run the initial cache update."""
+    logger.info("Running initial Neural Vault cache update (async)...")
     try:
-
-        neural_vault_cache.update_cache()
-        print("Initial cache update task finished.")
+        await neural_vault_cache.update_cache_async()
+        logger.info("Initial cache update task finished.")
     except Exception as e:
-        print(f"Error during initial cache update: {e}")
+        logger.error(f"Error during initial cache update: {e}", exc_info=True)
+
+
+async def initial_penalize_check_task():
+    """Task to run the initial penalize check."""
+    logger.info("Running initial penalize check (async)...")
+    try:
+        await check_overdue_and_penalize()
+        logger.info("Initial penalize check task finished.")
+    except Exception as e:
+        logger.error(f"Error during initial penalize check: {e}", exc_info=True)
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
     """Shutdown the scheduler gracefully."""
-    print("Server shutting down...")
+    logger.info("Server shutting down...")
     app_scheduler.stop_scheduler()
-
-
-#
