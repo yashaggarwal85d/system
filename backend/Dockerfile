@@ -5,27 +5,23 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copy the requirements file into the container at /app
-COPY requirements.txt .
+# This needs to be copied before installing dependencies
+COPY requirements.txt /app/
 
 # Install any needed packages specified in requirements.txt
-# Use --no-cache-dir to reduce image size
-# Use --compile to byte-compile for faster startup (optional)
+# Run the installation from the WORKDIR /app
 RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r /app/requirements.txt
 
-# Copy the current directory contents into the container at /app
-# This includes main.py, routers/, utils/, etc.
-COPY . .
+# Copy the backend application code (from the build context, which is the 'backend' folder)
+# into a 'backend' subdirectory within the WORKDIR /app
+# This creates the structure /app/backend/main.py, /app/backend/routers/, etc.
+COPY . /app/backend/
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000
 
-# Define environment variable (optional, can be overridden)
-ENV MODULE_NAME="backend.main"
-ENV VARIABLE_NAME="app"
-
 # Run uvicorn when the container launches
-# Use --host 0.0.0.0 to make it accessible from outside the container
-# Use --port 8000 to match the EXPOSE instruction
-# Use --reload for development (optional, remove for production)
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+# Point to the 'app' instance within the 'backend.main' module
+# Uvicorn runs from the WORKDIR /app, so it can find the 'backend' package
+CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8000"]
