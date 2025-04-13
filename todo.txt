@@ -3,5 +3,5 @@ Check errors
     not refresh overdue
     Rfresh checklist
     subtract aura for overdue
-AI integration
 Deployment - railway
+AI integration

@@ -218,9 +218,7 @@ async def get_random_cached_entry_async() -> Optional[Tuple[str, str]]:
             logger.warning("Cache directory does not exist.")
             return None
 
-        
         dir_entries = await asyncio.to_thread(os.scandir, CACHE_DIR)
-
         cached_files_paths = []
         for entry in dir_entries:
             if entry.is_file() and entry.name.endswith(".md"):
