@@ -1,10 +1,13 @@
 import logging
 import asyncio
+import logging
+import asyncio
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware # <-- Import the middleware
 
 from .routers import players, habits, tasks, routines
 from .jobs import neural_vault_cache
@@ -30,12 +33,6 @@ origins = [
     origin.strip() for origin in allowed_origins_str.split(",") if origin.strip()
 ]
 
-if not origins:
-    logger.warning(
-        "ALLOWED_ORIGINS not set in .env, defaulting to ['http://localhost:3000']"
-    )
-    origins = ["http://localhost:3000"]
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -43,6 +40,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(ProxyHeadersMiddleware, trusted_hosts="*")
 
 app.include_router(players.router)
 app.include_router(habits.router)
