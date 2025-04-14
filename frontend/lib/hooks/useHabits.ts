@@ -50,7 +50,13 @@ export function useHabits() {
     if (!completed) {
       updatePayload = { last_completed: habit.start_date };
     } else {
-      updatePayload = { last_completed: formatDateToDDMMYY(new Date()) };
+      updatePayload = {
+        last_completed: calculateNextDueDate(
+          habit.start_date,
+          habit.occurence,
+          habit.x_occurence
+        ),
+      };
     }
 
     const updatedHabit = await updateHabit(habitId, updatePayload);

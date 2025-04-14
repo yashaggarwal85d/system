@@ -51,7 +51,13 @@ export function useRoutines() {
     if (!completed) {
       updatePayload = { last_completed: routine.start_date };
     } else {
-      updatePayload = { last_completed: formatDateToDDMMYY(new Date()) };
+      updatePayload = {
+        last_completed: calculateNextDueDate(
+          routine.start_date,
+          routine.occurence,
+          routine.x_occurence
+        ),
+      };
     }
 
     const updatedRoutine = await updateRoutine(routineId, updatePayload);
