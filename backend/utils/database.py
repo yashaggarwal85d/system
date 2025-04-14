@@ -101,10 +101,14 @@ async def redis_update(
     """Updates an existing item in Redis."""
     existing_item = await redis_get(r, key, model_class)
     if not existing_item:
-        logger.warning(f"Attempted to update non-existent key: {key}")
         return None
 
-    updated_item = existing_item.model_copy(update=update_data)
+    item_dict = existing_item.model_dump()
 
+    for field, value in update_data.items():
+        if value is not None:
+            item_dict[field] = value
+
+    updated_item = model_class.model_validate(item_dict)
     await redis_set(r, key, updated_item)
     return updated_item

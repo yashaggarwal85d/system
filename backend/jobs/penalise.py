@@ -1,11 +1,29 @@
 import logging
-from datetime import datetime, timezone, date
+from datetime import datetime, timedelta, timezone, date
 from .. import models
-from ..models import validate_date_format 
-from ..utils.check_next_due import calculateNextDueDate
+from ..models import validate_date_format
 from ..utils import database
 
 logger = logging.getLogger(__name__)
+
+
+def calculateNextDueDate(
+    start_date: date, occurence: models.Occurence, x_occurence: int
+) -> str:
+    next_due = datetime.combine(start_date, datetime.min.time())
+
+    if occurence == models.Occurence.DAYS:
+        next_due += timedelta(days=x_occurence)
+    elif occurence == models.Occurence.WEEKS:
+        next_due += timedelta(weeks=x_occurence)
+    elif occurence == models.Occurence.MONTHS:
+        next_due += timedelta(days=x_occurence * 30)
+    else:
+        logger.error(f"Unknown occurence type encountered: {occurence}")
+        raise ValueError(f"Unsupported occurrence type: {occurence}")
+
+    return next_due
+
 
 async def check_overdue_and_penalize():
     """
@@ -24,112 +42,88 @@ async def check_overdue_and_penalize():
             r, "player:*", models.Player
         )
 
-        today = datetime.now(timezone.utc).date()
+        today = datetime.now().date()
 
         for player in all_players:
             total_penalty = 0
-            player_key = f"player:{player.username}"
             current_aura = player.aura
 
-            
-            task_pattern = f"task:{player.username}:*" 
+            habit_pattern = f"habit:{player.username}:*"
+            player_habits = await database.redis_get_all_by_prefix(
+                r, habit_pattern, models.Habit
+            )
+            task_pattern = f"task:{player.username}:*"
             player_tasks = await database.redis_get_all_by_prefix(
                 r, task_pattern, models.Task
             )
-            for task in player_tasks:
-                if task.userId != player.username:
-                     logger.warning(
-                         f"Task {task.id} retrieved for user {player.username} but has userId {task.userId}"
-                     )
-                     continue
-                if (
-                    not task.completed
-                    and isinstance(task.due_date, date)
-                    and task.due_date < today
-                ):
-                    logger.info(
-                        f"Task '{task.name}' for player '{player.username}' is incomplete and overdue (Due: {task.due_date}). Adding penalty."
-                    )
-                    total_penalty += 2
 
-            
-            routine_pattern = f"routine:{player.username}:*" 
+            routine_pattern = f"routine:{player.username}:*"
             player_routines = await database.redis_get_all_by_prefix(
                 r, routine_pattern, models.Routine
             )
-            for routine in player_routines:
-                if routine.userId != player.username:
-                    logger.warning(
-                        f"Routine {routine.id} retrieved for user {player.username} but has userId {routine.userId}"
+
+            for task in player_tasks:
+                try:
+                    if not task.completed and task.due_date < today:
+                        logger.info(
+                            f"Task '{task.name}' for player '{player.username}' is incomplete and overdue (Due: {task.due_date}). Adding penalty."
+                        )
+                        total_penalty += 2
+                except Exception as task_proc_err:
+                    logger.error(
+                        f"Error processing task {getattr(task, 'id', 'N/A')} for player {player.username}: {task_proc_err}",
+                        exc_info=True,
                     )
                     continue
+
+            for routine in player_routines:
                 try:
-                    start_date_str = routine.start_date.strftime("%d-%m-%y") if isinstance(routine.start_date, date) else routine.start_date
                     next_due_date_str = calculateNextDueDate(
-                        start_date_str,
+                        routine.start_date,
                         routine.occurence,
                         routine.x_occurence,
                     )
-                    next_due_date = validate_date_format(next_due_date_str)
-                    if isinstance(next_due_date, date) and next_due_date < today:
+                    if next_due_date_str.date() < today:
                         logger.info(
                             f"Routine '{routine.name}' for player '{player.username}' is overdue (Next Due: {next_due_date_str}). Adding penalty."
                         )
                         total_penalty += 5
-                except Exception as calc_err:
-                    logger.error(
-                        f"Error calculating next due date for routine {routine.id} ({routine.name}): {calc_err}",
-                        exc_info=True,
-                    )
-
+                except Exception as routine_proc_err:
+                     logger.error(f"Error processing routine {getattr(routine, 'id', 'N/A')} for player {player.username}: {routine_proc_err}", exc_info=True)
+                     continue 
             
-            habit_pattern = f"habit:{player.username}:*" 
-            player_habits = await database.redis_get_all_by_prefix(
-                r, habit_pattern, models.Habit
-            )
             for habit in player_habits:
-                if habit.userId != player.username:
-                    logger.warning(
-                        f"Habit {habit.id} retrieved for user {player.username} but has userId {habit.userId}"
-                    )
-                    continue
+                print(habit)
                 try:
-                    start_date_str_h = habit.start_date.strftime("%d-%m-%y") if isinstance(habit.start_date, date) else habit.start_date
-                    next_due_date_str_h = calculateNextDueDate(
-                        start_date_str_h,
+                    next_due_date_str = calculateNextDueDate(
+                        habit.start_date,
                         habit.occurence,
                         habit.x_occurence,
                     )
-                    next_due_date_h = validate_date_format(next_due_date_str_h)
-                    if isinstance(next_due_date_h, date) and next_due_date_h < today:
+                    if next_due_date_str.date() < today:
                         logger.info(
-                            f"Habit '{habit.name}' for player '{player.username}' is overdue (Next Due: {next_due_date_str_h}). Adding penalty."
+                            f"habit '{habit.name}' for player '{player.username}' is overdue (Next Due: {next_due_date_str}). Adding penalty."
                         )
-                        total_penalty += 3
-                except Exception as calc_err_h:
-                    logger.error(
-                        f"Error calculating next due date for habit {habit.id} ({habit.name}): {calc_err_h}",
-                        exc_info=True,
-                    )
+                        total_penalty += 5
+                except Exception as habit_proc_err:
+                     logger.error(f"Error processing habit {getattr(habit, 'id', 'N/A')} for player {player.username}: {habit_proc_err}", exc_info=True)
+                     continue 
 
-            
             if total_penalty > 0:
-                new_aura = max(0, current_aura - total_penalty)
-                if new_aura < current_aura:
-                    logger.info(
-                        f"Penalizing player '{player.username}' by {total_penalty}. Aura: {current_aura} -> {new_aura}"
-                    )
-                    await database.redis_update(
-                        r, player_key, {"aura": new_aura}, models.Player
-                    )
-                else:
-                    logger.info(
-                        f"Player '{player.username}' already at minimum aura or penalty ({total_penalty}) resulted in no change."
-                    )
+                logger.info(
+                    f"Penalising this MF {player.username}, aura depleted by {total_penalty}"
+                )
+                await database.redis_update(
+                    r,
+                    f"player:{player.username}",
+                    {"aura": max(0, current_aura - total_penalty)},
+                    models.Player,
+                )
 
     except Exception as e:
         logger.error(f"Penalize Job: Error during run: {e}", exc_info=True)
     finally:
+        # Ensure Redis connection is closed if necessary (depends on database.py implementation)
         pass
 
     logger.info(f"Finished check & penalize run at {datetime.now(timezone.utc)}")

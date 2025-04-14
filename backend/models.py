@@ -15,7 +15,7 @@ def generate_uuid():
     return str(uuid.uuid4())
 
 
-def validate_date_format(v: Union[str, date]) -> Union[str, date]:
+def validate_date_format(v: Union[str, date]) -> date:
     """Allow DD-MM-YY format in addition to default YYYY-MM-DD."""
     if isinstance(v, date):
         return v
@@ -24,7 +24,7 @@ def validate_date_format(v: Union[str, date]) -> Union[str, date]:
             return datetime.strptime(v, "%d-%m-%y").date()
         except ValueError:
             return v
-    return v
+    return None
 
 
 class Player(BaseModel):
@@ -101,7 +101,7 @@ class TaskUpdate(BaseModel):
     aura: Optional[int] = None
     completed: Optional[bool] = None
 
-    _validate_task_update_date = field_validator("due_date", mode="before")(
+    _validate_task_date = field_validator("due_date", mode="before")(
         validate_date_format
     )
 

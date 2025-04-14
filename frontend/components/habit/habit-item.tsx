@@ -74,7 +74,6 @@ export const HabitItem = ({
   }, [isCompleted]);
 
   const is_good = aura >= 0;
-  const due_date = calculateNextDueDate(start_date, occurence, x_occurence);
   return (
     <motion.div
       layout
@@ -126,8 +125,15 @@ export const HabitItem = ({
                     {" "}
                     Every {x_occurence} {occurence}
                   </span>
-                  <span className={`text-xs ${getDeadlineColor(due_date)}`}>
-                    Next due: {getDeadlineText(due_date)}
+                  <span
+                    className={`text-xs ${getDeadlineColor(
+                      calculateNextDueDate(start_date, occurence, x_occurence)
+                    )}`}
+                  >
+                    Next due:{" "}
+                    {getDeadlineText(
+                      calculateNextDueDate(start_date, occurence, x_occurence)
+                    )}
                   </span>
                 </>
               )}

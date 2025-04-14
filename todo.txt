@@ -1,7 +1,2 @@
-Check errors
-    refresh habit and routine
-    not refresh overdue
-    Rfresh checklist
-    subtract aura for overdue
 Deployment - railway
 AI integration

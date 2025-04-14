@@ -111,7 +111,7 @@ async def generic_update_item(
 ) -> ModelType:
     """Generic function to update a specific item by ID for the current user."""
     key = key_func(current_username, item_id)
-
+    
     updated_item = await database.redis_update(
         db, key, item_update.model_dump(exclude_unset=True), model_class
     )
