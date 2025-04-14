@@ -31,9 +31,7 @@ class Player(BaseModel):
     username: str
     level: int = 0
     aura: int = 0
-    description: str = (
-        "You are weak, You lack consistency, You need to work hard, Future You would be dissapointed if you stay like this"
-    )
+    description: str = "Welcome to the playground! Create your Tasks Habits and Routines"
     password: str
     is_admin: bool = False
 
