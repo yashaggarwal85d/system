@@ -1,6 +1,5 @@
 "use strict";
 
-
 const TAU = Math.PI * 2;
 const rand = (max) => Math.random() * max;
 const randRange = (max) => max - Math.random() * max * 2;
@@ -9,7 +8,6 @@ const fadeInOut = (t, m) => {
   let hm = 0.5 * m;
   return Math.abs(((t + hm) % m) - hm) / hm;
 };
-
 
 const particleCount = 700;
 const particlePropCount = 9;
@@ -27,10 +25,6 @@ const noiseSteps = 8;
 const xOff = 0.00125;
 const yOff = 0.00125;
 const zOff = 0.0005;
-
-
-
-
 
 let container;
 let canvas;
@@ -70,14 +64,14 @@ function initParticle(i) {
   let x, y, vx, vy, life, ttl, speed, radius, hue;
 
   x = rand(canvas.a.width);
-  y = rand(canvas.a.height); 
+  y = rand(canvas.a.height);
   vx = 0;
   vy = 0;
   life = 0;
   ttl = baseTTL + rand(rangeTTL);
   speed = baseSpeed + rand(rangeSpeed);
   radius = baseRadius + rand(rangeRadius);
-  
+
   const cssBaseHue = parseFloat(
     getComputedStyle(document.documentElement)
       .getPropertyValue("--swirl-particle-base-hue")
@@ -115,8 +109,8 @@ function updateParticle(i) {
   x = particleProps[i];
   y = particleProps[i2];
   n = simplex.noise3D(x * xOff, y * yOff, tick * zOff) * noiseSteps * TAU;
-  vx = lerp(particleProps[i3], Math.cos(n), 0.5); 
-  vy = lerp(particleProps[i4], Math.sin(n), 0.5); 
+  vx = lerp(particleProps[i3], Math.cos(n), 0.5);
+  vy = lerp(particleProps[i4], Math.sin(n), 0.5);
   life = particleProps[i5];
   ttl = particleProps[i6];
   speed = particleProps[i7];
@@ -219,7 +213,6 @@ function draw() {
 
   ctx.a.clearRect(0, 0, canvas.a.width, canvas.a.height);
 
-  
   const cssBackgroundColor =
     getComputedStyle(document.documentElement)
       .getPropertyValue("--swirl-background-color")
@@ -234,5 +227,4 @@ function draw() {
   window.requestAnimationFrame(draw);
 }
 
-window.addEventListener("load", setup);
 window.addEventListener("resize", resize);
