@@ -46,7 +46,7 @@ export const RoutineItem = ({
 }: RoutineItemProps & {
   onUpdateChecklist?: (checklist: ChecklistItemData[]) => void;
 }) => {
-  const { updateRoutine } = useRoutineStore();
+  const { updateEntity: updateRoutine } = useRoutineStore();
   const [isCompleted, setIsCompleted] = useState(false);
   const [checklistState, setChecklistState] = useState<ChecklistItemData[]>([]);
   const [showChecklist, setShowChecklist] = useState(false);

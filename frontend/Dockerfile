@@ -13,8 +13,6 @@ COPY . .
 # Set environment variables for the build process
 ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
 
-RUN pnpm build
-
 # Set environment variables for the runtime container (for server-side code like NextAuth)
 ENV NEXTAUTH_SECRET=$NEXTAUTH_SECRET
 
