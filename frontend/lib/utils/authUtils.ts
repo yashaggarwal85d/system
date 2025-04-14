@@ -1,4 +1,5 @@
 export const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
+console.log("API_BASE used by frontend:", API_BASE); // <-- Add this line for debugging
 
 export const getAuthToken = (): string | null => {
   if (typeof window !== "undefined") {
