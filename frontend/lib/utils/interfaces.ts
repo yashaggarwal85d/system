@@ -15,6 +15,7 @@ export interface Player {
 export interface Task {
   id?: string;
   name: string;
+  description: string | undefined;
   due_date: string;
   aura: number;
   completed: boolean;
@@ -36,6 +37,7 @@ export interface ChecklistItemData {
 export interface Habit {
   id?: string;
   name: string;
+  description?: string;
   aura: number;
   start_date: string;
   occurence: "weeks" | "months" | "days";
@@ -59,6 +61,7 @@ export interface PlayerFullInfo {
 export interface Routine {
   id?: string;
   name: string;
+  description?: string;
   aura: number;
   start_date: string;
   occurence: "weeks" | "months" | "days";

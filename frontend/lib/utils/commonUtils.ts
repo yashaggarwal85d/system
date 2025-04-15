@@ -77,7 +77,7 @@ export const getDaysRemaining = (date: string): number => {
   deadlineDate.setHours(0, 0, 0, 0);
   const diffTime = deadlineDate.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays;
+  return diffDays - 1;
 };
 
 export const getDeadlineColor = (date: string): string => {

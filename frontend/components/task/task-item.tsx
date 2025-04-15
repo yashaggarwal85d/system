@@ -19,6 +19,7 @@ interface TaskItemProps extends Task {
 export const TaskItem = ({
   id,
   name,
+  description,
   completed,
   due_date,
   aura,
@@ -73,6 +74,11 @@ export const TaskItem = ({
               >
                 {name}
               </span>
+              {description && (
+                <span className="text-xs text-muted-foreground mt-1 truncate">
+                  {description}
+                </span>
+              )}
               {!completed && due_date && (
                 <span className={`text-xs ${getDeadlineColor()}`}>
                   {getDeadlineText()} {}

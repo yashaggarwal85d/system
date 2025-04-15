@@ -30,6 +30,7 @@ interface RoutineItemProps extends Routine {
 
 export const RoutineItem = ({
   name,
+  description,
   aura,
   start_date,
   last_completed,
@@ -191,16 +192,19 @@ export const RoutineItem = ({
                 {name}
               </span>
 
+              {description && (
+                <span className="text-xs text-muted-foreground mt-1 truncate">
+                  {description}
+                </span>
+              )}
+              <span className="text-xs text-info">
+                {" "}
+                Every {x_occurence} {occurence}
+              </span>
               {!isCompleted && (
-                <>
-                  <span className="text-xs text-info">
-                    {" "}
-                    Every {x_occurence} {occurence}
-                  </span>
-                  <span className={`text-xs ${getDeadlineColor(due_date)}`}>
-                    Next due: {getDeadlineText(due_date)}
-                  </span>
-                </>
+                <span className={`text-xs ${getDeadlineColor(due_date)}`}>
+                  Next due: {getDeadlineText(due_date)}
+                </span>
               )}
               {isCompleted && (
                 <span

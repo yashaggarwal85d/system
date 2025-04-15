@@ -10,12 +10,10 @@ import { motion } from "framer-motion";
 import { Habit } from "@/lib/utils/interfaces";
 import {
   calculateNextDueDate,
-  formatDateToDDMMYY,
   getDeadlineColor,
   getDeadlineText,
   getRefreshColor,
   getRefreshText,
-  getRemainingTime,
   parseDate,
 } from "@/lib/utils/commonUtils";
 
@@ -29,6 +27,7 @@ interface HabitItemProps extends Habit {
 
 export const HabitItem = ({
   name,
+  description,
   aura,
   start_date,
   last_completed,
@@ -119,24 +118,15 @@ export const HabitItem = ({
                 {name}
               </span>
 
-              {!isCompleted && (
-                <>
-                  <span className="text-xs text-info">
-                    {" "}
-                    Every {x_occurence} {occurence}
-                  </span>
-                  <span
-                    className={`text-xs ${getDeadlineColor(
-                      calculateNextDueDate(start_date, occurence, x_occurence)
-                    )}`}
-                  >
-                    Next due:{" "}
-                    {getDeadlineText(
-                      calculateNextDueDate(start_date, occurence, x_occurence)
-                    )}
-                  </span>
-                </>
+              {description && (
+                <span className="text-xs text-muted-foreground mt-1 truncate">
+                  {description}
+                </span>
               )}
+              <span className="text-xs text-info">
+                {" "}
+                Every {x_occurence} {occurence}
+              </span>
               {isCompleted && (
                 <span
                   className={`text-xs ${getRefreshColor(
