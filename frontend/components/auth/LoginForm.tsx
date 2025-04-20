@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/button";
 import { Input } from "@/components/common/input";
@@ -12,148 +12,187 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/common/card";
+import { Textarea } from "@/components/common/textarea";
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/common/tabs";
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/common/select";
+import ProfileFormSteps from "./ProfileFormSteps";
+import { isValidGitHubUrl } from "@/lib/utils/commonUtils";
+import {
+  updatePlayer,
+  fetchPlayerData,
+  loginPlayer,
+} from "@/lib/utils/apiUtils";
+import { Player } from "@/lib/utils/interfaces";
 
-const AuthForm = () => {
+interface ActualLoginFormProps {
+  prefilledUsername: string | null;
+}
+
+const ActualLoginForm = ({ prefilledUsername }: ActualLoginFormProps) => {
+  const [currentStep, setCurrentStep] = useState(1);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState("login");
+  const [loginError, setLoginError] = useState("");
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
   const router = useRouter();
+
+  const [profileFormData, setProfileFormData] = useState<Partial<Player>>({});
+  const [isProfileLoading, setIsProfileLoading] = useState(false);
+  const [profileError, setProfileError] = useState("");
+
+  const handleProfileChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+  ) => {
+    const { id, value } = e.target;
+    setProfileFormData((prev: any) => ({ ...prev, [id]: value }));
+  };
+
+  const handleMentorChange = (value: string) => {
+    setProfileFormData((prev: any) => ({ ...prev, mentor: value }));
+  };
+
+  useEffect(() => {
+    if (currentStep === 1 && prefilledUsername) {
+      setUsername(prefilledUsername);
+      document.getElementById("login-password")?.focus();
+    }
+  }, [prefilledUsername, currentStep]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setSuccess("");
-    setIsLoading(true);
+    setLoginError("");
+    setIsLoginLoading(true);
 
     if (!username.trim() || !password) {
-      setError("Username and password are required.");
-      setIsLoading(false);
+      setLoginError("Username and password are required.");
+      setIsLoginLoading(false);
       return;
     }
 
     try {
-      const formData = new URLSearchParams();
-      formData.append("username", username);
-      formData.append("password", password);
+      const loginData = await loginPlayer(username, password);
+      const { access_token, token_type } = loginData;
 
-      const loginUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/players/login`;
-      const response = await fetch(loginUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formData.toString(),
-      });
-
-      if (!response.ok) {
-        let errorMessage = "Login failed.";
-        try {
-          const errorData = await response.json();
-          errorMessage =
-            errorData.detail || `Login failed (Status: ${response.status})`;
-        } catch (parseError) {
-          errorMessage = `Login failed: ${response.statusText} (Status: ${response.status})`;
-        }
-        setError(errorMessage);
-        setIsLoading(false);
+      if (!access_token || token_type !== "bearer") {
+        setLoginError(
+          "Login successful, but token was not received correctly."
+        );
+        setIsLoginLoading(false);
         return;
       }
 
-      const data = await response.json();
-      const { access_token, token_type } = data;
+      localStorage.setItem("accessToken", access_token);
+      localStorage.setItem("tokenType", token_type);
 
-      if (access_token && token_type === "bearer") {
-        localStorage.setItem("accessToken", access_token);
-        localStorage.setItem("tokenType", token_type);
+      try {
+        const playerData = await fetchPlayerData();
+        setProfileFormData({
+          current_problems: playerData.current_problems || "",
+          goals_in_life: playerData.goals_in_life || "",
+          ideal_future: playerData.ideal_future || "",
+          biggest_fears: playerData.biggest_fears || "",
+          past_issues: playerData.past_issues || "",
+          obsidian_notes: playerData.obsidian_notes || "",
+          mentor: playerData.mentor || "",
+        });
+        setCurrentStep(2);
+        setIsLoginLoading(false);
+      } catch (fetchErr: any) {
+        console.error("Failed to fetch player data after login:", fetchErr);
+        setLoginError(
+          `Login successful, but failed to load profile: ${
+            fetchErr.message || "Unknown error"
+          }. Redirecting to dashboard...`
+        );
 
-        router.push("/");
-      } else {
-        setError("Login successful, but token was not received correctly.");
-        setIsLoading(false);
+        setTimeout(() => router.push("/"), 3000);
+        setIsLoginLoading(false);
       }
     } catch (err: any) {
       console.error("Login Error:", err);
-      setError(
-        `An unexpected error occurred during login: ${
-          err.message || "Unknown error"
-        }`
-      );
-      setIsLoading(false);
+      setLoginError(`Username or password is incorrect`);
+      setIsLoginLoading(false);
     }
   };
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
-    setIsLoading(true);
-
-    if (!username.trim() || !password || !confirmPassword) {
-      setError("All fields are required for signup.");
-      setIsLoading(false);
+  const handleProfileNext = () => {
+    if (
+      !profileFormData.current_problems ||
+      !profileFormData.goals_in_life ||
+      !profileFormData.ideal_future
+    ) {
+      setProfileError("Please fill in Goals, Problems, and Ideal Future.");
       return;
     }
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
-      setIsLoading(false);
+    setProfileError("");
+    setCurrentStep(3);
+  };
+
+  const handleProfileBack = () => {
+    setProfileError("");
+    setCurrentStep(currentStep - 1);
+  };
+
+  const handleProfileUpdateSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setProfileError("");
+    setIsProfileLoading(true);
+
+    if (
+      !profileFormData.current_problems ||
+      !profileFormData.goals_in_life ||
+      !profileFormData.ideal_future ||
+      !profileFormData.biggest_fears ||
+      !profileFormData.mentor
+    ) {
+      setProfileError(
+        "Please fill in all required profile fields (including Biggest Fears)."
+      );
+      setIsProfileLoading(false);
+      return;
+    }
+
+    if (
+      profileFormData.obsidian_notes &&
+      !isValidGitHubUrl(profileFormData.obsidian_notes)
+    ) {
+      setProfileError("Invalid GitHub URL format for Obsidian Notes.");
+      setIsProfileLoading(false);
       return;
     }
 
     try {
-      const signupUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/players/signup`;
-      const response = await fetch(signupUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const updateData: Partial<Player> = {
+        current_problems: profileFormData.current_problems,
+        goals_in_life: profileFormData.goals_in_life,
+        ideal_future: profileFormData.ideal_future,
+        biggest_fears: profileFormData.biggest_fears,
+        past_issues: profileFormData.past_issues,
+        obsidian_notes: profileFormData.obsidian_notes,
+        mentor: profileFormData.mentor,
+      };
 
-        body: JSON.stringify({ username, password }),
-      });
-
-      if (!response.ok) {
-        let errorMessage = "Signup failed.";
-        try {
-          const errorData = await response.json();
-          errorMessage = errorData.detail || errorMessage;
-        } catch (parseError) {
-          errorMessage = `Signup failed: ${response.statusText} (Status: ${response.status})`;
-        }
-        setError(errorMessage);
-      } else {
-        setSuccess("Signup successful! Please log in.");
-        setActiveTab("login");
-
-        setUsername("");
-        setPassword("");
-        setConfirmPassword("");
-      }
+      await updatePlayer(updateData);
+      router.push("/");
     } catch (err: any) {
-      console.error("Signup Error:", err);
-      setError(
-        `An unexpected error occurred: ${err.message || "Unknown error"}`
+      console.error("Profile Update Error:", err);
+      setProfileError(
+        err.response?.data?.detail || err.message || "Failed to update profile."
       );
-    } finally {
-      setIsLoading(false);
+      setIsProfileLoading(false);
     }
   };
 
   return (
-    <Card className="w-full max-w-sm">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="login">Login</TabsTrigger>
-          <TabsTrigger value="signup">Sign Up</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="login">
+    <>
+      {/* Step 1: Login Form */}
+      {currentStep === 1 && (
+        <Card>
           <CardHeader>
             <CardTitle className="text-2xl font-bold text-center">
               Player Login
@@ -161,11 +200,10 @@ const AuthForm = () => {
           </CardHeader>
           <form onSubmit={handleLogin}>
             <CardContent className="space-y-4">
-              {error && activeTab === "login" && (
-                <p className="text-sm text-destructive text-center">{error}</p>
-              )}
-              {success && activeTab === "login" && (
-                <p className="text-sm text-success text-center">{success}</p>
+              {loginError && (
+                <p className="text-sm text-destructive text-center">
+                  {loginError}
+                </p>
               )}
               <div className="space-y-2">
                 <Label htmlFor="login-username">Username</Label>
@@ -177,6 +215,7 @@ const AuthForm = () => {
                   onChange={(e) => setUsername(e.target.value)}
                   required
                   className="text-foreground"
+                  disabled={isLoginLoading}
                 />
               </div>
               <div className="space-y-2">
@@ -189,75 +228,54 @@ const AuthForm = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   className="text-foreground"
+                  disabled={isLoginLoading}
                 />
               </div>
             </CardContent>
             <CardFooter>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoginLoading}
+              >
+                {isLoginLoading ? "Logging in..." : "Login"}
               </Button>
             </CardFooter>
           </form>
-        </TabsContent>
+        </Card>
+      )}
 
-        <TabsContent value="signup">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-center">
-              Create Account
-            </CardTitle>
-          </CardHeader>
-          <form onSubmit={handleSignup}>
-            <CardContent className="space-y-4">
-              {error && activeTab === "signup" && (
-                <p className="text-sm text-destructive text-center">{error}</p>
-              )}
-              <div className="space-y-2">
-                <Label htmlFor="signup-username">Username</Label>
-                <Input
-                  id="signup-username"
-                  type="text"
-                  placeholder="Choose a username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                  className="text-foreground"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="signup-password">Password</Label>
-                <Input
-                  id="signup-password"
-                  type="password"
-                  placeholder="Create a password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="text-foreground"
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirm-password">Confirm Password</Label>
-                <Input
-                  id="confirm-password"
-                  type="password"
-                  placeholder="Confirm your password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  className="text-foreground"
-                />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Signing up..." : "Sign Up"}
-              </Button>
-            </CardFooter>
-          </form>
-        </TabsContent>
-      </Tabs>
-    </Card>
+      {/* Steps 2 & 3: Profile Setup using shared component */}
+      {currentStep === 2 && (
+        <ProfileFormSteps
+          step={1}
+          formData={profileFormData}
+          error={profileError}
+          isLoading={isProfileLoading}
+          onChange={handleProfileChange}
+          onMentorChange={handleMentorChange}
+          onBack={handleProfileBack}
+          onNext={handleProfileNext}
+        />
+      )}
+
+      {currentStep === 3 && (
+        <ProfileFormSteps
+          step={2}
+          formData={profileFormData}
+          error={profileError}
+          isLoading={isProfileLoading}
+          onChange={handleProfileChange}
+          onMentorChange={handleMentorChange}
+          onBack={handleProfileBack}
+          onSubmit={handleProfileUpdateSubmit}
+          submitButtonText={
+            isProfileLoading ? "Updating Profile..." : "Submit Profile"
+          }
+        />
+      )}
+    </>
   );
 };
 
-export default AuthForm;
+export default ActualLoginForm;

@@ -14,11 +14,13 @@ import Header from "./Header";
 import TasksContainer from "./task/TasksContainer";
 import HabitsContainer from "./habit/HabitsContainer";
 import RoutinesContainer from "./routine/RoutinesContainer";
+import ChatContainer from "./chat/ChatContainer";
 
 const Dashboard = () => {
   const activeTab = useDashboardStore((state) => state.activeTab);
   const setActiveTab = useDashboardStore((state) => state.setActiveTab);
   const playerExists = useDashboardStore((state) => !!state.player);
+  const fetchPlayer = useDashboardStore((state) => state.fetchPlayer);
 
   return (
     <div className="container mx-auto p-6 relative z-10 max-w-6xl">
@@ -72,6 +74,7 @@ const Dashboard = () => {
             <RoutinesContainer />
           </TabsContent>
         </Tabs>
+        <ChatContainer onRefreshNeeded={fetchPlayer} />
       </motion.div>
     </div>
   );

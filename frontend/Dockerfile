@@ -1,25 +1,25 @@
-# Install dependencies only when needed
+
 FROM node:18-alpine AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Install pnpm
+
 RUN npm install -g pnpm
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
-# Rebuild the source code only when needed
+
 FROM node:18-alpine AS builder
 WORKDIR /app
 
-# Install pnpm
+
 RUN npm install -g pnpm
 
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Set NEXT_PUBLIC_API_BASE_URL build argument
+
 ARG NEXTAUTH_SECRET
 ENV NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
 ARG NEXT_PUBLIC_API_BASE_URL
@@ -27,7 +27,7 @@ ENV NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL}
 
 RUN pnpm build
 
-# Production image, copy all the files and run next
+
 FROM node:18-alpine AS runner
 WORKDIR /app
 

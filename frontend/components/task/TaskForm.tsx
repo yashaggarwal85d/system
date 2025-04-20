@@ -86,7 +86,7 @@ const TodoForm: React.FC<TodoFormProps> = ({
               <NumberWheelPicker
                 value={selectedYear}
                 onChange={handlePickerChange(setSelectedYear)}
-                min={currentYear}
+                min={currentYear - 1}
                 max={currentYear + 1}
                 label="Year"
               />

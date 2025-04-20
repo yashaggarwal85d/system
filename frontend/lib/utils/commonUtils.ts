@@ -49,7 +49,7 @@ export function calculateNextDueDate(
       nextDue.setDate(nextDue.getDate() + x_occurence * 7);
       break;
     case "months":
-      nextDue.setMonth(nextDue.getMonth() + x_occurence * 30);
+      nextDue.setMonth(nextDue.getMonth() + x_occurence);
       break;
     default:
       console.error("Error calculating next due date.");
@@ -80,20 +80,35 @@ export const getDaysRemaining = (date: string): number => {
   return diffDays - 1;
 };
 
-export const getDeadlineColor = (date: string): string => {
-  const daysRemaining = getDaysRemaining(date);
+export const getColor = (daysRemaining: number): string => {
   if (daysRemaining === null) return "text-primary/70";
   if (daysRemaining < 0) return "text-destructive";
   if (daysRemaining <= 3) return "text-warning";
   return "text-success";
 };
 
-export const getDeadlineText = (deadline: string): string => {
-  const daysRemaining = getDaysRemaining(deadline);
-  if (daysRemaining === null) return "No deadline";
+export const getDeadline = (daysRemaining: number): string => {
+  if (daysRemaining === null || daysRemaining > 800)
+    return "We have a lot of time";
   if (daysRemaining < 0) return `Overdue by ${Math.abs(daysRemaining)} day(s)`;
   if (daysRemaining === 0) return "Due today";
   return `Due in ${daysRemaining} day(s)`;
+};
+
+export const getDeadlineColor = (date: string): string => {
+  return getColor(getDaysRemaining(date));
+};
+
+export const getDeadlineColorForTask = (date: string): string => {
+  return getColor(getDaysRemaining(date) + 1);
+};
+
+export const getDeadlineText = (deadline: string): string => {
+  return getDeadline(getDaysRemaining(deadline));
+};
+
+export const getDeadlineTextForTask = (deadline: string): string => {
+  return getDeadline(getDaysRemaining(deadline) + 1);
 };
 
 export const getRefreshColor = (
@@ -101,13 +116,9 @@ export const getRefreshColor = (
   occurence: "weeks" | "months" | "days",
   x_occurence: number
 ): string => {
-  const daysRemaining = getDaysRemaining(
-    calculateNextDueDate(start_date, occurence, x_occurence)
+  return getColor(
+    getDaysRemaining(calculateNextDueDate(start_date, occurence, x_occurence))
   );
-  if (daysRemaining === null) return "text-primary/70";
-  if (daysRemaining < 0) return "text-destructive";
-  if (daysRemaining <= 3) return "text-warning";
-  return "text-success";
 };
 
 export const getRefreshText = (
@@ -141,13 +152,33 @@ export const getRemainingTime = (date: string): string => {
   return "Due now";
 };
 
+export function fixSingleQuotedJson(str: string): string {
+  return str
+    .replace(/([{,]\s*)'([^']+?)'\s*:/g, '$1"$2":')
+    .replace(/:\s*'((?:\\'|[^'])*)'/g, (_, val) => {
+      const escaped = val.replace(/"/g, '\\"').replace(/\\'/g, "'");
+      return `: "${escaped}"`;
+    })
+    .replace(/\bFalse\b/g, "false")
+    .replace(/\bTrue\b/g, "true");
+}
 export function stringToChecklist(str: string): ChecklistItemData[] {
-  return JSON.parse(str) as ChecklistItemData[];
+  return JSON.parse(fixSingleQuotedJson(str));
 }
 
 export function checklistToString(checklist: ChecklistItemData[]): string {
   return JSON.stringify(checklist);
 }
+
+export const isValidGitHubUrl = (url: string): boolean => {
+  if (!url) return true;
+  try {
+    const parsedUrl = new URL(url);
+    return parsedUrl.hostname === "github.com";
+  } catch (e) {
+    return false;
+  }
+};
 
 export const markChecklistIncomplete = (
   items: ChecklistItemData[]

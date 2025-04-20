@@ -1,2 +1,6 @@
-Deployment - railway
-AI integration
+Deploy
+Publish
+    Create a Landing page
+    Create logout
+    Multiple Gemini APIs use
+Create a mobile app

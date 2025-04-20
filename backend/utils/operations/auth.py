@@ -3,42 +3,28 @@ from jose import JWTError, jwt
 from datetime import datetime, timedelta, timezone
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
-from pydantic import BaseModel
-import os
-from dotenv import load_dotenv
-from pathlib import Path
 
-dotenv_path = Path(__file__).resolve().parent.parent.parent / '.env'
-load_dotenv(dotenv_path=dotenv_path)
+from models.pydantic_models import TokenData
+from utils.general.get_env import getenv
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verifies a plain password against a hashed password."""
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def get_password_hash(password: str) -> str:
-    """Hashes a plain password."""
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     return pwd_context.hash(password)
 
 
-SECRET_KEY = os.getenv("SECRET_KEY")
-ALGORITHM = os.getenv("ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
-
-if not SECRET_KEY:
-    raise EnvironmentError("SECRET_KEY environment variable not set.")
-
+SECRET_KEY = getenv("SECRET_KEY")
+ALGORITHM = getenv("ALGORITHM", "HS256")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="players/login")
 
 
-class TokenData(BaseModel):
-    username: str | None = None
-
-
 def create_access_token(data: dict, expires_delta: timedelta | None = None) -> str:
-    """Creates a JWT access token."""
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.now(timezone.utc) + expires_delta
@@ -52,7 +38,6 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme)) -> TokenData:
-    """Decodes the JWT token and returns the user data (username)."""
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -67,3 +52,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> TokenData:
     except JWTError:
         raise credentials_exception
     return token_data
+
+async def get_current_username(
+    token_data: TokenData = Depends(get_current_user),
+) -> str:
+    return token_data.username

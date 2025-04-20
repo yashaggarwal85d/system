@@ -1,11 +1,7 @@
 import { create, StateCreator } from "zustand";
 import { Player, PlayerFullInfo } from "@/lib/utils/interfaces";
 import { ColorTheme, defaultTheme, getThemeForLevel } from "@/lib/utils/colors";
-import {
-  fetchPlayerFullInfoAPI,
-  updateEntityAPI,
-  updatePlayer,
-} from "@/lib/utils/apiUtils";
+import { fetchPlayerFullInfoAPI, updatePlayer } from "@/lib/utils/apiUtils";
 import useTaskStore from "./taskStore";
 import useHabitStore from "./habitStore";
 import useRoutineStore from "./routineStore";
@@ -89,8 +85,6 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
     } else {
       set({ player: { ...currentPlayer, ...newPlayer } });
     }
-
-    console.log(newAura, get().player);
     await updatePlayer({ ...newPlayer });
   },
 });

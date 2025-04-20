@@ -10,5 +10,8 @@ pytest-cov
 python-multipart
 requests
 apscheduler
-httpx 
-aiofiles 
+httpx
+aiofiles
+sqlalchemy
+psycopg2-binary
+google-generativeai

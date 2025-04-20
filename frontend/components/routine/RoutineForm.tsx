@@ -4,10 +4,12 @@ import { Input } from "@/components/common/input";
 import { Button } from "@/components/common/button";
 import { Checkbox } from "@/components/common/checkbox";
 
+import { Plus } from "lucide-react";
+
 import { NumberWheelPicker } from "@/components/common/number-wheel-picker";
 import { PeriodWheelPicker } from "@/components/common/period-wheel-picker";
 import { Routine, ChecklistItemData } from "@/lib/utils/interfaces";
-import { Plus } from "lucide-react";
+
 import { v4 as uuidv4 } from "uuid";
 import { ChecklistItem, ChecklistItemHandle } from "../common/checklist-item";
 import { Reorder, useDragControls } from "framer-motion";
@@ -29,6 +31,14 @@ interface RoutineFormProps {
   setShowRoutineForm: (value: boolean) => void;
   setEditingRoutine: (routine: Routine | null) => void;
   editingRoutine: Routine | null;
+
+  startDay: number;
+  setStartDay: (value: number) => void;
+  startMonth: number;
+  setStartMonth: (value: number) => void;
+  startYear: number;
+  setStartYear: (value: number) => void;
+  currentYear: number;
 }
 
 const flattenChecklist = (items: ChecklistItemData[]): ChecklistItemData[] => {
@@ -88,8 +98,22 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
   setShowRoutineForm,
   setEditingRoutine,
   editingRoutine,
+
+  startDay,
+  setStartDay,
+  startMonth,
+  setStartMonth,
+  startYear,
+  setStartYear,
+  currentYear,
 }) => {
   const [newItemText, setNewItemText] = React.useState("");
+
+  const handleStartDatePickerChange =
+    (setter: (value: number) => void) => (value: number) => {
+      setError("");
+      setter(value);
+    };
   const [checklistItems, setChecklistItems] = React.useState<
     ChecklistItemData[]
   >([]);
@@ -423,6 +447,41 @@ const RoutineForm: React.FC<RoutineFormProps> = ({
                 onChange={(value) => handleConfigChange("period", value)}
               />
             </div>
+          </div>
+
+          {/* Start Date Number Wheel Pickers */}
+          <div className="flex flex-col gap-2">
+            <span className="text-primary">Start Date:</span> {}
+            <div className="flex justify-center items-end gap-4 p-2 rounded border border-primary/20 bg-secondary/60">
+              {" "}
+              <NumberWheelPicker
+                value={startDay}
+                onChange={handleStartDatePickerChange(setStartDay)}
+                min={1}
+                max={31}
+                label="Day"
+              />
+              <NumberWheelPicker
+                value={startMonth}
+                onChange={handleStartDatePickerChange(setStartMonth)}
+                min={1}
+                max={12}
+                label="Month"
+              />
+              <NumberWheelPicker
+                value={startYear}
+                onChange={handleStartDatePickerChange(setStartYear)}
+                min={currentYear - 5}
+                max={currentYear + 1}
+                label="Year"
+              />
+            </div>
+            {/* Error message is now handled in the container */}
+            {/* {error && (
+              <span className="text-destructive text-sm mt-1">
+                {error}
+              </span>
+            )} */}
           </div>
 
           <div className="flex flex-col gap-2">

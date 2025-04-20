@@ -1,8 +1,8 @@
 import logging
 
-from .. import models
-from .players import get_current_username 
-from ..utils.crud_utils import create_crud_router
+from models import redis_models
+from utils.operations.auth import get_current_username
+from utils.operations.crud_obj import create_crud_router
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +17,7 @@ router = create_crud_router(
     tags=["habits"],
     key_func=habit_key,
     pattern_func=user_habits_pattern,
-    model_class=models.Habit,
-    update_model_class=models.HabitUpdate, 
+    model_class=redis_models.Habit,
+    update_model_class=redis_models.HabitUpdate, 
     get_username_dependency=get_current_username
 )

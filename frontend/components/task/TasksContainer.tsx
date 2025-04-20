@@ -11,10 +11,10 @@ import useTaskStore from "@/store/taskStore";
 import useDashboardStore from "@/store/dashboardStore";
 import { Task } from "@/lib/utils/interfaces";
 import {
-  getDeadlineColor,
-  getDeadlineText,
+  getDeadlineColorForTask,
   parseDate,
   getAuraValue,
+  getDeadlineTextForTask,
 } from "@/lib/utils/commonUtils";
 import { containerVariants } from "@/lib/utils/animationUtils";
 import { useTasks } from "@/lib/hooks/useTasks";
@@ -200,8 +200,8 @@ const TasksContainer = () => {
             onToggle={() => handleToggleTask(task.id)}
             onDelete={() => handleDeleteTask(task.id)}
             onEdit={() => handleEditTask(task)}
-            getDeadlineColor={() => getDeadlineColor(task.due_date)}
-            getDeadlineText={() => getDeadlineText(task.due_date)}
+            getDeadlineColor={() => getDeadlineColorForTask(task.due_date)}
+            getDeadlineText={() => getDeadlineTextForTask(task.due_date)}
           />
         ))}
       </motion.div>

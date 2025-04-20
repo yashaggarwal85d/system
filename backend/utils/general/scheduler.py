@@ -2,19 +2,17 @@ import logging
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from ..jobs import neural_vault_cache,penalise
+from utils.jobs import penalise, gemini_analyzer
 
 logger = logging.getLogger(__name__)
 scheduler = AsyncIOScheduler(timezone="UTC")
 
-def start_scheduler():
-    """Adds scheduled jobs and starts the scheduler."""
-    try:
 
+def start_scheduler():
+    try:
         if scheduler.get_job("overdue_check_job"):
             logger.info("Overdue check job already scheduled.")
         else:
-
             scheduler.add_job(
                 penalise.check_overdue_and_penalize,
                 "interval",
@@ -25,17 +23,17 @@ def start_scheduler():
             )
             logger.info("Overdue check job added (runs every 3 hours).")
 
-        if scheduler.get_job("daily_cache_update"):
-            logger.info("Daily cache update job already scheduled.")
+        if scheduler.get_job("daily_gemini_analysis"):
+            logger.info("Daily Gemini analysis job already scheduled.")
         else:
             scheduler.add_job(
-                neural_vault_cache.update_cache_async,
-                trigger=CronTrigger(hour=11, minute=0, timezone="UTC"),
-                id="daily_cache_update",
-                name="Update Neural Vault cache daily",
+                gemini_analyzer.run_daily_analysis_job,
+                trigger=CronTrigger(hour=2, minute=0, timezone="UTC"),
+                id="daily_gemini_analysis",
+                name="Run daily Gemini analysis for player descriptions",
                 replace_existing=True,
             )
-            logger.info("Daily cache update job added (runs daily at 11:00 AM UTC).")
+            logger.info("Daily Gemini analysis job added (runs daily at 02:00 AM UTC).")
 
         if not scheduler.running:
             scheduler.start()
@@ -47,7 +45,6 @@ def start_scheduler():
 
 
 def stop_scheduler():
-    """Stops the scheduler gracefully."""
     if scheduler.running:
         logger.info("Scheduler shutting down...")
         try:

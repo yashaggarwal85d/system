@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import NeuralVaultPopup from "@/components/providers/NeuralVaultPopup";
+import NotesPopup from "@/components/providers/notesPopup";
 import Dashboard from "@/components/Dashboard";
 import useDashboardStore from "@/store/dashboardStore";
 import { Button } from "@/components/common/button";
@@ -78,7 +78,7 @@ export default function Home() {
     return (
       <main className="min-h-screen">
         <Dashboard />
-        <NeuralVaultPopup
+        <NotesPopup
           isOpen={isVaultPopupOpen}
           onOpenChange={setIsVaultPopupOpen}
         />

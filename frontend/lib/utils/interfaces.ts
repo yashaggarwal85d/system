@@ -10,12 +10,19 @@ export interface Player {
   level: number;
   aura: number;
   description: string;
+  obsidian_notes?: string;
+  mentor: string;
+  current_problems: string;
+  goals_in_life: string;
+  ideal_future: string;
+  biggest_fears: string;
+  past_issues?: string;
 }
 
 export interface Task {
   id?: string;
   name: string;
-  description: string | undefined;
+  description?: string;
   due_date: string;
   aura: number;
   completed: boolean;
@@ -68,4 +75,15 @@ export interface Routine {
   x_occurence: number;
   last_completed: string;
   checklist: ChecklistItemData[];
+}
+
+export interface ChatHistoryEntry {
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
+}
+
+export interface VaultData {
+  fileName: string;
+  content: string;
 }

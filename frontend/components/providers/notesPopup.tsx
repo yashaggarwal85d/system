@@ -1,11 +1,8 @@
 "use client";
 
-"use client";
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-
 import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
@@ -17,102 +14,97 @@ import {
   DialogDescription,
 } from "@/components/common/dialog";
 import { ScrollArea } from "@/components/common/scroll-area";
+import { VaultData } from "@/lib/utils/interfaces";
+import { fetchNotesData } from "@/lib/utils/apiUtils";
 
-interface NeuralVaultPopupProps {
+interface NotesPopupProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-interface VaultData {
-  fileName: string;
-  content: string;
-}
-
-const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
-  isOpen,
-  onOpenChange,
-}) => {
+const NotesPopup: React.FC<NotesPopupProps> = ({ isOpen, onOpenChange }) => {
   const [vaultData, setVaultData] = useState<VaultData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const isFetching = useRef(false);
 
   useEffect(() => {
-    if (isOpen && !vaultData && !isLoading) {
-      const fetchData = async () => {
-        setIsLoading(true);
-        setError(null);
-        try {
-          const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/players/neural-vault`;
-          const response = await fetch(apiUrl);
+    let isMounted = true;
 
-          if (!response.ok) {
-            let errorText = `HTTP error! status: ${response.status}`;
-            try {
-              const contentType = response.headers.get("content-type");
-              if (contentType && contentType.includes("application/json")) {
-                const errorData = await response.json();
-                errorText = errorData.error || JSON.stringify(errorData);
-              } else {
-                errorText = await response.text();
-              }
-            } catch (parseError) {
-              errorText = `Failed to parse error response: ${response.statusText}`;
-            }
-            throw new Error(errorText);
-          }
+    const fetchData = async () => {
+      if (isFetching.current) return;
+      isFetching.current = true;
+      setIsLoading(true);
+      setError(null);
 
-          const contentType = response.headers.get("content-type");
-          if (!contentType || !contentType.includes("application/json")) {
-            throw new Error(
-              `Expected JSON response but received ${contentType || "unknown"}`
-            );
-          }
-
-          let data: VaultData = await response.json();
-
-          const githubRawUrlBase =
-            "https://raw.githubusercontent.com/yashaggarwal85d/Neural-Vault/main/zassets/";
-          data.content = data.content.replace(
-            /!\[\[([^\]]+)\]\]/g,
-            (match, filename) => {
-              const trimmedFilename = filename.trim();
-
-              const encodedFilename = encodeURIComponent(trimmedFilename);
-              return `![](${githubRawUrlBase}${encodedFilename})`;
-            }
-          );
-
+      try {
+        const data = await fetchNotesData();
+        if (isMounted) {
           setVaultData(data);
-        } catch (err) {
-          console.error("Failed to fetch from Neural Vault API:", err);
-          const message =
-            err instanceof Error
-              ? err.message
-              : "An unknown error occurred while fetching data.";
+          setError(null);
+          setIsPopupVisible(true);
+        }
+      } catch (err) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "An unknown error occurred while fetching data.";
+        if (isMounted) {
           setError(message);
-        } finally {
+          setVaultData(null);
+          setIsPopupVisible(false);
+        }
+      } finally {
+        if (isMounted) {
           setIsLoading(false);
         }
-      };
-      fetchData();
+        isFetching.current = false;
+      }
+    };
+
+    if (isOpen) {
+      if (!isFetching.current && !vaultData && !error) {
+        fetchData();
+      } else if (
+        (vaultData || error) &&
+        !isPopupVisible &&
+        !isFetching.current
+      ) {
+        setIsPopupVisible(true);
+      }
+    } else {
+      if (isPopupVisible) {
+        setIsPopupVisible(false);
+      }
+
+      if (!isFetching.current) {
+        setVaultData(null);
+        setError(null);
+      }
     }
 
-    if (!isOpen) {
+    return () => {
+      isMounted = false;
+    };
+  }, [isOpen]);
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      setIsPopupVisible(false);
+      onOpenChange(false);
+
       setVaultData(null);
       setError(null);
     }
-  }, [isOpen, vaultData, isLoading]);
-
-  const handleClose = () => {
-    onOpenChange(false);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog open={isPopupVisible} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-[60vw] max-h-[80vh] flex flex-col bg-gradient-to-br from-background via-primary/10 to-background border-primary/50 text-foreground">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-primary">
-            Neural Vault Entry: {vaultData?.fileName || "Loading..."}
+            {vaultData?.fileName || "Loading..."}
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
             A random insight from the knowledge vault.
@@ -134,7 +126,7 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeRaw]}
                 components={{
-                  img: ({ node, src, alt, title, ...props }) => {
+                  img: ({ node, src, alt, title }) => {
                     if (alt === "Video" && src) {
                       return (
                         <a
@@ -181,4 +173,4 @@ const NeuralVaultPopup: React.FC<NeuralVaultPopupProps> = ({
   );
 };
 
-export default NeuralVaultPopup;
+export default NotesPopup;

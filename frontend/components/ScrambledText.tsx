@@ -42,10 +42,10 @@ const ScrambledText: React.FC = () => {
   }
 
   return (
-    <div className="mb-12 text-center">
+    <div className="mb-12 text-center min-h-[4rem] max-h-[4rem]">
       <h1
         ref={elementRef}
-        className="text-primary text-4xl font-bold tracking-wider text-center animate-glow" 
+        className="text-primary text-4xl font-bold tracking-wider text-center animate-glow"
       >
         {displayText}
       </h1>

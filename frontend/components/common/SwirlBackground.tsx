@@ -23,7 +23,6 @@ declare global {
   }
 }
 
-// Set the global variable immediately when the module loads on the client-side
 if (typeof window !== "undefined") {
   window.SimplexNoise = SimplexNoiseWrapper;
 }
@@ -37,8 +36,6 @@ declare global {
 }
 
 export default function SwirlBackground() {
-  // Removed assignment from here
-
   useEffect(() => {
     if (typeof document !== "undefined") {
       document.documentElement.style.setProperty(
@@ -87,7 +84,7 @@ export default function SwirlBackground() {
       <div className="content--canvas fixed inset-0 -z-10"></div>
       <Script
         src="/swirl.js"
-        strategy="afterInteractive" // Changed strategy
+        strategy="afterInteractive"
         onLoad={handleScriptLoad}
         onError={(e) => {
           console.error("Error loading swirl.js script:", e);

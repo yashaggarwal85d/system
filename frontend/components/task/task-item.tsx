@@ -7,6 +7,17 @@ import { Button } from "@/components/common/button";
 import { Sparkles, Trash2, Pencil, TimerReset } from "lucide-react";
 import { motion } from "framer-motion";
 import { Task } from "@/lib/utils/interfaces";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/common/alert-dialog";
 
 interface TaskItemProps extends Task {
   onToggle: () => void;
@@ -81,7 +92,7 @@ export const TaskItem = ({
               )}
               {!completed && due_date && (
                 <span className={`text-xs ${getDeadlineColor()}`}>
-                  {getDeadlineText()} {}
+                  {getDeadlineText()}
                 </span>
               )}
             </div>
@@ -111,14 +122,33 @@ export const TaskItem = ({
               </motion.div>
             )}
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-6 w-6 p-0"
-                onClick={handleDelete}
-              >
-                <Trash2 className="h-4 w-4 text-destructive" />
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="ghost" size="icon" className="h-6 w-6 p-0">
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      this task.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleDelete}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      Delete Task
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </CardContent>
