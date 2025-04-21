@@ -9,3 +9,4 @@ yarn-error.log*
 next-env.d.ts
 **/__pycache__/
 /.venv/
+node_modules

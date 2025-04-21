@@ -4,7 +4,11 @@ import React, { useState, useEffect, useRef } from "react";
 import useScrambleStore from "@/store/scrambleStore";
 import { TextScramble } from "@/lib/utils/scrambledClass";
 
-const ScrambledText: React.FC = () => {
+interface ScrambledTextProps {
+  className?: string;
+}
+
+const ScrambledText: React.FC<ScrambledTextProps> = ({ className }) => {
   const elementRef = useRef<HTMLHeadingElement>(null);
   const scramblerRef = useRef<TextScramble | null>(null);
   const [mounted, setMounted] = useState(false);
@@ -42,7 +46,7 @@ const ScrambledText: React.FC = () => {
   }
 
   return (
-    <div className="mb-12 text-center min-h-[4rem] max-h-[4rem]">
+    <div className={`mb-12 text-center min-h-[6rem] max-h-[6rem] ${className}`}>
       <h1
         ref={elementRef}
         className="text-primary text-4xl font-bold tracking-wider text-center animate-glow"

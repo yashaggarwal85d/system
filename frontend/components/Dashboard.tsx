@@ -30,14 +30,14 @@ const Dashboard = () => {
         exit={{ opacity: 0 }}
       >
         {playerExists && <Header />}
-        <ScrambledText />
+        <ScrambledText className="mt-[-1.5rem]" />
 
         <Tabs
           value={activeTab}
           className="w-full space-y-6"
           onValueChange={setActiveTab}
         >
-          <TabsList className="grid w-full grid-cols-3 bg-secondary/60 border border-primary/20">
+          <TabsList className="grid w-full grid-cols-3 bg-secondary border border-primary/20">
             {" "}
             <TabsTrigger
               value="tasks"

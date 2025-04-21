@@ -32,7 +32,7 @@ class Player(BaseModel):
     level: int = 0
     aura: int = 0
     description: str = (
-        "Welcome to the playground!,Track your Tasks/Habits/Routines"
+        "Welcome Player!,Track your Tasks/Habits/Routines"
     )
     password: str
     obsidian_notes: Optional[str] = None

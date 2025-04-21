@@ -68,7 +68,7 @@ export const TaskItem = ({
         },
       }}
     >
-      <Card className="bg-secondary/60 border-primary/20 hover:border-primary/40 transition-colors group">
+      <Card className="bg-secondary border-primary/20 hover:border-primary/40 transition-colors group">
         {" "}
         <CardContent className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1 min-w-0">

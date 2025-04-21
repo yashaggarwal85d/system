@@ -122,7 +122,7 @@ const HabitsContainer = () => {
               handleSaveHabit();
             }
           }}
-          className="bg-secondary/60 border-primary/20 focus:border-primary/50 placeholder:text-primary/30"
+          className="bg-secondary border-primary/20 focus:border-primary/50 placeholder:text-primary/30"
         />
         <Button
           onClick={() => {
@@ -166,7 +166,7 @@ const HabitsContainer = () => {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black backdrop-blur-sm"
         >
           <DynamicHabitForm
             habitText={habitText}

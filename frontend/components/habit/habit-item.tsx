@@ -102,7 +102,7 @@ export const HabitItem = ({
       }}
     >
       <Card
-        className={`bg-secondary/60 border transition-colors group ${
+        className={`bg-secondary border transition-colors group ${
           !is_good
             ? "border-destructive/20 hover:border-destructive/40"
             : "border-primary/20 hover:border-primary/40"

@@ -7,7 +7,7 @@ export const colors = {
     foreground: "#0d0d0d",
   },
   secondary: {
-    DEFAULT: "#1e293b",
+    DEFAULT: "#0d111a",
     foreground: "#f0f0f0",
   },
   muted: {
