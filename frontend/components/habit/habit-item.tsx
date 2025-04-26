@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import { Sparkles, Trash2, Pencil } from "lucide-react";
 import { motion } from "framer-motion";
 import { Habit } from "@/lib/utils/interfaces";
+import { BorderBeam } from "@/components/common/border-beam";
+import useDashboardStore from "@/store/dashboardStore";
 import {
   calculateNextDueDate,
   getDeadlineColor,
@@ -49,6 +51,7 @@ export const HabitItem = ({
   onEdit,
   refreshHabit,
 }: HabitItemProps) => {
+  const currentTheme = useDashboardStore((state) => state.currentTheme);
   const [isCompleted, setIsCompleted] = useState(false);
 
   const handleToggle = () => {
@@ -102,12 +105,30 @@ export const HabitItem = ({
       }}
     >
       <Card
-        className={`bg-secondary border transition-colors group ${
+        className={`relative overflow-hidden bg-secondary border transition-colors group ${
           !is_good
             ? "border-destructive/20 hover:border-destructive/40"
             : "border-primary/20 hover:border-primary/40"
         }`}
       >
+        {!isCompleted && (
+          <>
+            <BorderBeam
+              colorFrom={currentTheme.primary.DEFAULT}
+              colorTo={currentTheme.accent.DEFAULT}
+              size={600}
+              delay={10}
+              duration={20}
+              reverse={true}
+            />
+            <BorderBeam
+              colorFrom={currentTheme.primary.DEFAULT}
+              colorTo={currentTheme.accent.DEFAULT}
+              size={600}
+              duration={20}
+            />
+          </>
+        )}
         <CardContent className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1 min-w-0">
             <Checkbox

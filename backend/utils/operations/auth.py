@@ -20,7 +20,8 @@ def get_password_hash(password: str) -> str:
 
 SECRET_KEY = getenv("SECRET_KEY")
 ALGORITHM = getenv("ALGORITHM", "HS256")
-ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 60))
+ACCESS_TOKEN_EXPIRE_MINUTES = int(getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 43200)) 
+
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="players/login")
 
 
@@ -35,6 +36,9 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme)) -> TokenData:

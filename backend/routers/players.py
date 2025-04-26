@@ -3,19 +3,22 @@ import random
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from datetime import timedelta
+from datetime import datetime, timezone
 from typing import List
 from fastapi import Query
 from sqlalchemy.orm import Session
+from jose import JWTError, jwt
 
 import redis.asyncio as redis
 
 from utils.general import notes_utils
 from models import pydantic_models, redis_models
-from models.pydantic_models import NotesEntry
+
+from models.pydantic_models import NotesEntry, Token, RefreshTokenRequest, TokenData
 from utils.ai.data_format import parseResponseToJson
 from utils.ai.handle_ai_action import handle_create_action
 from utils.ai import prompts, gemini
+
 from utils.database import pg_database, redis_database
 from utils.operations import auth
 from utils.general.history_logger import log_history, HistoryType
@@ -58,7 +61,6 @@ async def signup_player(
         logger.info(f"Generating initial feed for player: {player_data.username}")
         profile_data = {
             "current_problems": player_to_save.current_problems,
-            "goals_in_life": player_to_save.goals_in_life,
             "ideal_future": player_to_save.ideal_future,
             "biggest_fears": player_to_save.biggest_fears,
             "past_issues": player_to_save.past_issues,
@@ -72,8 +74,8 @@ async def signup_player(
         feed_objects = parseResponseToJson(response.text).get("objects", [])
         for feed_object in feed_objects:
             feed: dict = feed_object
-            entity_type = feed.get("type",None)
-            details = feed.get("details",None)
+            entity_type = feed.get("type", None)
+            details = feed.get("details", None)
             if entity_type and details:
                 await handle_create_action(
                     r, pg_db, player_data.username, entity_type, details
@@ -94,7 +96,7 @@ async def signup_player(
     return player_data.model_copy(update={"password": "hidden"})
 
 
-@router.post("/login")
+@router.post("/login", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     r = await redis_database.get_redis_connection()
     player = await redis_database.redis_get(
@@ -107,12 +109,14 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
             detail="Incorrect username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+    access_token = auth.create_access_token(data={"sub": player.username})
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+    }
 
-    access_token_expires = timedelta(minutes=auth.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = auth.create_access_token(
-        data={"sub": player.username}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
+
+
 
 
 @router.get("/", response_model=List[redis_models.Player])

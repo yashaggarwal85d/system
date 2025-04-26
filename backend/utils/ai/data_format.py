@@ -110,7 +110,6 @@ def get_base_formatted_data(
     Current Player Description: {player.description}
     Based on the following user profile information:
         - Current Problems: {player.current_problems}
-        - Goals in Life: {player.goals_in_life}
         - Ideal Future: {player.ideal_future}
         - Biggest Fears: {player.biggest_fears}
         - Past Issues (Optional): {player.past_issues}

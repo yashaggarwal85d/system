@@ -10,6 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Routine, ChecklistItemData } from "@/lib/utils/interfaces";
 import { ChecklistItem } from "@/components/common/checklist-item";
 import useRoutineStore from "@/store/routineStore";
+import { BorderBeam } from "@/components/common/border-beam";
+import useDashboardStore from "@/store/dashboardStore";
 
 import {
   calculateNextDueDate,
@@ -58,6 +60,7 @@ export const RoutineItem = ({
 }: RoutineItemProps & {
   onUpdateChecklist?: (checklist: ChecklistItemData[]) => void;
 }) => {
+  const currentTheme = useDashboardStore((state) => state.currentTheme);
   const { updateEntity: updateRoutine } = useRoutineStore();
   const [isCompleted, setIsCompleted] = useState(false);
   const [checklistState, setChecklistState] = useState<ChecklistItemData[]>([]);
@@ -176,12 +179,29 @@ export const RoutineItem = ({
       }}
     >
       <Card
-        className={`bg-secondary border transition-colors group ${
+        className={`relative overflow-hidden bg-secondary border transition-colors group ${
           !is_good
             ? "border-destructive/20 hover:border-destructive/40"
             : "border-primary/20 hover:border-primary/40"
         }`}
       >
+        {!isCompleted && (
+          <>
+            <BorderBeam
+              colorFrom={currentTheme.primary.DEFAULT}
+              colorTo={currentTheme.accent.DEFAULT}
+              size={600}
+              delay={10}
+              duration={20}
+            />
+            <BorderBeam
+              colorFrom={currentTheme.primary.DEFAULT}
+              colorTo={currentTheme.accent.DEFAULT}
+              size={600}
+              duration={20}
+            />
+          </>
+        )}
         <CardContent className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1 min-w-0">
             <Checkbox

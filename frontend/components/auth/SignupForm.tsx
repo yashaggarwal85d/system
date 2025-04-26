@@ -35,7 +35,6 @@ const SignupFormContainer = ({ onSignupSuccess }: SignupFormContainerProps) => {
     password: "",
     confirmPassword: "",
     current_problems: "",
-    goals_in_life: "",
     ideal_future: "",
     biggest_fears: "",
     past_issues: "",
@@ -70,12 +69,8 @@ const SignupFormContainer = ({ onSignupSuccess }: SignupFormContainerProps) => {
       }
       setCurrentStep(2);
     } else if (currentStep === 2) {
-      if (
-        !formData.current_problems ||
-        !formData.goals_in_life ||
-        !formData.ideal_future
-      ) {
-        setError("Please fill in Goals, Problems, and Ideal Future.");
+      if (!formData.current_problems || !formData.ideal_future) {
+        setError("Please fill in Problems and Ideal Future.");
         return;
       }
       setCurrentStep(3);
@@ -104,7 +99,6 @@ const SignupFormContainer = ({ onSignupSuccess }: SignupFormContainerProps) => {
       !formData.username ||
       !formData.password ||
       !formData.current_problems ||
-      !formData.goals_in_life ||
       !formData.ideal_future ||
       !formData.biggest_fears ||
       !formData.mentor

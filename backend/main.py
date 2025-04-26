@@ -12,13 +12,14 @@ from uvicorn.middleware.proxy_headers import ProxyHeadersMiddleware
 
 from models.pg_models import Base
 from utils.database.pg_database import engine
-from routers import players, habits, tasks, routines, chat, jobs
+
+from routers import players, habits, tasks, routines, chat, jobs, finance
 from utils.general import scheduler as app_scheduler
 from utils.general.get_env import getenv
 
 app = FastAPI(
-    title="Ascend AI API",
-    description="Backend API for the Ascend AI.",
+    title="Shogun Fight club API",
+    description="Backend API for the Shogun Fight club.",
     version="1.0.1",
 )
 
@@ -43,6 +44,7 @@ app.include_router(tasks.router)
 app.include_router(routines.router)
 app.include_router(chat.router)
 app.include_router(jobs.router)
+app.include_router(finance.router)
 
 
 @app.on_event("startup")

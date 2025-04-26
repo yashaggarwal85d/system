@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
+import { toast } from "sonner";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -16,6 +17,7 @@ import {
 import { ScrollArea } from "@/components/common/scroll-area";
 import { VaultData } from "@/lib/utils/interfaces";
 import { fetchNotesData } from "@/lib/utils/apiUtils";
+import useDashboardStore from "@/store/dashboardStore";
 
 interface NotesPopupProps {
   isOpen: boolean;
@@ -28,6 +30,7 @@ const NotesPopup: React.FC<NotesPopupProps> = ({ isOpen, onOpenChange }) => {
   const [error, setError] = useState<string | null>(null);
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const isFetching = useRef(false);
+  const player = useDashboardStore((state) => state.player);
 
   useEffect(() => {
     let isMounted = true;
@@ -64,8 +67,30 @@ const NotesPopup: React.FC<NotesPopupProps> = ({ isOpen, onOpenChange }) => {
     };
 
     if (isOpen) {
-      if (!isFetching.current && !vaultData && !error) {
-        fetchData();
+      if (player) {
+        if (!player.obsidian_notes) {
+          toast.info("Obsidian notes path not set.", {
+            description: "We recommend setting it up for insights.",
+            duration: 5000,
+          });
+
+          if (isPopupVisible) setIsPopupVisible(false);
+          if (isLoading) setIsLoading(false);
+          if (error) setError(null);
+          if (vaultData) setVaultData(null);
+          if (isFetching.current) isFetching.current = false;
+          onOpenChange(false);
+        } else {
+          if (!isFetching.current && !vaultData && !error) {
+            fetchData();
+          } else if (
+            (vaultData || error) &&
+            !isPopupVisible &&
+            !isFetching.current
+          ) {
+            setIsPopupVisible(true);
+          }
+        }
       } else if (
         (vaultData || error) &&
         !isPopupVisible &&
@@ -87,7 +112,7 @@ const NotesPopup: React.FC<NotesPopupProps> = ({ isOpen, onOpenChange }) => {
     return () => {
       isMounted = false;
     };
-  }, [isOpen]);
+  }, [isOpen, player, vaultData, error, isPopupVisible]);
 
   const handleOpenChange = (open: boolean) => {
     if (!open) {

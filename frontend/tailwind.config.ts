@@ -27,6 +27,7 @@ const config = {
     extend: {
       fontFamily: {
         inter: ["Inter", "sans-serif"],
+        "russo-one": ['"Russo One"', "sans-serif"],
       },
       colors: {
         border: "hsl(var(--border))",

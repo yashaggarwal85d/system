@@ -40,6 +40,7 @@ async def get_chat_history(
                     role=record.role,
                     content=record.content,
                     timestamp=record.timestamp.isoformat(),
+                    mentor=record.mentor,
                 )
             )
         return history_response
@@ -64,6 +65,14 @@ async def get_gemini_history(
     return gemini_api_history
 
 
+async def handle_mentor(message: str):
+    mentor_prompt = prompts.get_mentor(message)
+    gemini_model = gemini.get_gemini_model()
+    chat_session = gemini_model.start_chat()
+    response = await chat_session.send_message_async(mentor_prompt)
+    return response.text
+
+
 @router.post("/chat", response_model=ChatResponse)
 async def handle_chat_message(
     user_message: str,
@@ -83,7 +92,8 @@ async def handle_chat_message(
         base_prompt = data_format.get_base_formatted_data(
             player, habits, tasks, routines, history
         )
-        full_user_prompt = prompts.get_chat_prompt(base_prompt, player.mentor)
+        mentor = await handle_mentor(user_message)
+        full_user_prompt = prompts.get_chat_prompt(base_prompt, mentor)
         gemini_api_history: list = await get_gemini_history(
             current_user, pg_db, full_user_prompt
         )
@@ -155,6 +165,7 @@ async def handle_chat_message(
             user_id=current_user.username,
             role="assistant",
             content=ai_reply,
+            mentor=mentor
         )
         user_chat_entry = ChatHistory(
             user_id=current_user.username,
@@ -164,7 +175,7 @@ async def handle_chat_message(
         pg_db.add(user_chat_entry)
         pg_db.add(ai_chat_entry)
         pg_db.commit()
-        return ChatResponse(reply=ai_reply)
+        return ChatResponse(reply=ai_reply, mentor=mentor)
 
     except Exception as e:
         logger.error(

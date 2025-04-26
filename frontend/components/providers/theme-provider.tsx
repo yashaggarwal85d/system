@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { useTheme } from "next-themes";
 import useDashboardStore from "@/store/dashboardStore";
-import { ColorTheme } from "@/lib/utils/colors";
+import { ColorTheme, colors, darkColors } from "@/lib/utils/colors";
 
 function hexToHslString(hex: string): string {
   hex = hex.replace(/^#/, "");
@@ -78,11 +79,25 @@ function applyTheme(theme: ColorTheme) {
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const currentTheme = useDashboardStore((state) => state.currentTheme);
+  const { resolvedTheme } = useTheme();
+  const setCurrentThemeInStore = useDashboardStore(
+    (state) => state.setCurrentTheme
+  );
+  const currentThemeFromStore = useDashboardStore(
+    (state) => state.currentTheme
+  );
 
   React.useEffect(() => {
-    applyTheme(currentTheme);
-  }, [currentTheme]);
+    if (resolvedTheme === "dark") {
+      setCurrentThemeInStore(darkColors);
+    } else {
+      setCurrentThemeInStore(colors);
+    }
+  }, [resolvedTheme, setCurrentThemeInStore]);
+
+  React.useEffect(() => {
+    applyTheme(currentThemeFromStore);
+  }, [currentThemeFromStore]);
 
   return <>{children}</>;
 }

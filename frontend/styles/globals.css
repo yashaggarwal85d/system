@@ -41,18 +41,17 @@
     --input: 215 39% 17%;
     --ring: 203 92% 59%;
 
-    --radius: 0.5rem; /* Keep existing radius */
+    --radius: 0.5rem;
 
-    /* Custom theme variables */
-    --swirl-background: 245 30% 6%;
-    --swirl-particle-base-hue: 200;
-    --swirl-particle-hue-range: 40;
+    /* Chart colors */
+    --chart-1: var(--primary);
+    --chart-2: var(--accent);
+    --chart-3: var(--secondary); /* Adjust if needed */
+    --chart-4: var(--destructive);
+    --chart-5: var(--muted); /* Adjust if needed */
   }
 
-  .dark {
-    /* Define dark mode overrides here if needed,
-       though the ThemeProvider now handles dynamic themes */
-  }
+  /* No separate .dark needed if base HSL values change */
 }
 
 @layer base {
@@ -163,4 +162,31 @@
 }
 .markdown-content img {
   @apply max-w-full h-auto my-4 rounded;
+}
+
+/* View Transition for Theme Change */
+@keyframes reveal {
+  from {
+    clip-path: circle(0% at var(--ripple-x) var(--ripple-y));
+  }
+  to {
+    clip-path: circle(
+      150% at var(--ripple-x) var(--ripple-y)
+    ); /* Ensure it covers the whole screen */
+  }
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-new(root) {
+  animation: reveal 0.5s ease-out forwards;
+  z-index: 9999;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
 }

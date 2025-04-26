@@ -6,7 +6,6 @@ from datetime import datetime
 from models.redis_models import Player, Habit, Task, Routine
 from models.pg_models import HistoryType
 
-
 class PlayerFullInfo(BaseModel):
     player: Player
     habits: List[Habit]

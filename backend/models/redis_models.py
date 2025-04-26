@@ -32,14 +32,13 @@ class Player(BaseModel):
     level: int = 0
     aura: int = 0
     description: str = (
-        "Welcome Player!,Track your Tasks/Habits/Routines"
+        "Welcome to Shogun Forge Club!,Track your Tasks/Habits/Routines,Manage your personal finances,Chat with mentors"
     )
     password: str
     obsidian_notes: Optional[str] = None
     mentor: str
     is_admin: bool = False
     current_problems: str
-    goals_in_life: str
     ideal_future: str
     biggest_fears: str
     past_issues: Optional[str] = None
@@ -52,7 +51,6 @@ class PlayerUpdate(BaseModel):
     obsidian_notes: Optional[str] = None
     mentor: Optional[str] = None
     current_problems: Optional[str] = None
-    goals_in_life: Optional[str] = None
     ideal_future: Optional[str] = None
     biggest_fears: Optional[str] = None
     past_issues: Optional[str] = None

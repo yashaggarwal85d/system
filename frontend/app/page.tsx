@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import NotesPopup from "@/components/providers/notesPopup";
+import NotesPopup from "@/components/Misc/notesPopup";
 import Dashboard from "@/components/Dashboard";
 import useDashboardStore from "@/store/dashboardStore";
 import { Button } from "@/components/common/button";
@@ -29,7 +29,7 @@ export default function Home() {
       }
     } else {
       setAuthStatus("unauthenticated");
-      router.replace("/login");
+      router.replace("/info");
     }
   }, [fetchPlayer, player, router]);
 

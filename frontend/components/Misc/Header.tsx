@@ -1,4 +1,4 @@
-import { Card, CardContent } from "./common/card";
+import { Card, CardContent } from "../common/card";
 import useDashboardStore from "@/store/dashboardStore";
 const Header: React.FC = () => {
   const playerAura = useDashboardStore((state) => state.player?.aura);

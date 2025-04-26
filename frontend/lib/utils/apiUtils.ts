@@ -3,8 +3,21 @@ import {
   PlayerFullInfo,
   ChatHistoryEntry,
   VaultData,
+  CategorizedTransaction,
 } from "./interfaces";
 import { API_BASE, fetchWithAuth, handleResponse } from "./authUtils";
+
+interface FinanceDataResponse {
+  transactions: CategorizedTransaction[];
+  suggestions: string[];
+}
+
+interface UploadResponse {
+  message: string;
+  added: number;
+  skipped: number;
+  failed: number;
+}
 
 export const signupPlayer = async (
   playerData: Omit<Player, "level" | "aura" | "description"> & {
@@ -109,14 +122,18 @@ export const deleteEntityAPI = async (
 
 export const sendChatMessageAPI = async (
   user_message: string
-): Promise<{ reply: string }> => {
+): Promise<{ reply: string; action_taken?: boolean; mentor?: string }> => {
   const encodedMessage = encodeURIComponent(user_message);
   const url = `${API_BASE}/chat?user_message=${encodedMessage}`;
 
   const response = await fetchWithAuth(url, {
     method: "POST",
   });
-  return await handleResponse<{ reply: string }>(response);
+  return await handleResponse<{
+    reply: string;
+    action_taken?: boolean;
+    mentor?: string;
+  }>(response);
 };
 
 export const fetchChatHistoryAPI = async (): Promise<ChatHistoryEntry[]> => {
@@ -139,4 +156,30 @@ export const fetchNotesData = async (): Promise<VaultData> => {
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/players/me/notes`
   );
   return await handleResponse<VaultData>(response);
+};
+
+export const fetchFinanceData = async (): Promise<FinanceDataResponse> => {
+  console.log("API: Fetching finance data...");
+  const response = await fetchWithAuth(`${API_BASE}/finance/data`);
+
+  const data = await handleResponse<FinanceDataResponse>(response);
+  console.log(`API: Fetched ${data.transactions.length} transactions.`);
+  return data;
+};
+
+export const uploadRawFile = async (file: File): Promise<UploadResponse> => {
+  console.log(`API: Uploading file ${file.name}...`);
+  const formData = new FormData();
+  formData.append("file", file);
+
+  const response = await fetchWithAuth(`${API_BASE}/finance/upload-raw`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const result = await handleResponse<UploadResponse>(response);
+  console.log(
+    `API: File upload result - Added: ${result.added}, Skipped: ${result.skipped}, Failed: ${result.failed}`
+  );
+  return result;
 };

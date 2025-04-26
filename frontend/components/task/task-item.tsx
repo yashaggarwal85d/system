@@ -7,6 +7,8 @@ import { Button } from "@/components/common/button";
 import { Sparkles, Trash2, Pencil, TimerReset } from "lucide-react";
 import { motion } from "framer-motion";
 import { Task } from "@/lib/utils/interfaces";
+import { BorderBeam } from "@/components/common/border-beam";
+import useDashboardStore from "@/store/dashboardStore";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -40,6 +42,7 @@ export const TaskItem = ({
   getDeadlineColor,
   getDeadlineText,
 }: TaskItemProps) => {
+  const currentTheme = useDashboardStore((state) => state.currentTheme);
   const handleToggle = () => id && onToggle();
   const handleDelete = () => id && onDelete();
 
@@ -68,8 +71,24 @@ export const TaskItem = ({
         },
       }}
     >
-      <Card className="bg-secondary border-primary/20 hover:border-primary/40 transition-colors group">
-        {" "}
+      <Card className="relative overflow-hidden bg-secondary border-primary/20 hover:border-primary/40 transition-colors group">
+        {!completed && (
+          <>
+            <BorderBeam
+              colorFrom={currentTheme.primary.DEFAULT}
+              colorTo={currentTheme.accent.DEFAULT}
+              size={600}
+              delay={10}
+              duration={20}
+            />
+            <BorderBeam
+              colorFrom={currentTheme.primary.DEFAULT}
+              colorTo={currentTheme.accent.DEFAULT}
+              size={600}
+              duration={20}
+            />
+          </>
+        )}
         <CardContent className="p-4 flex items-center justify-between">
           <div className="flex items-center gap-4 flex-1 min-w-0">
             <Checkbox

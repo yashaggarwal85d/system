@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/common/button";
+import { InteractiveHoverButton } from "@/components/common/interactive-hover-button";
 import { Input } from "@/components/common/input";
 import { Label } from "@/components/common/label";
 import {
@@ -12,14 +12,6 @@ import {
   CardTitle,
   CardFooter,
 } from "@/components/common/card";
-import { Textarea } from "@/components/common/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/common/select";
 import ProfileFormSteps from "./ProfileFormSteps";
 import { isValidGitHubUrl } from "@/lib/utils/commonUtils";
 import {
@@ -93,7 +85,6 @@ const ActualLoginForm = ({ prefilledUsername }: ActualLoginFormProps) => {
         const playerData = await fetchPlayerData();
         setProfileFormData({
           current_problems: playerData.current_problems || "",
-          goals_in_life: playerData.goals_in_life || "",
           ideal_future: playerData.ideal_future || "",
           biggest_fears: playerData.biggest_fears || "",
           past_issues: playerData.past_issues || "",
@@ -121,12 +112,8 @@ const ActualLoginForm = ({ prefilledUsername }: ActualLoginFormProps) => {
   };
 
   const handleProfileNext = () => {
-    if (
-      !profileFormData.current_problems ||
-      !profileFormData.goals_in_life ||
-      !profileFormData.ideal_future
-    ) {
-      setProfileError("Please fill in Goals, Problems, and Ideal Future.");
+    if (!profileFormData.current_problems || !profileFormData.ideal_future) {
+      setProfileError("Please fill in Problems and Ideal Future.");
       return;
     }
     setProfileError("");
@@ -145,7 +132,6 @@ const ActualLoginForm = ({ prefilledUsername }: ActualLoginFormProps) => {
 
     if (
       !profileFormData.current_problems ||
-      !profileFormData.goals_in_life ||
       !profileFormData.ideal_future ||
       !profileFormData.biggest_fears ||
       !profileFormData.mentor
@@ -169,7 +155,6 @@ const ActualLoginForm = ({ prefilledUsername }: ActualLoginFormProps) => {
     try {
       const updateData: Partial<Player> = {
         current_problems: profileFormData.current_problems,
-        goals_in_life: profileFormData.goals_in_life,
         ideal_future: profileFormData.ideal_future,
         biggest_fears: profileFormData.biggest_fears,
         past_issues: profileFormData.past_issues,
@@ -233,13 +218,13 @@ const ActualLoginForm = ({ prefilledUsername }: ActualLoginFormProps) => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button
+              <InteractiveHoverButton
                 type="submit"
                 className="w-full"
                 disabled={isLoginLoading}
               >
                 {isLoginLoading ? "Logging in..." : "Login"}
-              </Button>
+              </InteractiveHoverButton>
             </CardFooter>
           </form>
         </Card>

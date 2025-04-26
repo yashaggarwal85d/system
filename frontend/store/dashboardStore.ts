@@ -1,11 +1,10 @@
 import { create, StateCreator } from "zustand";
 import { Player, PlayerFullInfo } from "@/lib/utils/interfaces";
-import { ColorTheme, defaultTheme, getThemeForLevel } from "@/lib/utils/colors";
+import { ColorTheme, defaultTheme } from "@/lib/utils/colors";
 import { fetchPlayerFullInfoAPI, updatePlayer } from "@/lib/utils/apiUtils";
 import useTaskStore from "./taskStore";
 import useHabitStore from "./habitStore";
 import useRoutineStore from "./routineStore";
-import useScrambleStore from "./scrambleStore";
 import { stringToChecklist } from "@/lib/utils/commonUtils";
 
 interface DashboardState {
@@ -18,6 +17,7 @@ interface DashboardState {
   setActiveTab: (tab: string) => void;
   fetchPlayer: () => void;
   modifyAura: (amount: number) => void;
+  setCurrentTheme: (theme: ColorTheme) => void;
 }
 
 const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
@@ -37,18 +37,13 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
         ...routine,
         checklist: stringToChecklist(routine.checklist.toString()),
       }));
-      const playerLevel = fullPlayerData.player.level;
-      const theme = getThemeForLevel(playerLevel);
       set({
         player: fullPlayerData.player,
-        currentTheme: theme,
         isLoading: false,
       });
       useHabitStore.getState().setEntities(fullPlayerData.habits);
       useTaskStore.getState().setEntities(fullPlayerData.tasks);
       useRoutineStore.getState().setEntities(fullPlayerData.routines);
-      const scramble = fullPlayerData.player.description.split(",");
-      useScrambleStore.getState().setPhrases(scramble);
     } catch (err) {
       console.error("Failed to fetch player data:", err);
       const errorMsg =
@@ -60,6 +55,8 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
       });
     }
   },
+
+  setCurrentTheme: (theme) => set({ currentTheme: theme }),
 
   modifyAura: async (amount) => {
     const currentPlayer = get().player;
@@ -76,11 +73,8 @@ const dashboardStoreCreator: StateCreator<DashboardState> = (set, get) => ({
         level: newLevel,
         description: " You are now level " + newLevel,
       };
-
-      const newTheme = getThemeForLevel(newLevel);
       set({
         player: { ...currentPlayer, ...newPlayer },
-        currentTheme: newTheme,
       });
     } else {
       set({ player: { ...currentPlayer, ...newPlayer } });

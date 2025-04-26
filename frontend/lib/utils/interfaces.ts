@@ -13,7 +13,6 @@ export interface Player {
   obsidian_notes?: string;
   mentor: string;
   current_problems: string;
-  goals_in_life: string;
   ideal_future: string;
   biggest_fears: string;
   past_issues?: string;
@@ -81,9 +80,19 @@ export interface ChatHistoryEntry {
   role: "user" | "assistant";
   content: string;
   timestamp: string;
+  mentor?: string;
 }
 
 export interface VaultData {
   fileName: string;
   content: string;
+}
+
+export interface CategorizedTransaction {
+  id?: string;
+  Timestamp: string;
+  Amount: number;
+  CrDr: "CR" | "DR";
+  Category: string;
+  Description?: string;
 }

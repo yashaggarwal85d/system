@@ -1,105 +1,115 @@
 export const colors = {
-  background: "#0d0d0d",
-  foreground: "#f0f0f0",
+  background: "#f5f2eb",
+  foreground: "#1c1c1c",
 
   primary: {
-    DEFAULT: "#3abff8",
-    foreground: "#0d0d0d",
+    DEFAULT: "#735f32",
+    foreground: "#fffaf3",
   },
   secondary: {
-    DEFAULT: "#0d111a",
-    foreground: "#f0f0f0",
+    DEFAULT: "#c2bba7",
+    foreground: "#1c1c1c",
   },
   muted: {
-    DEFAULT: "#334155",
-    foreground: "#94a3b8",
+    DEFAULT: "#d6d2c6",
+    foreground: "#2a2a2a",
   },
   accent: {
-    DEFAULT: "#7dd3fc",
-    foreground: "#0d0d0d",
+    DEFAULT: "#a37c2c",
+    foreground: "#fdfbf7",
   },
   destructive: {
-    DEFAULT: "#ef4444",
+    DEFAULT: "#b04a4a",
+    foreground: "#fff1f1",
+  },
+  success: {
+    DEFAULT: "#6f9e58",
+    foreground: "#f3fff5",
+  },
+  warning: {
+    DEFAULT: "#cc8b2f",
+    foreground: "#fff9f2",
+  },
+  info: {
+    DEFAULT: "#6489af",
+    foreground: "#f2faff",
+  },
+
+  input: "#ddd9cf",
+  border: "#9c9480",
+  ring: "#a37c2c",
+
+  card: {
+    DEFAULT: "#f2efe6",
+    foreground: "#1c1c1c",
+  },
+  popover: {
+    DEFAULT: "#e8e4dc",
+    foreground: "#1c1c1c",
+  },
+
+  swirlBackground: "#f5f2eb",
+  swirlParticleBaseHue: 40,
+  swirlParticleHueRange: 20,
+};
+
+export const darkColors = {
+  background: "#0f0e0d",
+  foreground: "#f3f0e7",
+
+  primary: {
+    DEFAULT: "#735f32",
+    foreground: "#fdfaf3",
+  },
+  secondary: {
+    DEFAULT: "#2a2927",
+    foreground: "#e5e1d9",
+  },
+  muted: {
+    DEFAULT: "#3d3b39",
+    foreground: "#b4b0a5",
+  },
+  accent: {
+    DEFAULT: "#fdfaf3",
+    foreground: "#1a1a1a",
+  },
+  destructive: {
+    DEFAULT: "#cc5a5a",
     foreground: "#fef2f2",
   },
   success: {
-    DEFAULT: "#22c55e",
+    DEFAULT: "#77b779",
     foreground: "#f0fdf4",
   },
   warning: {
-    DEFAULT: "#eab308",
-    foreground: "#fefce8",
+    DEFAULT: "#d6a44c",
+    foreground: "#fff8e5",
   },
   info: {
-    DEFAULT: "#38bdf8",
-    foreground: "#f0f9ff",
+    DEFAULT: "#7da9c7",
+    foreground: "#f0faff",
   },
-  border: "#1f2937",
-  input: "#1e293b",
-  ring: "#38bdf8",
+
+  border: "#2d2c2a",
+  input: "#1a1a1a",
+  ring: "#fdfaf3",
 
   card: {
-    DEFAULT: "#111827",
-    foreground: "#f0f0f0",
+    DEFAULT: "#1a1a1a",
+    foreground: "#f3f0e7",
   },
   popover: {
-    DEFAULT: "#1f2937",
-    foreground: "#f0f0f0",
+    DEFAULT: "#232220",
+    foreground: "#f3f0e7",
   },
 
-  swirlBackground: "#0b0a13",
-  swirlParticleBaseHue: 200,
-  swirlParticleHueRange: 40,
+  swirlBackground: "#0f0e0d",
+  swirlParticleBaseHue: 40,
+  swirlParticleHueRange: 30,
 };
-
-import levelThemeOverrides from "./level-themes.json";
 
 export type ColorTheme = typeof colors;
-
 export const defaultTheme: ColorTheme = colors;
-
-export const levelThemes: Record<number, ColorTheme> = {
-  1: defaultTheme,
-  ...Object.entries(levelThemeOverrides).reduce(
-    (acc, [levelStr, overrides]) => {
-      const level = parseInt(levelStr, 10);
-
-      const mergedTheme = JSON.parse(JSON.stringify(defaultTheme));
-      for (const key in overrides) {
-        if (
-          typeof overrides[key as keyof typeof overrides] === "object" &&
-          overrides[key as keyof typeof overrides] !== null &&
-          mergedTheme[key as keyof ColorTheme] &&
-          typeof mergedTheme[key as keyof ColorTheme] === "object"
-        ) {
-          Object.assign(
-            mergedTheme[key as keyof ColorTheme] as object,
-            overrides[key as keyof typeof overrides]
-          );
-        } else {
-          (mergedTheme as any)[key] = overrides[key as keyof typeof overrides];
-        }
-      }
-      acc[level] = mergedTheme as ColorTheme;
-      return acc;
-    },
-    {} as Record<number, ColorTheme>
-  ),
-};
-
-export const getThemeForLevel = (level: number): ColorTheme => {
-  const availableLevels = Object.keys(levelThemes)
-    .map(Number)
-    .sort((a, b) => b - a);
-
-  for (const themeLevel of availableLevels) {
-    if (level >= themeLevel) {
-      return levelThemes[themeLevel];
-    }
-  }
-
-  return defaultTheme;
-};
 
 export const tailwindColors = {
   background: defaultTheme.background,
@@ -117,5 +127,4 @@ export const tailwindColors = {
   ring: defaultTheme.ring,
   card: defaultTheme.card,
   popover: defaultTheme.popover,
-  swirlBackground: defaultTheme.swirlBackground,
 };

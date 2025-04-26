@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/common/button";
+import { InteractiveHoverButton } from "@/components/common/interactive-hover-button";
 import { Input } from "@/components/common/input";
 import { Label } from "@/components/common/label";
 import {
@@ -49,6 +50,12 @@ const ProfileFormSteps = ({
   onSubmit,
   submitButtonText = "Submit Profile",
 }: ProfileFormStepsProps) => {
+  const mentorString = process.env.NEXT_PUBLIC_MENTORS || "";
+  const mentorOptions = mentorString
+    .split(",")
+    .map((mentor) => mentor.trim())
+    .filter((mentor) => mentor);
+
   return (
     <Card>
       <CardHeader>
@@ -68,18 +75,6 @@ const ProfileFormSteps = ({
           )}
           {step === 1 && (
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="goals_in_life">Goals in Life</Label>
-                <Textarea
-                  id="goals_in_life"
-                  placeholder="What are your major long-term aspirations?"
-                  value={formData.goals_in_life || ""}
-                  onChange={onChange}
-                  required
-                  className="text-foreground"
-                  disabled={isLoading}
-                />
-              </div>
               <div className="space-y-2">
                 <Label htmlFor="current_problems">Current Problems</Label>
                 <Textarea
@@ -162,21 +157,17 @@ const ProfileFormSteps = ({
                     <SelectValue placeholder="Select a mentor" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Lord Krishna from Hindu Mythology">
-                      Lord Krishna
-                    </SelectItem>
-                    <SelectItem value="Ryomen Sukuna from JJk">
-                      Ryomen Sukuna
-                    </SelectItem>
-                    <SelectItem value="Kiyotaka Ayanokoji from classroom of the elite">
-                      Kiyotaka Ayanokoji
-                    </SelectItem>
-                    <SelectItem value="Elon Musk from Tesla and SpaceX">
-                      Elon Musk
-                    </SelectItem>
-                    <SelectItem value="Jordan Peterson the Psychologist">
-                      Jordan Peterson
-                    </SelectItem>
+                    {mentorOptions.length > 0 ? (
+                      mentorOptions.map((mentor) => (
+                        <SelectItem key={mentor} value={mentor}>
+                          {mentor}
+                        </SelectItem>
+                      ))
+                    ) : (
+                      <SelectItem value="" disabled>
+                        No mentors configured
+                      </SelectItem>
+                    )}
                   </SelectContent>
                 </Select>
               </div>
@@ -198,9 +189,13 @@ const ProfileFormSteps = ({
             </Button>
           )}
           {step === 2 && onSubmit && (
-            <Button type="button" onClick={onSubmit} disabled={isLoading}>
+            <InteractiveHoverButton
+              type="button"
+              onClick={onSubmit}
+              disabled={isLoading}
+            >
               {isLoading ? "Processing..." : submitButtonText}
-            </Button>
+            </InteractiveHoverButton>
           )}
         </CardFooter>
       </>
