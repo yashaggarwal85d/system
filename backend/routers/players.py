@@ -3,18 +3,16 @@ import random
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from datetime import datetime, timezone
 from typing import List
 from fastapi import Query
 from sqlalchemy.orm import Session
-from jose import JWTError, jwt
 
 import redis.asyncio as redis
 
 from utils.general import notes_utils
 from models import pydantic_models, redis_models
 
-from models.pydantic_models import NotesEntry, Token, RefreshTokenRequest, TokenData
+from models.pydantic_models import NotesEntry, Token
 from utils.ai.data_format import parseResponseToJson
 from utils.ai.handle_ai_action import handle_create_action
 from utils.ai import prompts, gemini

@@ -5,7 +5,12 @@ import {
   VaultData,
   CategorizedTransaction,
 } from "./interfaces";
-import { API_BASE, fetchWithAuth, handleResponse } from "./authUtils";
+import {
+  API_BASE,
+  fetchFileWithAuth,
+  fetchWithAuth,
+  handleResponse,
+} from "./authUtils";
 
 interface FinanceDataResponse {
   transactions: CategorizedTransaction[];
@@ -172,7 +177,7 @@ export const uploadRawFile = async (file: File): Promise<UploadResponse> => {
   const formData = new FormData();
   formData.append("file", file);
 
-  const response = await fetchWithAuth(`${API_BASE}/finance/upload-raw`, {
+  const response = await fetchFileWithAuth(`${API_BASE}/finance/upload-raw`, {
     method: "POST",
     body: formData,
   });

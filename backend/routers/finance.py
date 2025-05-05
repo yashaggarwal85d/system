@@ -3,22 +3,25 @@ import hashlib
 from datetime import datetime
 from typing import List
 
+from PyPDF2 import PdfReader
+from io import BytesIO
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from sqlalchemy.orm import Session
-from backend.models.finance_models import (
+from models.finance_models import (
     CategorizedTransactionResponse,
     FinanceDataResponse,
     GeminiResponse,
     UploadResponse,
 )
-from backend.utils.ai import gemini
-from backend.utils.ai.data_format import parseResponseToJson
+from utils.ai import gemini
+from utils.ai.data_format import parseResponseToJson
 from utils.database.pg_database import get_pg_db
 from utils.general.check_transaction_dup import add_transaction
 from models.pg_models import Transaction as DBTransaction
 from utils.operations.auth import get_current_user
 from models.redis_models import Player
 from utils.ai.prompts import get_finance_data_prompt
+
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +31,15 @@ router = APIRouter(prefix="/finance", tags=["Finance"])
 def generate_hash(data: str) -> str:
     return hashlib.sha256(data.encode("utf-8")).hexdigest()
 
+async def read_pdf(file):
+    contents = await file.read()
+    pdf_reader = PdfReader(BytesIO(contents))
+
+    text = ""
+    for page in pdf_reader.pages:
+        text += page.extract_text() or ""
+    
+    return text.strip()
 
 @router.post("/upload-raw", response_model=UploadResponse)
 async def upload_finance_data(
@@ -39,19 +51,14 @@ async def upload_finance_data(
     logger.info(f"Received transaction file upload from user: {user_id}")
 
     try:
-        contents = await file.read()
-        raw_text = contents.decode("utf-8")
-        await file.close()
-
-        if not raw_text.strip():
-            raise HTTPException(status_code=400, detail="Uploaded file is empty.")
-
+        raw_text = await read_pdf(file)
         gemini_model = gemini.get_gemini_model()
         chat_session = gemini_model.start_chat()
         response = await chat_session.send_message_async(
             get_finance_data_prompt(raw_text)
         )
         response_data = parseResponseToJson(response.text)
+        print(response_data)
         gemini_data = GeminiResponse.model_validate(response_data)
 
         added_count = 0

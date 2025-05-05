@@ -15,3 +15,4 @@ aiofiles
 sqlalchemy
 psycopg2-binary
 google-generativeai
+PyPDF2

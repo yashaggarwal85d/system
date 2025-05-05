@@ -42,6 +42,38 @@ export const fetchWithAuth = async (
   return response;
 };
 
+export const fetchFileWithAuth = async (
+  url: string,
+  options: RequestInit = {}
+): Promise<Response> => {
+  const token = getAuthToken();
+  const headers = new Headers(options.headers);
+
+  if (token) {
+    headers.append("Authorization", `Bearer ${token}`);
+  }
+
+  const response = await fetch(url, {
+    ...options,
+    headers,
+  });
+
+  if (response.status === 401) {
+    console.error(
+      "Unauthorized request - Token might be invalid or expired. Redirecting to login."
+    );
+
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("accessToken");
+
+      window.location.href = "/login";
+    }
+
+    throw new Error("Unauthorized");
+  }
+  return response;
+};
+
 export async function handleResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
     const errorData = await response
